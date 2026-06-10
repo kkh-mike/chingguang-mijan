@@ -487,3 +487,14 @@ footer p{
         font-size:2.2rem;
     }
 }
+
+/* =========================
+   products
+========================= */
+.navbar-brand{
+    font-size:1.4rem;
+}
+
+#cartCount{
+    font-size:0.75rem;
+}

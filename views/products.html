@@ -1,5 +1,7 @@
 <!DOCTYPE html>
+
 <html lang="zh-TW">
+
 <head>
 
 <meta charset="UTF-8">
@@ -11,54 +13,74 @@
 
 <style>
 
-body{
-    background:#fffaf3;
-}
+    body{
+        background:#fffaf3;
+    }
 
-.page-title{
-    text-align:center;
-    margin-bottom:50px;
-}
+    .page-title{
+        text-align:center;
+        margin-bottom:50px;
+    }
 
-.page-title h1{
-    color:#8B4513;
-    font-weight:bold;
-}
+    .page-title h1{
+        color:#8B4513;
+        font-weight:bold;
+    }
 
-.card{
-    border:none;
-    border-radius:15px;
-    overflow:hidden;
-    box-shadow:0 5px 15px rgba(0,0,0,.1);
-    transition:.3s;
-    height:100%;
-}
+    .page-title p{
+        color:#666;
+    }
 
-.card:hover{
-    transform:translateY(-5px);
-}
+    .card{
+        border:none;
+        border-radius:15px;
+        overflow:hidden;
+        box-shadow:0 5px 15px rgba(0,0,0,.1);
+        transition:.3s;
+        height:100%;
+    }
 
-.card img{
-    height:250px;
-    object-fit:cover;
-}
+    .card:hover{
+        transform:translateY(-5px);
+    }
 
-.price{
-    color:#d35400;
-    font-size:1.3rem;
-    font-weight:bold;
-}
+    .card img{
+        height:250px;
+        object-fit:cover;
+    }
 
-.btn-order{
-    background:#d35400;
-    color:white;
-    width:100%;
-}
+    .price{
+        color:#d35400;
+        font-size:1.3rem;
+        font-weight:bold;
+    }
 
-.btn-order:hover{
-    background:#b84300;
-    color:white;
-}
+    .btn-order{
+        background:#d35400;
+        color:white;
+        width:100%;
+        border:none;
+    }
+
+    .btn-order:hover{
+        background:#b84300;
+        color:white;
+    }
+
+    .loading{
+        text-align:center;
+        padding:40px;
+        color:#666;
+    }
+
+        
+    .navbar-brand{
+        font-size:1.4rem;
+    }
+
+    #cartCount{
+        font-size:0.75rem;
+    }
 
 </style>
 
@@ -66,108 +88,52 @@ body{
 
 <body>
 
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <div class="container">
+
+        <a class="navbar-brand fw-bold" href="/">
+            🍊 晴光蜜餞
+        </a>
+
+        <div class="ms-auto">
+
+            <a href="/cart"
+               class="btn btn-warning position-relative">
+
+                🛒 購物車
+
+                <span id="cartCount"
+                      class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    0
+                </span>
+
+            </a>
+
+        </div>
+
+    </div>
+</nav>
+
 <div class="container py-5">
 
-<div class="page-title">
-    <h1>晴光蜜餞商品專區</h1>
-    <p>古早味蜜餞・休閒零嘴・伴手禮首選</p>
-</div>
-
-<div class="row g-4">
-
-    <!-- 商品1 -->
-    <div class="col-md-4">
-        <div class="card">
-            <img src="/images/butter-plum.jpg" class="card-img-top">
-            <div class="card-body">
-                <h5>奶油話梅</h5>
-                <p>香濃奶油香氣搭配酸甜話梅。</p>
-                <p class="price">NT$120</p>
-                <button class="btn btn-order">
-                    加入購物車
-                </button>
-            </div>
-        </div>
+    <div class="page-title">
+        <h1>晴光蜜餞商品專區</h1>
+        <p>古早味蜜餞・休閒零嘴・伴手禮首選</p>
     </div>
 
-    <!-- 商品2 -->
-    <div class="col-md-4">
-        <div class="card">
-            <img src="/images/honey-plum.jpg" class="card-img-top">
-            <div class="card-body">
-                <h5>蜂蜜梅</h5>
-                <p>天然蜂蜜調味，酸甜回甘。</p>
-                <p class="price">NT$130</p>
-                <button class="btn btn-order">
-                    加入購物車
-                </button>
-            </div>
-        </div>
-    </div>
+    <div class="row g-4" id="productList">
 
-    <!-- 商品3 -->
-    <div class="col-md-4">
-        <div class="card">
-            <img src="/images/green-plum.jpg" class="card-img-top">
-            <div class="card-body">
-                <h5>青梅</h5>
-                <p>經典人氣商品，酸甜適中。</p>
-                <p class="price">NT$100</p>
-                <button class="btn btn-order">
-                    加入購物車
-                </button>
-            </div>
+        <div class="loading">
+            商品載入中...
         </div>
-    </div>
 
-    <!-- 商品4 -->
-    <div class="col-md-4">
-        <div class="card">
-            <img src="/images/mango.jpg" class="card-img-top">
-            <div class="card-body">
-                <h5>愛文芒果乾</h5>
-                <p>果香濃郁，口感Q彈。</p>
-                <p class="price">NT$180</p>
-                <button class="btn btn-order">
-                    加入購物車
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 商品5 -->
-    <div class="col-md-4">
-        <div class="card">
-            <img src="/images/guava.jpg" class="card-img-top">
-            <div class="card-body">
-                <h5>芭樂乾</h5>
-                <p>酸甜滋味，越吃越順口。</p>
-                <p class="price">NT$120</p>
-                <button class="btn btn-order">
-                    加入購物車
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 商品6 -->
-    <div class="col-md-4">
-        <div class="card">
-            <img src="/images/preserved-fruit.jpg" class="card-img-top">
-            <div class="card-body">
-                <h5>古早味蜜餞</h5>
-                <p>懷舊風味，經典不敗。</p>
-                <p class="price">NT$100</p>
-                <button class="btn btn-order">
-                    加入購物車
-                </button>
-            </div>
-        </div>
     </div>
 
 </div>
 
-</div>
+<script src="/js/products.js"></script>
+```
 
 </body>
+
 </html>
