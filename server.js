@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const session = require('express-session');   // ← 新增
+const session = require('express-session');
 const products = require('./data/products');
 const pool = require('./db');
 
@@ -10,19 +10,19 @@ const app = express();
 app.use(express.static('public'));
 app.use(express.json());
 
-// Session 設定（重要！）
+// Session 設定
 app.use(session({
-    secret: 'chingguang-mijan-secret-2026',   // 建議改成更長更亂的字串
+    secret: 'chingguang-mijan-secret-2026',   // 建議改成更長更隨機的字串
     resave: false,
     saveUninitialized: false,
     cookie: { 
-        maxAge: 60 * 60 * 1000,   // 1小時自動過期
+        maxAge: 60 * 60 * 1000,   // 1小時
         httpOnly: true
     }
 }));
 
 // === 後台登入相關 ===
-const ADMIN_PASSWORD = '123';   // ←←← 務必修改！
+const ADMIN_PASSWORD = '123';   // ←←← 務必修改成安全的密碼！
 
 app.get('/admin-login', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'admin-login.html'));
@@ -33,7 +33,7 @@ app.post('/api/admin-login', (req, res) => {
     
     if (password === ADMIN_PASSWORD) {
         req.session.isAdmin = true;
-        res.json({ success: true, redirect: '/admin-orders' });
+        res.json({ success: true, redirect: '/admin' });   // 改成導向後台首頁
     } else {
         res.status(401).json({ success: false, message: '密碼錯誤' });
     }
@@ -68,7 +68,11 @@ app.get('/success', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'success.html'));
 });
 
-// 保護後台頁面
+// === 後台路由 ===
+app.get('/admin', requireAdmin, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'admin.html'));   // 後台首頁
+});
+
 app.get('/admin-orders', requireAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin-orders.html'));
 });
@@ -79,7 +83,7 @@ app.get('/api/products', (req, res) => {
   res.json(products);
 });
 
-// 新增：建立訂單 API（前台使用，不需要保護）
+// 建立訂單（前台使用）
 app.post('/api/orders', async (req, res) => {
   console.log('========== 收到訂單 ==========');
   console.log(req.body);
@@ -128,6 +132,56 @@ app.post('/api/orders', async (req, res) => {
   }
 });
 
+// === 新增：銷售統計 API (Phase 8.6) ===
+app.get('/api/sales-stats', requireAdmin, async (req, res) => {
+  try {
+    const today = new Date().toISOString().split('T')[0];
+    const firstDayOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+      .toISOString().split('T')[0];
+
+    // 今日訂單數
+    const todayOrders = await pool.query(
+      `SELECT COUNT(*) as count FROM orders WHERE DATE(created_at) = $1`,
+      [today]
+    );
+
+    // 本月訂單數
+    const monthOrders = await pool.query(
+      `SELECT COUNT(*) as count FROM orders WHERE created_at >= $1`,
+      [firstDayOfMonth]
+    );
+
+    // 本月營業額
+    const monthRevenue = await pool.query(
+      `SELECT COALESCE(SUM(total_amount), 0) as revenue FROM orders WHERE created_at >= $1`,
+      [firstDayOfMonth]
+    );
+
+    // 熱銷排行（前5名）
+    const hotSales = await pool.query(`
+      SELECT 
+        oi.product_name,
+        SUM(oi.quantity) as total_qty
+      FROM order_items oi
+      JOIN orders o ON oi.order_id = o.id
+      WHERE o.created_at >= $1
+      GROUP BY oi.product_name
+      ORDER BY total_qty DESC
+      LIMIT 5
+    `, [firstDayOfMonth]);
+
+    res.json({
+      todayOrders: parseInt(todayOrders.rows[0].count),
+      monthOrders: parseInt(monthOrders.rows[0].count),
+      monthRevenue: parseInt(monthRevenue.rows[0].revenue),
+      hotSales: hotSales.rows
+    });
+  } catch (err) {
+    console.error('取得銷售統計失敗', err);
+    res.status(500).json({ error: '取得銷售統計失敗' });
+  }
+});
+
 // 測試資料庫連線
 app.get('/test-db', async (req, res) => {
   try {
@@ -139,7 +193,7 @@ app.get('/test-db', async (req, res) => {
   }
 });
 
-// 保護的後台 API
+// 後台訂單 API
 app.get('/api/orders', requireAdmin, async (req, res) => {
   try {
     const result = await pool.query(`
@@ -200,5 +254,5 @@ app.get('/admin-logout', (req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log('Server running on port 3000');
+  console.log('🚀 Server running on http://localhost:3000');
 });
