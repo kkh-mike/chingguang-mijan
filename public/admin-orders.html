@@ -1,50 +1,50 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-
 <head>
-
-<meta charset="UTF-8">
-
-<title>訂單管理</title>
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<style>
-
-body{
-    background:#f5f5f5;
-}
-
-.order-card{
-    margin-bottom:20px;
-    border:none;
-    border-radius:15px;
-    box-shadow:0 2px 10px rgba(0,0,0,.08);
-}
-
-.card-header{
-    font-weight:bold;
-    font-size:18px;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <title>訂單管理</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background: #f5f5f5; }
+        .order-card {
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,.08);
+        }
+        .card-header { font-weight: bold; font-size: 18px; }
+    </style>
 </head>
-
 <body>
+    <div class="container mt-4">
+        <h1 class="mb-4">訂單管理後台</h1>
 
-<div class="container mt-4">
+        <!-- 搜尋區 -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">🔍 搜尋收件人</label>
+                <input type="text" id="searchReceiver" class="form-control" placeholder="輸入收件人姓名">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">📱 搜尋電話</label>
+                <input type="text" id="searchPhone" class="form-control" placeholder="輸入電話號碼">
+            </div>
+        </div>
 
-    <h1 class="mb-4">
-        訂單管理後台
-    </h1>
+        <!-- 新增：排序區 -->
+        <div class="mb-4">
+            <label class="form-label fw-bold">🔄 排序方式</label>
+            <div class="btn-group" role="group">
+                <button class="btn btn-outline-primary active" data-sort="newest">最新優先</button>
+                <button class="btn btn-outline-primary" data-sort="oldest">最舊優先</button>
+                <button class="btn btn-outline-primary" data-sort="pending">待確認優先</button>
+                <button class="btn btn-outline-primary" data-sort="shipped">已出貨優先</button>
+            </div>
+        </div>
 
-    <div id="orderContainer">
+        <div id="orderContainer"></div>
     </div>
 
-</div>
-
-<script src="/js/admin-orders.js"></script>
-
+    <script src="/js/admin-orders.js"></script>
 </body>
 </html>
