@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>商品管理 - 晴光蜜餞後台</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background: #f8f9fa; padding-top: 70px; }
+        .product-row:hover { background-color: #f1f3f5; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/admin">🌟 晴光蜜餞 後台</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="/admin">📊 首頁</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin-orders">📋 訂單</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/admin-products">📦 商品管理</a></li>
+                </ul>
+                <a class="nav-link text-light" href="/admin-logout">🚪 登出</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1>📦 商品管理</h1>
+        <table class="table table-hover" id="productTable">
+            <thead>
+                <tr>
+                    <th>商品名稱</th>
+                    <th>價格</th>
+                    <th>狀態</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        async function loadProducts() {
+            const res = await fetch('/api/admin/products');
+            const products = await res.json();
+            const tbody = document.querySelector('#productTable tbody');
+            tbody.innerHTML = '';
+
+            products.forEach(p => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${p.name}</strong></td>
+                    <td>NT$ ${p.price}</td>
+                    <td><span class="badge ${p.isActive ? 'bg-success' : 'bg-secondary'}">${p.isActive ? '上架中' : '已下架'}</span></td>
+                    <td>
+                        <button class="btn btn-sm ${p.isActive ? 'btn-warning' : 'btn-success'}" 
+                                onclick="toggleProduct(${p.id})">
+                            ${p.isActive ? '下架' : '上架'}
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        async function toggleProduct(id) {
+            const res = await fetch(`/api/admin/products/${id}/toggle`, { method: 'PUT' });
+            const data = await res.json();
+            if (data.success) {
+                alert(data.message);
+                loadProducts();
+            }
+        }
+
+        window.onload = loadProducts;
+    </script>
+</body>
+</html>
