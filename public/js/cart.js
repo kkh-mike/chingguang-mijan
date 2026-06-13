@@ -38,39 +38,32 @@ async function loadCart() {
         const subtotal = product ? product.price * item.qty : 0;
 
         if (!product) {
-            cartItems.innerHTML += `
-                <div class="cart-item">
-                    <div class="text-muted">商品已不存在</div>
-                </div>`;
+            cartItems.innerHTML += `<div class="cart-item p-4 text-muted">商品已不存在</div>`;
             return;
         }
 
         cartItems.innerHTML += `
         <div class="cart-item">
             <div class="cart-item-content">
-                <!-- 小圖片 -->
                 <img src="${product.image || '/images/no-image.jpg'}" alt="${product.name}">
                 
                 <div class="cart-item-info">
                     <div class="cart-item-name">${product.name}</div>
                     <div class="cart-item-spec">
                         單價：NT$${product.price}
-                        ${item.spec ? `<br>${item.spec}` : ''}
                     </div>
 
-                    <!-- 數量控制 -->
                     <div class="qty-row">
                         <div class="qty-control">
                             <button class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button>
                             <input type="text" class="qty-input" value="${item.qty}" readonly>
                             <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
                         </div>
-                        <div class="item-subtotal">小計 NT$${subtotal}</div>
+                        <div class="item-subtotal">小計：NT$${subtotal}</div>
                     </div>
                 </div>
             </div>
 
-            <!-- 垃圾桶在右側 -->
             <button class="delete-btn" onclick="removeItem(${item.id})">
                 <i class="bi bi-trash"></i>
             </button>
