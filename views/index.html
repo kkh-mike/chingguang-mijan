@@ -79,58 +79,97 @@
             max-width: 160px;
         }
 
+        /* 圓形 Logo */
        /* Navbar 優化 */
-.navbar-brand img {
-    height: 68px;
-    width: 68px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 3px solid #fff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
+        .navbar-brand img {
+            height: 68px;
+            width: 68px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
 
-.navbar-brand span {
-    font-size: 1.65rem;
-    font-weight: 700;
-    white-space: nowrap;
-}
+        .navbar-brand span {
+            font-size: 1.65rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
 
-/* 手機版搜尋框優化 */
-.mobile-search {
-    max-width: 220px;
-}
+        /* 手機版搜尋框優化 */
+        .mobile-search {
+            max-width: 220px;
+        }
 
-.mobile-search .input-group input {
-    font-size: 0.95rem;
-}
+        .mobile-search .input-group input {
+            font-size: 0.95rem;
+        }
 
-/* 手機版調整 */
-@media (max-width: 768px) {
-    .navbar-brand img {
-        height: 48px;
-        width: 48px;
-    }
-    
-    .navbar-brand span {
-        font-size: 1.25rem;
-    }
+        /* 底部導航欄 - 改成固定在底部 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1030;
+            padding: 8px 0 4px;
+        }
 
-    .mobile-search {
-        max-width: none;           /* 讓它有彈性 */
-        flex-grow: 1;
-        max-width: 180px;          /* 關鍵調整 */
-    }
+        .bottom-nav .nav-link {
+            color: #333;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
 
-    .mobile-search .input-group input {
-        font-size: 0.9rem;
-        padding: 8px 10px;
-    }
+        .bottom-nav .nav-link:hover,
+        .bottom-nav .nav-link.active {
+            color: #ffc107;
+        }
 
-    .container {
-        padding-left: 12px;
-        padding-right: 12px;
-    }
-}
+        .bottom-nav .fs-3 {
+            font-size: 1.65rem;
+        }
+
+        /* 防止內容被底部導航蓋住 */
+        body {
+            padding-bottom: 70px; /* 預留底部導航高度 */
+        }
+
+        @media (max-width: 768px) {
+                .navbar-brand img {
+                height: 48px;
+                width: 48px;
+            }
+           
+            
+            .navbar-brand span {
+                font-size: 1.25rem;
+            }
+
+            .mobile-search {
+                max-width: none;           /* 讓它有彈性 */
+                flex-grow: 1;
+                max-width: 180px;          /* 關鍵調整 */
+            }
+
+            .mobile-search .input-group input {
+                font-size: 0.9rem;
+                padding: 8px 10px;
+            }
+
+            .container {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+            
+            .bottom-nav {
+                display: block;
+            }
+        }
+
         /* iPhone 安全區域處理 */
         @supports (padding: max(0px)) {
             .bottom-nav {
@@ -141,7 +180,16 @@
 </head>
 <body>
 
+✅ 已幫你優化手機版 Logo + 搜尋框的排版問題
+主要問題：
 
+Logo + 文字 + 搜尋框在小螢幕上空間不足，容易擠在一起。
+ms-auto 雖然把搜尋框推到右邊，但沒有足夠的壓縮空間。
+
+
+修正後的程式碼（直接替換即可）
+1. 替換 Navbar 部分
+HTML<!-- Top Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
     <div class="container px-3">
         <a class="navbar-brand d-flex align-items-center" href="/">
