@@ -147,7 +147,6 @@ function changeQty(id, amount) {
     localStorage.setItem('shineguang_cart', JSON.stringify(cart));
     loadCart();
 }
-
 /* ====================== 用 LINE 直接送出訂單 ====================== */
 async function sendToLine() {
     const cart = JSON.parse(localStorage.getItem('shineguang_cart')) || [];
@@ -162,7 +161,7 @@ async function sendToLine() {
         await loadCurrentProducts();
     }
 
-    let message = "🌟 *晴光蜜餞* 訂單\n\n";
+    let message = "🌟 *晴光蜜餞 訂單* 🌟\n\n";
     let total = 0;
     let hasInvalid = false;
 
@@ -175,32 +174,36 @@ async function sendToLine() {
         }
 
         const subtotal = product.price * item.qty;
-        message += `✅ ${product.name}\n`;
-        message += `   數量：${item.qty} × NT$${product.price} = NT$${subtotal}\n\n`;
+        message += `🛍️ ${product.name}\n`;
+        message += `   數量：${item.qty} 件\n`;
+        message += `   小計：NT$${subtotal}\n\n`;
         
         total += subtotal;
     });
 
     if (hasInvalid) {
-        message += "⚠️ 注意：部分商品已下架，將不列入此次訂單。\n\n";
+        message += "⚠️ 注意：部分商品已下架，已自動排除。\n\n";
     }
 
-    message += `📌 *總金額：NT$${total}*\n`;
-    message += `🕒 訂單時間：${new Date().toLocaleString('zh-TW')}\n\n`;
-    message += "謝謝您～ 請確認後回覆「確認訂單」即可！";
+    message += `────────────────\n`;
+    message += `📌 總金額：*NT$${total}*\n`;
+    message += `🕒 訂單時間：${new Date().toLocaleString('zh-TW')}\n`;
+    message += `────────────────\n\n`;
+    message += "🙏 麻煩店家確認後回覆「確認訂單」即可～\n";
+    message += "謝謝！";
 
-    const lineId = "@xhr6167l";   // ← 已替換為你的 LINE ID
+    const lineId = "@xhr6167l";
 
-    // 直接開啟與官方帳號的聊天視窗，並帶入訊息
     const lineUrl = `https://line.me/R/oaMessage/${lineId}/?text=${encodeURIComponent(message)}`;
     
     window.open(lineUrl, '_blank');
 
-    // 同時複製到剪貼簿（備用）
+    // 同時複製到剪貼簿（方便備用）
     navigator.clipboard.writeText(message).then(() => {
-        console.log('訂單內容已複製到剪貼簿');
+        console.log('✅ 訂單已複製到剪貼簿');
+    }).catch(() => {
+        console.log('複製失敗');
     });
 }
-
 /* 頁面載入 */
 window.onload = loadCart;
