@@ -6,20 +6,18 @@
     <title>晴光蜜餞｜商品專區</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/styles.css">
 
     <style>
         body {
             background: #fffaf3;
-        }
-
-        .navbar-brand {
-            font-size: 1.5rem;
+            padding-bottom: 70px;
         }
 
         .page-title {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
 
         .page-title h1 {
@@ -27,88 +25,145 @@
             font-weight: bold;
         }
 
-        .page-title p {
-            color: #666;
-            font-size: 1.1rem;
-        }
-
-        /* 商品卡片優化 */
+        /* ==================== 商品卡片 - 這次再調小 ==================== */
         .product-card {
             border: none;
-            border-radius: 20px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
             height: 100%;
+            background: white;
         }
 
         .product-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .product-image-container {
+            position: relative;
+            height: 200px;           /* 再調小 */
+            background: #f8f1e3;
         }
 
         .product-card img {
-            height: 220px;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
         }
 
-        .price {
-            color: #d35400;
-            font-size: 1.35rem;
-            font-weight: bold;
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #333;
+            padding: 12px 16px 6px;
+            margin: 0;
         }
 
-        .btn-order {
-            background: #d35400;
-            color: white;
+        .product-desc {
+            padding: 0 16px 8px;
+            font-size: 0.92rem;
+            color: #666;
+            line-height: 1.45;
+        }
+
+        .product-price {
+            color: #e67e22;
+            font-size: 1.4rem;
+            font-weight: bold;
+            padding: 0 16px 8px;
+        }
+
+        /* 數量調整 + 按鈕 */
+        .quantity-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0 16px;
+            margin-bottom: 12px;
+        }
+
+        .quantity-btn {
+            width: 34px;
+            height: 34px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .quantity-input {
+            width: 48px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .btn-add-cart {
+            background: #e67e22 !important;
+            color: white !important;
             border: none;
             border-radius: 50px;
-            padding: 10px 0;
+            padding: 12px 20px;
             font-weight: 600;
+            margin: 0 16px 16px;
+            width: calc(100% - 32px);
         }
 
-        .btn-order:hover {
-            background: #b84300;
+        .btn-add-cart:hover {
+            background: #d35400 !important;
         }
 
-        .loading {
-            text-align: center;
-            padding: 60px 20px;
-            color: #666;
-            font-size: 1.1rem;
-        }
-
-        #cartCount {
-            font-size: 0.75rem;
-        }
-
-        /* 手機版優化 */
-        @media (max-width: 576px) {
-            .product-card img {
-                height: 180px;
+        /* 手機版更小更舒服 */
+        @media (max-width: 768px) {
+            .product-image-container {
+                height: 170px;     /* 手機版明顯變小 */
+            }
+            
+            .product-name {
+                font-size: 1.08rem;
+                padding: 10px 14px 4px;
+            }
+            
+            .product-desc {
+                font-size: 0.88rem;
+            }
+            
+            .product-price {
+                font-size: 1.3rem;
             }
             
             .page-title h1 {
-                font-size: 1.8rem;
-            }
-            
-            .price {
-                font-size: 1.2rem;
+                font-size: 1.7rem;
             }
         }
     </style>
 </head>
 <body>
 
-<!-- Navbar（與首頁統一風格） -->
+<!-- Navbar (不變) -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="/">
-            🍯 晴光蜜餞
+    <div class="container px-3">
+        <a class="navbar-brand d-flex align-items-center" href="/">
+            <img src="/images/log.png" alt="晴光蜜餞" class="me-2">
+            <span class="fw-bold">晴光蜜餞</span>
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+
+        <div class="d-lg-none mobile-search flex-grow-1 mx-2">
+            <form action="/products" method="GET">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" name="q" placeholder="搜尋商品..." aria-label="搜尋商品">
+                    <button class="btn btn-warning" type="submit"><i class="bi bi-search"></i></button>
+                </div>
+            </form>
+        </div>
+
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="/">首頁</a></li>
@@ -118,30 +173,66 @@
             </ul>
         </div>
 
-        <a href="/cart" class="btn btn-warning position-relative ms-3">
-            🛒 購物車
-            <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
+        <a href="/cart" class="btn btn-warning position-relative ms-3 d-none d-lg-flex align-items-center">
+            🛒 購物車 <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
         </a>
     </div>
 </nav>
 
 <div class="container py-5">
-
     <div class="page-title">
         <h1>晴光蜜餞商品專區</h1>
         <p>古早味蜜餞・休閒零嘴・伴手禮首選</p>
     </div>
 
-    <div class="row g-4" id="productList">
-        <!-- 商品由 JS 動態載入 -->
-        <div class="loading col-12">
-            商品載入中...
+    <div class="row g-4" id="productList"></div>
+</div>
+
+<!-- 底部導航 -->
+<nav class="bottom-nav">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-4">
+                <a href="/products" class="nav-link d-block active">
+                    <span class="fs-3">🛍️</span><br>全部商品
+                </a>
+            </div>
+            <div class="col-4">
+                <a href="/cart" class="nav-link d-block position-relative">
+                    <span class="fs-3">🛒</span><br>我的購物車
+                    <span id="cartCountBottom" class="cart-badge position-absolute translate-middle badge rounded-pill bg-danger">0</span>
+                </a>
+            </div>
+            <div class="col-4">
+                <a href="#" class="nav-link d-block">
+                    <span class="fs-3">📋</span><br>訂單查詢
+                </a>
+            </div>
         </div>
     </div>
-
-</div>
+</nav>
 
 <script src="/js/products.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// 購物車計數
+function getCartCount() {
+    try {
+        const cart = JSON.parse(localStorage.getItem('shineguang_cart') || '[]');
+        return cart.reduce((sum, item) => sum + (parseInt(item.qty) || 0), 0);
+    } catch(e) { return 0; }
+}
+
+function updateAllCartCounts() {
+    const count = getCartCount();
+    document.getElementById('cartCount').textContent = count;
+    document.getElementById('cartCountBottom').textContent = count;
+}
+
+document.addEventListener('DOMContentLoaded', updateAllCartCounts);
+window.updateAllCartCounts = updateAllCartCounts;
+setInterval(updateAllCartCounts, 1000);
+</script>
 </body>
 </html>
