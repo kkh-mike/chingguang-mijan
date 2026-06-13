@@ -6,6 +6,7 @@
     <title>晴光蜜餞｜晴光市場人氣老店</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/styles.css">
 
     <style>
@@ -19,18 +20,6 @@
             color: white;
             text-align: center;
             padding: 100px 20px 90px;
-        }
-
-        .hero-tag {
-            display: inline-block;
-            background: #ffc107;
-            color: #000;
-            padding: 10px 32px;
-            border-radius: 50px;
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin-bottom: 1.8rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
         .hero h1 {
@@ -54,17 +43,16 @@
             line-height: 1.6;
         }
 
-        .btn-shop {
-            background: #ffc107;
-            color: #000;
-            font-size: 1.35rem;
-            font-weight: bold;
-            padding: 16px 56px;
-            border-radius: 50px;
-            box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
+        /* 熱銷商品卡片優化 - 修正歪斜問題 */
+        .hot-card {
+            text-align: center;
+            padding: 15px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* 圓形熱銷商品 */
         .circle-img {
             width: 138px;
             height: 138px;
@@ -72,36 +60,46 @@
             border-radius: 50%;
             border: 6px solid #fff;
             box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-            margin: 0 auto 12px;
+            margin: 0 auto 16px;
         }
 
-        .hot-card { text-align: center; }
-
-        /* 固定底部導航欄 */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #fff;
-            box-shadow: 0 -3px 12px rgba(0,0,0,0.12);
-            z-index: 1030;
-            border-top: 1px solid #ddd;
-            display: none;
+        .hot-card h5 {
+            margin-bottom: 6px;
         }
 
-        .bottom-nav .nav-link {
-            color: #333;
-            font-size: 0.85rem;
-            padding: 8px 0 4px;
+        .hot-card .btn {
+            margin-top: auto;           /* 讓按鈕靠下方 */
+            width: 100%;
+            max-width: 160px;
+        }
+
+        /* 手機版搜尋框 */
+        .mobile-search {
+            max-width: 280px;
+        }
+
+        .mobile-search .form-control {
+            font-size: 0.95rem;
+            padding: 0.5rem 0.75rem;
         }
 
         @media (max-width: 768px) {
+            .navbar-brand img {
+                height: 42px;
+                width: auto;
+            }
+            .mobile-search {
+                margin: 6px 0;
+                flex: 1;
+            }
+            .circle-img {
+                width: 118px;
+                height: 118px;
+            }
             .bottom-nav { display: block; }
             .hero { min-height: 62vh; padding: 90px 15px 80px; }
             .hero h1 { font-size: 2.3rem; }
             .hero h2 { font-size: 1.35rem; }
-            .circle-img { width: 120px; height: 120px; }
         }
     </style>
 </head>
@@ -109,14 +107,32 @@
 
 <!-- Top Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
-    <div class="container">
-        <a class="navbar-brand fw-bold fs-4" href="/">
-            🍯 晴光蜜餞
+    <div class="container d-flex align-items-center">
+
+        <!-- Logo -->
+        <a class="navbar-brand d-flex align-items-center" href="/">
+            <img src="/images/log.png" alt="晴光蜜餞" class="me-2">
+            <span class="fw-bold fs-4">晴光蜜餞</span>
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
+
+        <!-- 手機版搜尋框 -->
+        <div class="d-lg-none mobile-search ms-auto">
+            <form action="/products" method="GET">
+                <div class="input-group">
+                    <input type="text" 
+                           class="form-control" 
+                           name="q" 
+                           placeholder="輸入品名搜"
+                           aria-label="搜尋商品">
+                    <button class="btn btn-warning" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 桌面版選單 -->
+        <div class="collapse navbar-collapse d-none d-lg-block" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="/">首頁</a></li>
                 <li class="nav-item"><a class="nav-link" href="/products">商品專區</a></li>
@@ -130,16 +146,12 @@
 <!-- Hero -->
 <section class="hero">
     <div class="container">
-        <span class="hero-tag">晴光市場人氣老店</span>
         <h1>晴光蜜餞</h1>
         <h2>傳承30年古早味</h2>
         <p>
             來自台北晴光市場的人氣蜜餞老店<br>
             保留記憶中的熟悉滋味
         </p>
-        <a href="/products" class="btn btn-shop">
-            立即選購 →
-        </a>
     </div>
 </section>
 
@@ -155,24 +167,24 @@
             <div class="hot-card">
                 <img src="/images/butter-plum.jpg" class="circle-img" alt="奶油話梅">
                 <h5 class="fw-bold mb-1">奶油話梅</h5>
-                <p class="text-muted small mb-2">招牌人氣</p>
-                <a href="/products#butter-plum" class="btn btn-outline-warning btn-sm">前往訂購</a>
+                <p class="text-muted small mb-3">招牌人氣</p>
+                <a href="/products#butter-plum" class="btn btn-warning btn-sm">前往訂購</a>
             </div>
         </div>
         <div class="col-6 col-md-4 col-lg-3">
             <div class="hot-card">
                 <img src="/images/honey-plum.jpg" class="circle-img" alt="蜂蜜梅">
                 <h5 class="fw-bold mb-1">蜂蜜梅</h5>
-                <p class="text-muted small mb-2">酸甜回甘</p>
-                <a href="/products#honey-plum" class="btn btn-outline-warning btn-sm">前往訂購</a>
+                <p class="text-muted small mb-3">酸甜回甘</p>
+                <a href="/products#honey-plum" class="btn btn-warning btn-sm">前往訂購</a>
             </div>
         </div>
         <div class="col-6 col-md-4 col-lg-3">
             <div class="hot-card">
                 <img src="/images/airplane-biscuit.jpg" class="circle-img" alt="飛機餅乾">
                 <h5 class="fw-bold mb-1">飛機餅乾</h5>
-                <p class="text-muted small mb-2">懷舊經典</p>
-                <a href="/products#airplane-biscuit" class="btn btn-outline-warning btn-sm">前往訂購</a>
+                <p class="text-muted small mb-3">懷舊經典</p>
+                <a href="/products#airplane-biscuit" class="btn btn-warning btn-sm">前往訂購</a>
             </div>
         </div>
     </div>

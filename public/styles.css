@@ -1,470 +1,259 @@
 /* =========================
-   晴光蜜餞 Brand Style
+   晴光蜜餞 - 新風格 2026
 ========================= */
 
-:root{
-    --primary:#5e3d24;
-    --secondary:#d6a44c;
-    --bg:#faf8f4;
-    --text:#333;
-    --muted:#777;
+:root {
+    --primary: #5c4033;      /* 深焦糖棕 */
+    --accent: #e8b923;       /* 蜂蜜金 */
+    --light: #f8f1e9;        /* 奶油米白 */
+    --text: #3f2a22;
+    --muted: #6b5a4f;
 }
 
-/* =========================
-   Base
-========================= */
-
-body{
-    font-family:
-    "Noto Sans TC",
-    "Microsoft JhengHei",
-    sans-serif;
-
-    background:var(--bg);
-    color:var(--text);
-    line-height:1.8;
-    overflow-x:hidden;
+body {
+    font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+    background: var(--light);
+    color: var(--text);
+    line-height: 1.75;
+    overflow-x: hidden;
 }
 
-.container{
-    max-width:1400px;
-}
-
-a{
-    text-decoration:none;
-}
-
-section{
-    padding:100px 0;
+.container {
+    max-width: 1380px;
 }
 
 /* =========================
    Navbar
 ========================= */
-
-.navbar{
-    background:#fff !important;
-    padding:18px 0;
-
-    box-shadow:
-    0 2px 20px rgba(0,0,0,.06);
+.navbar {
+    background: rgba(255,255,255,0.95) !important;
+    backdrop-filter: blur(12px);
+    padding: 20px 0;
+    box-shadow: 0 4px 25px rgba(92, 64, 51, 0.08);
 }
 
-.navbar-brand{
-
-    font-size:2.2rem;
-
-    font-weight:900;
-
-    color:#222 !important;
-
-    letter-spacing:2px;
+.navbar-brand {
+    font-size: 2.35rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: var(--primary) !important;
 }
 
-.nav-link{
-
-    font-size:1.05rem;
-
-    font-weight:700;
-
-    color:#333 !important;
-
-    margin-left:30px;
-
-    transition:.3s;
+.nav-link {
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: #4a372d !important;
+    margin-left: 32px;
+    position: relative;
 }
 
-.nav-link:hover{
-
-    color:var(--secondary)!important;
+.nav-link:hover {
+    color: var(--accent) !important;
 }
 
-
-/* =========================
-   Feature Bar
-========================= */
-
-.feature-bar{
-
-    background:#f3eee7;
-
-    border-top:1px solid #e7dfd3;
-
-    border-bottom:1px solid #e7dfd3;
-
-    padding:28px 0;
+.nav-link:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background: var(--accent);
+    transition: 0.3s;
 }
 
-.feature-bar .container{
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    gap:80px;
-
-    flex-wrap:wrap;
-}
-
-.feature-item{
-
-    font-size:1.1rem;
-
-    font-weight:700;
-
-    color:#555;
-
-    position:relative;
-}
-
-.feature-item:not(:last-child)::after{
-
-    content:"";
-
-    position:absolute;
-
-    right:-40px;
-
-    top:50%;
-
-    transform:translateY(-50%);
-
-    width:1px;
-
-    height:24px;
-
-    background:#cfc7bb;
+.nav-link:hover:after {
+    width: 100%;
 }
 
 /* =========================
-   Titles
+   Hero - 大幅優化
 ========================= */
-
-.text-center h2{
-
-    font-size:3rem;
-
-    font-weight:900;
-
-    color:#2d2d2d;
+.hero {
+    background: linear-gradient(rgba(60, 40, 30, 0.65), rgba(60, 40, 30, 0.55)), 
+                url('/images/store-hero.jpg') center/cover no-repeat;
+    min-height: 78vh;
+    display: flex;
+    align-items: center;
+    color: white;
+    text-align: center;
+    position: relative;
 }
 
-.text-center h2::after{
+.hero::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: linear-gradient(transparent, var(--light));
+}
 
-    content:"";
+.hero-tag {
+    display: inline-block;
+    background: var(--accent);
+    color: #3f2a22;
+    padding: 10px 34px;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    box-shadow: 0 6px 20px rgba(232, 185, 35, 0.35);
+    margin-bottom: 1.8rem;
+}
 
-    width:60px;
+.hero h1 {
+    font-size: 3.4rem;
+    font-weight: 900;
+    margin-bottom: 0.6rem;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
 
-    height:4px;
+.hero h2 {
+    font-size: 1.75rem;
+    color: #ffe8b3;
+    font-weight: 500;
+    margin-bottom: 2rem;
+}
 
-    background:var(--secondary);
+.hero p {
+    font-size: 1.25rem;
+    max-width: 580px;
+    margin: 0 auto 2.5rem;
+    opacity: 0.95;
+}
 
-    display:block;
+.btn-shop {
+    background: var(--accent);
+    color: #3f2a22;
+    font-size: 1.4rem;
+    font-weight: 800;
+    padding: 18px 58px;
+    border-radius: 50px;
+    box-shadow: 0 8px 25px rgba(232, 185, 35, 0.4);
+    transition: all 0.3s;
+}
 
-    margin:15px auto 0;
-
-    border-radius:999px;
+.btn-shop:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 35px rgba(232, 185, 35, 0.5);
+    background: #f5c53a;
 }
 
 /* =========================
-   Product Cards
+   熱銷商品 - 圓形卡片優化
 ========================= */
-
-.card{
-
-    border:none;
-
-    border-radius:18px;
-
-    overflow:hidden;
-
-    background:white;
-
-    transition:.35s;
-
-    box-shadow:
-    0 10px 30px rgba(0,0,0,.05);
+.circle-img {
+    width: 148px;
+    height: 148px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 7px solid white;
+    box-shadow: 0 10px 30px rgba(92, 64, 51, 0.18);
+    transition: 0.4s;
 }
 
-.card:hover{
-
-    transform:translateY(-10px);
-
-    box-shadow:
-    0 25px 50px rgba(0,0,0,.12);
+.hot-card:hover .circle-img {
+    transform: scale(1.08);
+    box-shadow: 0 15px 35px rgba(232, 185, 35, 0.3);
 }
 
-.card img{
-
-    height:330px;
-
-    object-fit:cover;
-}
-
-.card-body{
-
-    padding:30px;
-}
-
-.card h5{
-
-    font-size:1.8rem;
-
-    font-weight:800;
-
-    color:var(--primary);
-}
-
-.card p{
-
-    color:#777;
+.hot-card h5 {
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 6px;
 }
 
 /* =========================
-   About
+   標題通用
 ========================= */
-
-#about{
-
-    background:white;
+.text-center h2 {
+    font-size: 2.9rem;
+    font-weight: 900;
+    color: var(--primary);
+    position: relative;
+    display: inline-block;
 }
 
-#about img{
-
-    width:100%;
-
-    height:500px;
-
-    object-fit:cover;
-
-    border-radius:20px;
-
-    box-shadow:
-    0 20px 50px rgba(0,0,0,.08);
-}
-
-#about h2{
-
-    font-size:3rem;
-
-    font-weight:900;
-
-    margin-top:10px;
-}
-
-#about p{
-
-    font-size:1.15rem;
-
-    color:#555;
-}
-
-#about .text-warning{
-
-    color:var(--secondary)!important;
-
-    font-size:1.2rem;
-}
-
-.hero{
-    position:relative;
-
-    height:90vh;
-    min-height:720px;
-
-    display:flex;
-    align-items:center;
-
-    background:
-    linear-gradient(
-        90deg,
-        rgba(15,15,15,.78) 0%,
-        rgba(15,15,15,.62) 35%,
-        rgba(15,15,15,.25) 60%,
-        rgba(15,15,15,0) 100%
-    ),
-    url("/images/store-hecccro.jpg");
-
-    background-size:cover;
-    background-position:center;
-}
-
-.hero-content{
-    margin-left:10vw;
-    max-width:550px;
-    color:white;
-}
-
-.hero-tag{
-    display:inline-block;
-
-    background:#d6a44c;
-
-    color:#fff;
-
-    padding:10px 20px;
-
-    border-radius:50px;
-
-    font-weight:700;
-}
-
-.hero h1{
-    font-size:5rem;
-    font-weight:900;
-    margin:20px 0 10px;
-}
-
-.hero h2{
-    font-size:2rem;
-    color:#f2d49a;
-    margin-bottom:25px;
-}
-
-.hero p{
-    font-size:1.2rem;
-    color:#f5f5f5;
-}
-
-.btn-shop{
-    display:inline-block;
-
-    margin-top:30px;
-
-    background:#d6a44c;
-
-    color:white;
-
-    padding:16px 36px;
-
-    border-radius:12px;
-
-    font-weight:700;
-
-    transition:.3s;
-}
-
-.btn-shop:hover{
-    background:#c08f36;
-    color:white;
-    transform:translateY(-3px);
+.text-center h2::after {
+    content: '';
+    position: absolute;
+    width: 70px;
+    height: 4px;
+    background: var(--accent);
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 2px;
 }
 
 /* =========================
-   Store
+   品牌故事
 ========================= */
-
-#store .card{
-
-    border:none;
-
-    border-radius:24px;
-
-    overflow:hidden;
-
-    background:#f8f5f1;
-
-    box-shadow:
-    0 10px 40px rgba(0,0,0,.06);
+#about {
+    background: white;
 }
 
-#store h2{
-
-    font-weight:900;
-
-    color:#2f2f2f;
-}
-
-#store img{
-
-    height:100%;
-
-    min-height:350px;
-
-    object-fit:cover;
+#about img {
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(92, 64, 51, 0.15);
 }
 
 /* =========================
-   Buttons
+   門市資訊
 ========================= */
-
-.btn-outline-dark{
-
-    border-radius:12px;
-
-    padding:14px 36px;
-
-    font-weight:700;
-
-    transition:.3s;
+#store .card {
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(92, 64, 51, 0.12);
 }
 
-.btn-outline-dark:hover{
-
-    transform:translateY(-3px);
+#store h2 {
+    font-size: 2.6rem;
+    font-weight: 900;
 }
 
 /* =========================
    Footer
 ========================= */
-
-footer{
-
-    background:
-    linear-gradient(
-        90deg,
-        #241911,
-        #4a3324,
-        #241911
-    );
-
-    padding:70px 0;
-
-    color:white;
+footer {
+    background: linear-gradient(135deg, #3f2a22, #5c4033);
+    padding: 80px 0 40px;
 }
 
-footer h4{
-
-    font-size:2rem;
-
-    font-weight:900;
-}
-
-footer p{
-
-    color:#ddd;
+footer h4 {
+    font-size: 2.1rem;
+    font-weight: 900;
 }
 
 /* =========================
-   Mobile
+   響應式調整
 ========================= */
 @media (max-width: 768px) {
     .hero {
-        min-height: 60vh;        /* 降低高度 */
-        padding: 60px 20px;
+        min-height: 65vh;
+        padding: 100px 15px 90px;
     }
     
     .hero h1 {
-        font-size: 2.8rem;       /* 再小一點 */
+        font-size: 2.65rem;
     }
     
-    .card img {
-        height: 200px;           /* 更小 */
+    .hero h2 {
+        font-size: 1.45rem;
+    }
+    
+    .circle-img {
+        width: 118px;
+        height: 118px;
     }
     
     section {
-        padding: 60px 0;
+        padding: 70px 0;
     }
     
-    .container {
-        padding-left: 15px;
-        padding-right: 15px;
-    }
-    
-    /* Navbar 手機優化 */
     .navbar-brand {
-        font-size: 1.6rem;
+        font-size: 1.85rem;
     }
 }
