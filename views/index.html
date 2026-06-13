@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/styles.css">
 
     <style>
-        /* Hero - 優化版 */
+        /* Hero */
         .hero {
             background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), 
                         url('/images/store-hero.jpg') center/cover no-repeat;
@@ -22,9 +22,64 @@
             padding: 100px 20px 90px;
         }
 
-        .hero h1, .hero h2, .hero p { /* 保持原本樣式 */ }
+        .hero h1 {
+            font-size: 2.85rem;
+            font-weight: 900;
+            margin-bottom: 0.4rem;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+        }
 
-        /* === 重點優化：更搶眼的圓形 Logo === */
+        .hero h2 {
+            font-size: 1.55rem;
+            color: #ffc107;
+            margin-bottom: 1.8rem;
+            font-weight: 500;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 560px;
+            margin: 0 auto 2.8rem;
+            line-height: 1.6;
+        }
+
+        /* 更穩固的熱銷商品卡片（解決歪斜） */
+        .hot-card {
+            text-align: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 10px;
+        }
+
+        .circle-img {
+            width: 138px;
+            height: 138px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 6px solid #fff;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+            margin-bottom: 16px;
+        }
+
+        .hot-card h5 {
+            margin-bottom: 6px;
+            min-height: 1.4em;
+        }
+
+        .hot-card p {
+            margin-bottom: 16px;
+            flex-grow: 1;
+        }
+
+        .hot-card .btn {
+            margin-top: auto;
+            width: 100%;
+            max-width: 160px;
+        }
+
+        /* 圓形 Logo */
         .navbar-brand img {
             height: 68px;
             width: 68px;
@@ -32,13 +87,16 @@
             border-radius: 50%;
             border: 3px solid #fff;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            background: #fff;
         }
 
         .navbar-brand span {
             font-size: 1.65rem;
             font-weight: 700;
-            letter-spacing: 0.5px;
+        }
+
+        /* 手機版搜尋框 */
+        .mobile-search {
+            max-width: 280px;
         }
 
         @media (max-width: 768px) {
@@ -49,13 +107,12 @@
             .navbar-brand span {
                 font-size: 1.4rem;
             }
-            .mobile-search {
-                margin: 6px 0;
-                flex: 1;
-            }
             .circle-img {
                 width: 118px;
                 height: 118px;
+            }
+            .hot-card {
+                padding: 15px 8px;
             }
             .bottom-nav { display: block; }
             .hero { min-height: 62vh; padding: 90px 15px 80px; }
@@ -67,7 +124,6 @@
 <!-- Top Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
     <div class="container">
-        <!-- Logo -->
         <a class="navbar-brand d-flex align-items-center" href="/">
             <img src="/images/log.png" alt="晴光蜜餞">
             <span class="fw-bold ms-3">晴光蜜餞</span>
@@ -113,7 +169,7 @@
     </div>
 </section>
 
-<!-- 熱銷商品 -->
+<!-- 熱銷商品（已加強對齊） -->
 <section class="container py-5">
     <div class="text-center mb-5">
         <h2 class="fw-bold">熱銷商品</h2>
@@ -124,24 +180,24 @@
         <div class="col-6 col-md-4 col-lg-3">
             <div class="hot-card">
                 <img src="/images/butter-plum.jpg" class="circle-img" alt="奶油話梅">
-                <h5 class="fw-bold mb-1">奶油話梅</h5>
-                <p class="text-muted small mb-3">招牌人氣</p>
+                <h5 class="fw-bold">奶油話梅</h5>
+                <p class="text-muted small">招牌人氣</p>
                 <a href="/products#butter-plum" class="btn btn-warning btn-sm">前往訂購</a>
             </div>
         </div>
         <div class="col-6 col-md-4 col-lg-3">
             <div class="hot-card">
                 <img src="/images/honey-plum.jpg" class="circle-img" alt="蜂蜜梅">
-                <h5 class="fw-bold mb-1">蜂蜜梅</h5>
-                <p class="text-muted small mb-3">酸甜回甘</p>
+                <h5 class="fw-bold">蜂蜜梅</h5>
+                <p class="text-muted small">酸甜回甘</p>
                 <a href="/products#honey-plum" class="btn btn-warning btn-sm">前往訂購</a>
             </div>
         </div>
         <div class="col-6 col-md-4 col-lg-3">
             <div class="hot-card">
                 <img src="/images/airplane-biscuit.jpg" class="circle-img" alt="飛機餅乾">
-                <h5 class="fw-bold mb-1">飛機餅乾</h5>
-                <p class="text-muted small mb-3">懷舊經典</p>
+                <h5 class="fw-bold">飛機餅乾</h5>
+                <p class="text-muted small">懷舊經典</p>
                 <a href="/products#airplane-biscuit" class="btn btn-warning btn-sm">前往訂購</a>
             </div>
         </div>
