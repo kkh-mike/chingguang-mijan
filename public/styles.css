@@ -440,61 +440,31 @@ footer p{
 /* =========================
    Mobile
 ========================= */
-
-@media(max-width:768px){
-
-    section{
-        padding:70px 0;
+@media (max-width: 768px) {
+    .hero {
+        min-height: 60vh;        /* 降低高度 */
+        padding: 60px 20px;
     }
-
-    .navbar-brand{
-        font-size:1.5rem;
+    
+    .hero h1 {
+        font-size: 2.8rem;       /* 再小一點 */
     }
-
-    .hero{
-        min-height:650px;
+    
+    .card img {
+        height: 200px;           /* 更小 */
     }
-
-    .hero h1{
-        font-size:3.5rem;
+    
+    section {
+        padding: 60px 0;
     }
-
-    .hero h2{
-        font-size:1.6rem;
+    
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
     }
-
-    .hero p{
-        font-size:1rem;
+    
+    /* Navbar 手機優化 */
+    .navbar-brand {
+        font-size: 1.6rem;
     }
-
-    .feature-bar .container{
-        gap:25px;
-    }
-
-    .feature-item::after{
-        display:none;
-    }
-
-    .card img{
-        height:250px;
-    }
-
-    #about img{
-        height:320px;
-    }
-
-    .text-center h2{
-        font-size:2.2rem;
-    }
-}
-
-/* =========================
-   products
-========================= */
-.navbar-brand{
-    font-size:1.4rem;
-}
-
-#cartCount{
-    font-size:0.75rem;
 }
