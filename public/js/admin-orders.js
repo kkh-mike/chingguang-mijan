@@ -1,4 +1,4 @@
-// admin-orders.js - Phase 8.8 完整優化版
+// admin-orders.js - Phase 8.9 美化版 + 自動跳轉登入
 function getStatusBadge(status) {
     switch(status) {
         case '待確認': return '<span class="badge bg-warning text-dark">待確認</span>';
@@ -14,14 +14,35 @@ let allOrders = [];
 let currentSort = 'newest';
 
 async function loadOrders() {
+    const container = document.getElementById('orderContainer');
+    container.innerHTML = '<div class="text-center py-5"><div class="spinner-border text-primary" role="status"></div><p class="mt-3">載入中...</p></div>';
+
     try {
         const response = await fetch('/api/orders');
-        if (!response.ok) throw new Error('載入失敗');
+
+        // === 新增：未登入自動跳轉 ===
+        if (response.status === 401) {
+            alert('請先登入後台');
+            window.location.href = '/admin-login';
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error('載入失敗');
+        }
+
         allOrders = await response.json();
         applyFiltersAndSort();
     } catch (err) {
         console.error(err);
-        alert('無法載入訂單，請確認後端是否運行');
+        container.innerHTML = `
+            <div class="alert alert-danger text-center py-5">
+                <h5>載入訂單失敗</h5>
+                <p>請確認已登入後台</p>
+                <button onclick="window.location.href='/admin-login'" class="btn btn-primary mt-3">
+                    前往登入
+                </button>
+            </div>`;
     }
 }
 
@@ -35,31 +56,46 @@ function renderOrders(orders) {
     }
 
     orders.forEach(order => {
-        let itemsHtml = '';
-        order.items.forEach(item => {
-            itemsHtml += `<li>${item.product_name} × ${item.quantity}</li>`;
-        });
+        let itemsHtml = order.items.map(item => `
+            <div class="order-item">
+                ${item.product_name} × ${item.quantity} 
+                <span class="float-end text-muted">NT$ ${item.price || ''}</span>
+            </div>
+        `).join('');
 
         const cancelHtml = order.cancel_reason 
-            ? `<p class="text-danger mb-2"><strong>取消原因：</strong>${order.cancel_reason}</p>` 
+            ? `<div class="alert alert-danger py-2"><strong>取消原因：</strong>${order.cancel_reason}</div>` 
             : '';
 
+        const statusColor = {
+            '待確認': 'warning',
+            '已確認': 'primary',
+            '已出貨': 'success',
+            '已完成': 'dark',
+            '已取消': 'danger'
+        }[order.status] || 'secondary';
+
         container.innerHTML += `
-        <div class="card order-card mb-4">
-            <div class="card-header d-flex justify-content-between">
+        <div class="card order-card">
+            <div class="status-bar bg-${statusColor}"></div>
+            <div class="card-header d-flex justify-content-between align-items-center">
                 <span>訂單 #${order.id}</span>
                 ${getStatusBadge(order.status)}
             </div>
             <div class="card-body">
-                <p><strong>收件人：</strong>${order.receiver}</p>
-                <p><strong>電話：</strong>${order.phone}</p>
-                <p><strong>地址：</strong>${order.address}</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>收件人：</strong>${order.receiver}</p>
+                        <p><strong>電話：</strong>${order.phone}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>地址：</strong>${order.address}</p>
+                    </div>
+                </div>
 
-                <div class="mb-3"><strong>目前狀態：</strong> ${getStatusBadge(order.status)}</div>
-
-                <div class="mb-3">
+                <div class="mt-3">
                     <strong>更新狀態：</strong>
-                    <select onchange="updateStatus(${order.id}, this.value)" class="form-select" style="max-width:220px; display:inline-block;">
+                    <select onchange="updateStatus(${order.id}, this.value)" class="form-select d-inline-block w-auto">
                         <option value="待確認" ${order.status === '待確認' ? 'selected' : ''}>待確認</option>
                         <option value="已確認" ${order.status === '已確認' ? 'selected' : ''}>已確認</option>
                         <option value="已出貨" ${order.status === '已出貨' ? 'selected' : ''}>已出貨</option>
@@ -70,15 +106,29 @@ function renderOrders(orders) {
 
                 ${cancelHtml}
 
-                <p><strong>總金額：</strong>NT$ ${order.total_amount}</p>
+                <p class="mt-3"><strong>總金額：</strong><span class="fs-5 fw-bold text-danger">NT$ ${order.total_amount}</span></p>
                 <p><strong>建立時間：</strong>${new Date(order.created_at).toLocaleString('zh-TW')}</p>
 
-                <hr>
-                <h6>商品明細</h6>
-                <ul>${itemsHtml}</ul>
+                <button class="btn btn-sm btn-outline-secondary mt-2" onclick="toggleItems(this)">
+                    📋 顯示商品明細 (${order.items.length} 項)
+                </button>
+                <div class="items-detail mt-3" style="display:none;">
+                    ${itemsHtml}
+                </div>
             </div>
         </div>`;
     });
+}
+
+function toggleItems(btn) {
+    const detail = btn.nextElementSibling;
+    if (detail.style.display === 'none') {
+        detail.style.display = 'block';
+        btn.textContent = '📋 隱藏商品明細';
+    } else {
+        detail.style.display = 'none';
+        btn.textContent = `📋 顯示商品明細 (${detail.children.length} 項)`;
+    }
 }
 
 function applyFiltersAndSort() {
@@ -93,7 +143,6 @@ function applyFiltersAndSort() {
         return matchReceiver && matchPhone && matchStatus;
     });
 
-    // 排序邏輯...
     filtered.sort((a, b) => {
         switch(currentSort) {
             case 'newest': return new Date(b.created_at) - new Date(a.created_at);
@@ -114,13 +163,12 @@ function applyFiltersAndSort() {
 }
 
 function setupListeners() {
-    ['searchReceiver', 'searchPhone'].forEach(id => {
+    const els = ['searchReceiver', 'searchPhone', 'statusFilter'];
+    els.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.addEventListener('input', applyFiltersAndSort);
+        if (el && el.tagName === 'SELECT') el.addEventListener('change', applyFiltersAndSort);
     });
-
-    const statusEl = document.getElementById('statusFilter');
-    if (statusEl) statusEl.addEventListener('change', applyFiltersAndSort);
 
     document.querySelectorAll('.btn-group button').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -160,5 +208,9 @@ async function updateStatus(orderId, newStatus) {
     }
 }
 
-// 啟動
-loadOrders().then(setupListeners);
+// 初始化
+window.onload = () => {
+    loadOrders().then(() => {
+        setupListeners();
+    });
+};

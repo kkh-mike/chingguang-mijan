@@ -8,28 +8,47 @@
     <style>
         body { 
             background: #f8f9fa; 
-            padding-top: 70px; /* 為固定導航列預留空間 */
+            padding-top: 70px;
         }
-        .navbar-brand {
-            font-weight: bold;
-            font-size: 1.4rem;
-        }
+        .navbar-brand { font-weight: bold; font-size: 1.4rem; }
+        
         .order-card {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             border: none;
-            border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,.08);
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            overflow: hidden;
         }
-        .card-header { 
-            font-weight: bold; 
-            font-size: 18px;
+        .order-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
         }
-        .nav-link.active {
+        .order-card .card-header {
             font-weight: bold;
-            background-color: rgba(255,255,255,0.2);
+            font-size: 1.1rem;
+            padding: 16px 20px;
+        }
+        .status-bar {
+            height: 6px;
         }
         .badge {
             font-size: 0.95em;
+            padding: 6px 12px;
+        }
+        .order-item {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+        }
+        #orderContainer:empty::after {
+            content: "目前沒有訂單";
+            display: block;
+            text-align: center;
+            color: #6c757d;
+            font-size: 1.1rem;
+            padding: 60px 20px;
         }
     </style>
 </head>
@@ -37,32 +56,19 @@
     <!-- 頂部導航列 -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/admin">
-                🌟 晴光蜜餞 後台
-            </a>
-            
+            <a class="navbar-brand" href="/admin">🌟 晴光蜜餞 後台</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin">📊 後台首頁</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/admin-orders">📋 訂單管理</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin-products">📦 商品管理</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="/admin">📊 後台首頁</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/admin-orders">📋 訂單管理</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin-products">📦 商品管理</a></li>
                 </ul>
-                
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="/admin-logout">
-                            🚪 登出
-                        </a>
+                        <a class="nav-link text-light" href="/admin-logout">🚪 登出</a>
                     </li>
                 </ul>
             </div>
@@ -70,20 +76,22 @@
     </nav>
 
     <div class="container mt-4">
-        <h1 class="mb-4">📋 訂單管理</h1>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>📋 訂單管理</h1>
+            <button onclick="loadOrders()" class="btn btn-outline-primary">
+                🔄 重新整理
+            </button>
+        </div>
 
-        <!-- 搜尋與篩選區 -->
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <label class="form-label fw-bold">🔍 搜尋收件人</label>
-                <input type="text" id="searchReceiver" class="form-control" placeholder="輸入收件人姓名">
+        <!-- 搜尋與篩選 -->
+        <div class="row mb-4 g-3">
+            <div class="col-md-3">
+                <input type="text" id="searchReceiver" class="form-control" placeholder="搜尋收件人">
             </div>
-            <div class="col-md-4">
-                <label class="form-label fw-bold">📱 搜尋電話</label>
-                <input type="text" id="searchPhone" class="form-control" placeholder="輸入電話號碼">
+            <div class="col-md-3">
+                <input type="text" id="searchPhone" class="form-control" placeholder="搜尋電話">
             </div>
-            <div class="col-md-4">
-                <label class="form-label fw-bold">📌 狀態篩選</label>
+            <div class="col-md-3">
                 <select id="statusFilter" class="form-select">
                     <option value="">全部狀態</option>
                     <option value="待確認">待確認</option>
@@ -93,16 +101,13 @@
                     <option value="已取消">已取消</option>
                 </select>
             </div>
-        </div>
-
-        <!-- 排序區 -->
-        <div class="mb-4">
-            <label class="form-label fw-bold">🔄 排序方式</label>
-            <div class="btn-group" role="group">
-                <button class="btn btn-outline-primary active" data-sort="newest">最新優先</button>
-                <button class="btn btn-outline-primary" data-sort="oldest">最舊優先</button>
-                <button class="btn btn-outline-primary" data-sort="pending">待確認優先</button>
-                <button class="btn btn-outline-primary" data-sort="shipped">已出貨優先</button>
+            <div class="col-md-3">
+                <div class="btn-group w-100" role="group">
+                    <button class="btn btn-outline-primary active" data-sort="newest">最新</button>
+                    <button class="btn btn-outline-primary" data-sort="oldest">最舊</button>
+                    <button class="btn btn-outline-primary" data-sort="pending">待確認</button>
+                    <button class="btn btn-outline-primary" data-sort="shipped">已出貨</button>
+                </div>
             </div>
         </div>
 
