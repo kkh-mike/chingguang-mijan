@@ -9,163 +9,118 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/styles.css">
 
-    <style>
-        body{
-            background:#faf7f2;
-            font-family:"Microsoft JhengHei",sans-serif;
-        }
+    
 
-        /* Navbar 樣式 */
-        .navbar-brand img {
-            height: 68px;
-            width: 68px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 3px solid #fff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
+✅ 好的，我直接幫你調整成接近佳德風格（小圖 + 垃圾桶在右邊）
+請替換 cart.html 的 <style> 區塊（重點是把圖片變小）
+HTML<style>
+    body{
+        background:#faf7f2;
+        font-family:"Microsoft JhengHei",sans-serif;
+    }
 
-        .navbar-brand span {
-            font-size: 1.65rem;
-            font-weight: 700;
-            white-space: nowrap;
-        }
+    /* Navbar 樣式 */
+    .navbar-brand img {
+        height: 68px; width: 68px; object-fit: cover; 
+        border-radius: 50%; border: 3px solid #fff; 
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
 
-        @media (max-width: 768px) {
-            .navbar-brand img { height: 48px; width: 48px; }
-            .navbar-brand span { font-size: 1.25rem; }
-            .container { padding-left: 12px; padding-right: 12px; }
-        }
+    @media (max-width: 768px) {
+        .navbar-brand img { height: 48px; width: 48px; }
+        .container { padding-left: 12px; padding-right: 12px; }
+    }
 
-        /* ==================== 購物車 UI (接近圖二) ==================== */
-        .cart-title {
-            font-size: 1.85rem;
-            font-weight: 700;
-            color: #5b3d2b;
-            margin-bottom: 1.5rem;
-        }
+    /* ==================== 佳德風格 ==================== */
+    .cart-title { font-size: 1.85rem; font-weight: 700; color: #5b3d2b; }
 
-        .cart-item {
-            background: white;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.07);
-            position: relative;
-        }
+    .cart-item {
+        background: white;
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 12px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+        position: relative;
+    }
 
-        .cart-item-content {
-            display: flex;
-            gap: 14px;
-        }
+    .cart-item-content {
+        display: flex;
+        gap: 12px;
+    }
 
-        .cart-item img {
-            width: 78px;
-            height: 78px;
-            object-fit: cover;
-            border-radius: 8px;
-            flex-shrink: 0;
-        }
+    .cart-item img {
+        width: 65px !important;     /* 更小 */
+        height: 65px !important;
+        object-fit: cover;
+        border-radius: 8px;
+        flex-shrink: 0;
+    }
 
-        .cart-item-info {
-            flex: 1;
-            min-width: 0;
-        }
+    .cart-item-info {
+        flex: 1;
+    }
 
-        .cart-item-name {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 3px;
-        }
+    .cart-item-name {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #333;
+    }
 
-        .cart-item-spec {
-            font-size: 0.92rem;
-            color: #666;
-            line-height: 1.4;
-        }
+    .cart-item-spec {
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 2px;
+    }
 
-        /* 垃圾桶 */
-        .delete-btn {
-            position: absolute;
-            top: 14px;
-            right: 14px;
-            color: #aaa;
-            font-size: 1.35rem;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 4px;
-        }
+    .delete-btn {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        color: #999;
+        font-size: 1.45rem;
+        cursor: pointer;
+    }
 
-        .delete-btn:hover {
-            color: #e74c3c;
-        }
+    .qty-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
 
-        /* 數量與小計 */
-        .qty-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 12px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+    .qty-control {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
 
-        .qty-control {
-            display: flex;
-            align-items: center;
-            background: #f8f9fa;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 3px;
-        }
+    .qty-btn {
+        width: 36px;
+        height: 36px;
+        border: 1px solid #ccc;
+        background: white;
+        border-radius: 50%;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-        .qty-btn {
-            width: 34px;
-            height: 34px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border: none;
-            background: white;
-            border-radius: 6px;
-            cursor: pointer;
-        }
+    .qty-input {
+        width: 55px;
+        text-align: center;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-weight: 600;
+    }
 
-        .qty-input {
-            width: 48px;
-            text-align: center;
-            border: none;
-            background: transparent;
-            font-size: 1.05rem;
-            font-weight: 600;
-        }
+    .item-subtotal {
+        font-weight: 700;
+        color: #d35400;
+    }
+</style>
 
-        .item-subtotal {
-            font-weight: 700;
-            color: #d35400;
-            font-size: 1.08rem;
-            white-space: nowrap;
-        }
 
-        .summary-box {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
-            position: sticky;
-            top: 20px;
-        }
-
-        .total-amount {
-            font-size: 2.1rem;
-            font-weight: 700;
-            color: #d35400;
-        }
-    </style>
 </head>
 <body>
 
@@ -231,12 +186,7 @@
                     <span id="totalPrice" class="total-amount">NT$0</span>
                 </div>
 
-                <div class="mt-4">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="giftBag" checked>
-                        <label class="form-check-label" for="giftBag">📦 免費禮袋</label>
-                    </div>
-                </div>
+             
 
                 <div class="d-grid gap-2 mt-4">
                     <a href="/products" class="btn btn-secondary btn-lg">繼續購物</a>
@@ -251,16 +201,15 @@
 <script src="/js/cart.js"></script>
 
 <script>
-// 購物車數量更新
+// 簡單更新購物車數量
 function getCartCount() {
     try {
         const cart = JSON.parse(localStorage.getItem('shineguang_cart') || '[]');
         return cart.reduce((sum, item) => sum + (parseInt(item.qty) || 0), 0);
     } catch(e) { return 0; }
 }
-
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('目前購物車數量:', getCartCount());
+    console.log('購物車數量:', getCartCount());
 });
 </script>
 
