@@ -79,100 +79,58 @@
             max-width: 160px;
         }
 
-        /* 圓形 Logo */
-        .navbar-brand img {
-            height: 68px;
-            width: 68px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 3px solid #fff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
+       /* Navbar 優化 */
+.navbar-brand img {
+    height: 68px;
+    width: 68px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
 
-        .navbar-brand span {
-            font-size: 1.65rem;
-            font-weight: 700;
-        }
+.navbar-brand span {
+    font-size: 1.65rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
 
-        /* 手機版搜尋框 */
-        .mobile-search {
-            max-width: 280px;
-        }
+/* 手機版搜尋框優化 */
+.mobile-search {
+    max-width: 220px;
+}
 
-        /* 底部導航欄 - 改成固定在底部 */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #f8f9fa;
-            border-top: 1px solid #dee2e6;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-            z-index: 1030;
-            padding: 8px 0 4px;
-        }
+.mobile-search .input-group input {
+    font-size: 0.95rem;
+}
 
-        .bottom-nav .nav-link {
-            color: #333;
-            font-size: 0.85rem;
-            transition: color 0.2s;
-        }
+/* 手機版調整 */
+@media (max-width: 768px) {
+    .navbar-brand img {
+        height: 48px;
+        width: 48px;
+    }
+    
+    .navbar-brand span {
+        font-size: 1.25rem;
+    }
 
-        .bottom-nav .nav-link:hover,
-        .bottom-nav .nav-link.active {
-            color: #ffc107;
-        }
+    .mobile-search {
+        max-width: none;           /* 讓它有彈性 */
+        flex-grow: 1;
+        max-width: 180px;          /* 關鍵調整 */
+    }
 
-        .bottom-nav .fs-3 {
-            font-size: 1.65rem;
-        }
+    .mobile-search .input-group input {
+        font-size: 0.9rem;
+        padding: 8px 10px;
+    }
 
-        /* 防止內容被底部導航蓋住 */
-        body {
-            padding-bottom: 70px; /* 預留底部導航高度 */
-        }
-
-        @media (max-width: 768px) {
-            .navbar-brand img {
-                height: 52px;
-                width: 52px;
-            }
-            .navbar-brand span {
-                font-size: 1.35rem;
-            }
-            
-            .circle-img {
-                width: 115px;
-                height: 115px;
-            }
-            
-            .hot-card {
-                padding: 14px 6px;
-            }
-            
-            .hero {
-                min-height: 58vh;
-                padding: 80px 15px 70px;
-            }
-            
-            .hero h1 {
-                font-size: 2.1rem;
-            }
-            
-            .hero h2 {
-                font-size: 1.3rem;
-            }
-            
-            .mobile-search input {
-                font-size: 1rem;
-                padding: 10px 12px;
-            }
-            
-            .bottom-nav {
-                display: block;
-            }
-        }
-
+    .container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+}
         /* iPhone 安全區域處理 */
         @supports (padding: max(0px)) {
             .bottom-nav {
@@ -183,22 +141,22 @@
 </head>
 <body>
 
-<!-- Top Navbar -->
+
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
-    <div class="container">
+    <div class="container px-3">
         <a class="navbar-brand d-flex align-items-center" href="/">
-            <img src="/images/log.png" alt="晴光蜜餞">
-            <span class="fw-bold ms-3">晴光蜜餞</span>
+            <img src="/images/log.png" alt="晴光蜜餞" class="me-2">
+            <span class="fw-bold">晴光蜜餞</span>
         </a>
 
         <!-- 手機版搜尋框 -->
-        <div class="d-lg-none mobile-search ms-auto me-2">
+        <div class="d-lg-none mobile-search flex-grow-1 mx-2">
             <form action="/products" method="GET">
-                <div class="input-group">
+                <div class="input-group input-group-sm">
                     <input type="text" 
                            class="form-control" 
                            name="q" 
-                           placeholder="輸入品名搜"
+                           placeholder="搜尋商品..."
                            aria-label="搜尋商品">
                     <button class="btn btn-warning" type="submit">
                         <i class="bi bi-search"></i>
