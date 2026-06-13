@@ -38,8 +38,9 @@ async function loadProducts() {
             const slug = generateSlug(product.name);
 
             html += `
-                <div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-3 mb-4" id="${slug}">
-                    <div class="product-card">
+
+<div class="col-6 col-md-4 col-lg-3 col-xl-3 mb-4" id="${slug}">
+            <div class="product-card">
                         <div class="product-image-container">
                             <img
                                 src="${product.image || '/images/no-image.jpg'}"
@@ -68,9 +69,10 @@ async function loadProducts() {
             `;
         });
 
+        // 重要：innerHTML 放在迴圈外面
         productList.innerHTML = html;
 
-        // 商品載入完成後，檢查是否有 anchor 跳轉需求
+        // 商品載入完成後，檢查 anchor 跳轉
         scrollToProduct();
 
     } catch (error) {
@@ -149,7 +151,6 @@ function updateCartCount() {
     const cartCount = document.getElementById('cartCount');
     if (cartCount) cartCount.innerText = totalQty;
 
-    // 同時更新底部導航（如果存在）
     const bottomCount = document.getElementById('cartCountBottom');
     if (bottomCount) bottomCount.innerText = totalQty;
 }

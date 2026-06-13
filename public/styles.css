@@ -289,35 +289,44 @@ footer h4 {
     }
 }
 
-/* ==================== 商品專區整體壓縮 & 優化 ==================== */
+/* ==================== 商品專區優化 ==================== */
 #productList .product-card {
     margin-bottom: 1.5rem;
 }
 
-/* 讓電腦版圖片比例更方正 */
-@media (min-width: 992px) {
+/* 統一控制圖片比例，強制覆蓋所有衝突 */
+.product-image-container {
+    padding-top: 68% !important;
+}
+
+@media (max-width: 768px) {
     .product-image-container {
-        padding-top: 58% !important;
+        padding-top: 65% !important;
     }
 }
 
-/* 商品卡片在 products.html 內的 inline style 衝突防護 */
+/* 強制修正商品排列 */
+@media (min-width: 992px) {
+    .row#g-productList, #productList {
+        --bs-gutter-x: 1.5rem !important;
+    }
+    
+    .col-lg-3 {
+        flex: 0 0 25% !important;
+        max-width: 25% !important;
+    }
+    
+    .product-image-container {
+        padding-top: 65% !important;
+    }
+}
+
+/* 商品卡片懸停效果 */
 .product-card {
     transition: all 0.3s ease;
 }
 
 .product-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
-}
-
-/* 商品專區桌面版優化 */
-@media (min-width: 992px) {
-    .product-image-container {
-        padding-top: 56%;     /* 電腦版再更方正 */
-    }
-    
-    #productList {
-        gap: 1.25rem;         /* 控制卡片間距 */
-    }
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15) !important;
 }

@@ -30,7 +30,7 @@
             font-size: 1.1rem;
         }
 
-        /* 商品卡片統一高度 */
+       /* 商品卡片統一高度 */
         .product-card {
             border: none;
             border-radius: 16px;
@@ -40,14 +40,17 @@
             height: 100%;
             display: flex;
             flex-direction: column;
+            width: 100%;                 /* 新增這行 */
         }
 
         .product-image-container {
             position: relative;
-            padding-top: 58%;        /* 桌面版 */
+            padding-top: 65% !important;   /* 強制更方正 */
             background: #f8f1e3;
             overflow: hidden;
+            width: 100%;
         }
+
 
         .product-image-container img {
             position: absolute;
@@ -65,8 +68,8 @@
         }
 
         .card-body {
-            padding: 12px 14px !important;
-            flex-grow: 1;                    /* 關鍵：讓內容撐滿 */
+            padding: 14px 16px !important;
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
         }
@@ -74,20 +77,21 @@
         .card-body .product-name {
             font-weight: 700;
             margin-bottom: 6px;
-            min-height: 2.8em;               /* 統一標題高度 */
+            min-height: 2.8em;
+            font-size: 1.1rem;
         }
 
         .card-body .product-desc {
-            font-size: 0.95rem;
+            font-size: 0.93rem;
             color: #666;
-            flex-grow: 1;                    /* 描述區自動撐開 */
+            flex-grow: 1;
             margin-bottom: 12px;
+            line-height: 1.4;
         }
 
-        /* 價格與按鈕 */
         .price {
             color: #d35400;
-            font-size: 1.22rem;
+            font-size: 1.25rem;
             font-weight: bold;
         }
 
@@ -96,10 +100,10 @@
             color: white;
             border: none;
             border-radius: 50px;
-            padding: 9px 0;
+            padding: 10px 0;
             font-weight: 600;
-            font-size: 0.97rem;
-            margin-top: auto;                /* 按鈕靠底部 */
+            font-size: 0.98rem;
+            margin-top: auto;
         }
 
         .loading {
@@ -150,26 +154,12 @@
             justify-content: center;
         }
 
-        @media (max-width: 768px) {
-            .navbar-brand img { height: 48px; width: 48px; }
-            .navbar-brand span { font-size: 1.25rem; }
-
-            .mobile-search { max-width: 150px !important; }
-
-            .product-image-container {
-                padding-top: 65%;     /* 手機版稍微調整比例 */
-            }
-
-            .card-body .product-name {
-                min-height: 2.4em;
-                font-size: 1.05rem;
-            }
-        }
+     
     </style>
 </head>
 <body>
 
-<!-- Navbar（與首頁一致） -->
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
     <div class="container px-3">
         <a class="navbar-brand d-flex align-items-center" href="/">
