@@ -43,7 +43,7 @@
             line-height: 1.6;
         }
 
-        /* 更穩固的熱銷商品卡片（解決歪斜） */
+        /* 熱銷商品卡片 */
         .hot-card {
             text-align: center;
             height: 100%;
@@ -99,23 +99,85 @@
             max-width: 280px;
         }
 
+        /* 底部導航欄 - 改成固定在底部 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1030;
+            padding: 8px 0 4px;
+        }
+
+        .bottom-nav .nav-link {
+            color: #333;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        .bottom-nav .nav-link:hover,
+        .bottom-nav .nav-link.active {
+            color: #ffc107;
+        }
+
+        .bottom-nav .fs-3 {
+            font-size: 1.65rem;
+        }
+
+        /* 防止內容被底部導航蓋住 */
+        body {
+            padding-bottom: 70px; /* 預留底部導航高度 */
+        }
+
         @media (max-width: 768px) {
             .navbar-brand img {
                 height: 52px;
                 width: 52px;
             }
             .navbar-brand span {
-                font-size: 1.4rem;
+                font-size: 1.35rem;
             }
+            
             .circle-img {
-                width: 118px;
-                height: 118px;
+                width: 115px;
+                height: 115px;
             }
+            
             .hot-card {
-                padding: 15px 8px;
+                padding: 14px 6px;
             }
-            .bottom-nav { display: block; }
-            .hero { min-height: 62vh; padding: 90px 15px 80px; }
+            
+            .hero {
+                min-height: 58vh;
+                padding: 80px 15px 70px;
+            }
+            
+            .hero h1 {
+                font-size: 2.1rem;
+            }
+            
+            .hero h2 {
+                font-size: 1.3rem;
+            }
+            
+            .mobile-search input {
+                font-size: 1rem;
+                padding: 10px 12px;
+            }
+            
+            .bottom-nav {
+                display: block;
+            }
+        }
+
+        /* iPhone 安全區域處理 */
+        @supports (padding: max(0px)) {
+            .bottom-nav {
+                padding-bottom: max(8px, env(safe-area-inset-bottom));
+            }
         }
     </style>
 </head>
@@ -130,7 +192,7 @@
         </a>
 
         <!-- 手機版搜尋框 -->
-        <div class="d-lg-none mobile-search ms-auto">
+        <div class="d-lg-none mobile-search ms-auto me-2">
             <form action="/products" method="GET">
                 <div class="input-group">
                     <input type="text" 
@@ -169,7 +231,7 @@
     </div>
 </section>
 
-<!-- 熱銷商品（已加強對齊） -->
+<!-- 熱銷商品 -->
 <section class="container py-5">
     <div class="text-center mb-5">
         <h2 class="fw-bold">熱銷商品</h2>
@@ -252,7 +314,7 @@
 </footer>
 
 <!-- 固定底部導航欄 -->
-<nav class="bottom-nav py-2">
+<nav class="bottom-nav">
     <div class="container">
         <div class="row text-center">
             <div class="col-4">
