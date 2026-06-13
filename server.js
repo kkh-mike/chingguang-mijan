@@ -39,12 +39,19 @@ app.post('/api/admin-login', (req, res) => {
     }
 });
 
-// 登入檢查中間件
+// 登入檢查中間件 - 改進版
 function requireAdmin(req, res, next) {
     if (req.session && req.session.isAdmin) {
         return next();
     }
-    res.status(401).json({ success: false, message: '請先登入後台' });
+
+    // 如果是 AJAX / API 請求 → 回傳 JSON
+    if (req.xhr || req.headers.accept?.includes('application/json')) {
+        return res.status(401).json({ success: false, message: '請先登入後台' });
+    }
+
+    // 如果是一般頁面請求 → 直接跳轉登入頁
+    res.redirect('/admin-login');
 }
 
 // === 頁面路由 ===
@@ -223,6 +230,7 @@ app.get('/test-db', async (req, res) => {
 });
 
 // 後台訂單 API
+// 後台訂單 API（已修正，包含 cancel_reason）
 app.get('/api/orders', requireAdmin, async (req, res) => {
   try {
     const result = await pool.query(`
@@ -234,8 +242,8 @@ app.get('/api/orders', requireAdmin, async (req, res) => {
         o.remark,
         o.total_amount,
         o.status,
-        o.cancel_reason,
-        o.status_updated_at,
+        o.cancel_reason,           -- ← 新增
+        o.status_updated_at,       -- ← 新增
         o.created_at,
         COALESCE(
           json_agg(
@@ -249,9 +257,10 @@ app.get('/api/orders', requireAdmin, async (req, res) => {
         ) AS items
       FROM orders o
       LEFT JOIN order_items oi ON o.id = oi.order_id
-      GROUP BY o.id, o.receiver, o.phone, o.address, o.remark, 
-               o.total_amount, o.status, o.cancel_reason, 
-               o.status_updated_at, o.created_at
+      GROUP BY 
+        o.id, o.receiver, o.phone, o.address, o.remark, 
+        o.total_amount, o.status, o.cancel_reason, 
+        o.status_updated_at, o.created_at
       ORDER BY o.id DESC
     `);
     res.json(result.rows);
