@@ -30,29 +30,46 @@
             font-size: 1.1rem;
         }
 
-        /* 商品卡片優化 */
+        /* 商品卡片圖片優化 - 桌面版一列4個 */
         .product-card {
             border: none;
-            border-radius: 20px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
             height: 100%;
         }
 
-        .product-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+        .product-image-container {
+            position: relative;
+            padding-top: 58%;        /* 桌面版更方正的比例 */
+            background: #f8f1e3;
+            overflow: hidden;
         }
 
-        .product-card img {
-            height: 220px;
+        .product-image-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
+            object-position: center;
+            transition: transform 0.4s ease;
         }
 
+        .product-card:hover img {
+            transform: scale(1.06);
+        }
+
+        .card-body {
+            padding: 12px 14px !important;   /* 壓縮內距 */
+        }
+
+        /* 價格與按鈕 */
         .price {
             color: #d35400;
-            font-size: 1.35rem;
+            font-size: 1.22rem;
             font-weight: bold;
         }
 
@@ -61,8 +78,9 @@
             color: white;
             border: none;
             border-radius: 50px;
-            padding: 10px 0;
+            padding: 9px 0;
             font-weight: 600;
+            font-size: 0.97rem;
         }
 
         .btn-order:hover {
@@ -161,17 +179,13 @@
                 font-size: 0.9rem;
                 padding: 8px 10px;
             }
-
-            .product-card img {
-                height: 180px;
-            }
             
             .page-title h1 {
                 font-size: 1.8rem;
             }
             
-            .price {
-                font-size: 1.2rem;
+            .product-image-container {
+                padding-top: 62%;     /* 手機版維持稍高一點，視覺較舒服 */
             }
         }
 

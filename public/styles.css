@@ -257,3 +257,67 @@ footer h4 {
         font-size: 1.85rem;
     }
 }
+
+/* ==================== 手機底部導航欄 ==================== */
+.bottom-nav {
+    display: none;                    /* 預設隱藏（電腦版） */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-top: 1px solid #ddd;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    z-index: 1050;
+    padding: 8px 0 5px;
+}
+
+@media (max-width: 768px) {
+    .bottom-nav {
+        display: flex;
+    }
+    
+    body {
+        padding-bottom: 80px;         /* 避免內容被底部欄蓋住 */
+    }
+}
+
+/* iPhone 安全區 */
+@supports (padding: max(0px)) {
+    .bottom-nav {
+        padding-bottom: max(8px, env(safe-area-inset-bottom));
+    }
+}
+
+/* ==================== 商品專區整體壓縮 & 優化 ==================== */
+#productList .product-card {
+    margin-bottom: 1.5rem;
+}
+
+/* 讓電腦版圖片比例更方正 */
+@media (min-width: 992px) {
+    .product-image-container {
+        padding-top: 58% !important;
+    }
+}
+
+/* 商品卡片在 products.html 內的 inline style 衝突防護 */
+.product-card {
+    transition: all 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+}
+
+/* 商品專區桌面版優化 */
+@media (min-width: 992px) {
+    .product-image-container {
+        padding-top: 56%;     /* 電腦版再更方正 */
+    }
+    
+    #productList {
+        gap: 1.25rem;         /* 控制卡片間距 */
+    }
+}

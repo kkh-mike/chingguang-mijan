@@ -38,38 +38,30 @@ async function loadProducts() {
             const slug = generateSlug(product.name);
 
             html += `
-                <div class="col-md-4" id="${slug}">
-                    <div class="card product-card">
-
-                        <img
-                            src="${product.image || '/images/no-image.jpg'}"
-                            class="card-img-top"
-                            alt="${product.name}"
-                        >
+                <div class="col-6 col-md-3 col-lg-3 col-xl-3 mb-4" id="${slug}">
+                    <div class="product-card">
+                        <div class="product-image-container">
+                            <img
+                                src="${product.image || '/images/no-image.jpg'}"
+                                alt="${product.name}"
+                            >
+                        </div>
 
                         <div class="card-body">
-
                             <h5 class="fw-bold">${product.name}</h5>
-
-                            <p class="text-muted">
-                                ${product.description || ''}
-                            </p>
-
-                            <p class="price">
-                                NT$${product.price}
-                            </p>
+                            <p class="text-muted">${product.description || ''}</p>
+                            <p class="price">NT$${product.price}</p>
 
                             <div class="d-flex align-items-center mb-3">
                                 <button class="btn btn-outline-secondary" onclick="changeQty(${product.id}, -1)">-</button>
                                 <input id="qty-${product.id}" type="number" min="1" value="1" 
-                                       class="form-control text-center mx-2" style="width:80px">
+                                    class="form-control text-center mx-2" style="width:80px">
                                 <button class="btn btn-outline-secondary" onclick="changeQty(${product.id}, 1)">+</button>
                             </div>
 
                             <button class="btn btn-order w-100" onclick="addToCart(${product.id})">
                                 加入購物車
                             </button>
-
                         </div>
                     </div>
                 </div>
@@ -105,7 +97,7 @@ function scrollToProduct() {
             });
 
             // 高亮效果
-            const card = target.querySelector('.card');
+            const card = target.querySelector('.product-card');
             if (card) {
                 card.style.transition = "all 0.6s ease";
                 card.style.boxShadow = "0 0 0 5px #ffc107";
