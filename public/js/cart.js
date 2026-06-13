@@ -147,7 +147,9 @@ function changeQty(id, amount) {
     localStorage.setItem('shineguang_cart', JSON.stringify(cart));
     loadCart();
 }
-/* ====================== 用 LINE 直接送出訂單 ====================== */
+
+
+/* ====================== 用 LINE 送出訂單 ====================== */
 async function sendToLine() {
     const cart = JSON.parse(localStorage.getItem('shineguang_cart')) || [];
 
@@ -156,12 +158,11 @@ async function sendToLine() {
         return;
     }
 
-    // 確保有最新商品資料
     if (allProducts.length === 0) {
         await loadCurrentProducts();
     }
 
-    let message = "🌟 *晴光蜜餞 訂單* 🌟\n\n";
+    let message = "🌟 *晴光蜜餞 - 新訂單* 🌟\n\n";
     let total = 0;
     let hasInvalid = false;
 
@@ -175,7 +176,7 @@ async function sendToLine() {
 
         const subtotal = product.price * item.qty;
         message += `🛍️ ${product.name}\n`;
-        message += `   數量：${item.qty} 件\n`;
+        message += `   數量：${item.qty} 件 × NT$${product.price}\n`;
         message += `   小計：NT$${subtotal}\n\n`;
         
         total += subtotal;
@@ -185,25 +186,24 @@ async function sendToLine() {
         message += "⚠️ 注意：部分商品已下架，已自動排除。\n\n";
     }
 
-    message += `────────────────\n`;
-    message += `📌 總金額：*NT$${total}*\n`;
+    message += `──────────────────\n`;
+    message += `💰 總金額：*NT$${total}*\n`;
     message += `🕒 訂單時間：${new Date().toLocaleString('zh-TW')}\n`;
-    message += `────────────────\n\n`;
-    message += "🙏 麻煩店家確認後回覆「確認訂單」即可～\n";
-    message += "謝謝！";
+    message += `──────────────────\n\n`;
+    message += "🙏 請店家確認後回覆「確認訂單」即可\n";
+    message += "感謝您的購買！💕";
 
     const lineId = "@xhr6167l";
-
     const lineUrl = `https://line.me/R/oaMessage/${lineId}/?text=${encodeURIComponent(message)}`;
     
     window.open(lineUrl, '_blank');
 
-    // 同時複製到剪貼簿（方便備用）
+    // 複製到剪貼簿（雙重保險）
     navigator.clipboard.writeText(message).then(() => {
         console.log('✅ 訂單已複製到剪貼簿');
-    }).catch(() => {
-        console.log('複製失敗');
     });
 }
+
+
 /* 頁面載入 */
 window.onload = loadCart;
