@@ -1,0 +1,50 @@
+<!-- views/partials/navbar.html -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+    <div class="container px-3">
+        <!-- Logo（點擊回到首頁） -->
+        <a class="navbar-brand d-flex align-items-center" href="/">
+            <img src="/images/log.png" alt="晴光蜜餞" class="me-2">
+            <span class="fw-bold">晴光蜜餞</span>
+        </a>
+
+        <!-- 手機版搜尋框 -->
+        <div class="d-lg-none mobile-search flex-grow-1 mx-2">
+            <form action="/products" method="GET">
+                <div class="input-group input-group-sm">
+                    <input type="text" 
+                           class="form-control" 
+                           name="q" 
+                           placeholder="搜尋商品..."
+                           aria-label="搜尋商品">
+                    <button class="btn btn-warning" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 桌面版選單 -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">首頁</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/products">商品專區</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/#about">品牌故事</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/#store">門市資訊</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 桌面版購物車按鈕 -->
+        <a href="/cart" class="btn btn-warning position-relative ms-3 d-none d-lg-flex align-items-center">
+            🛒 購物車
+            <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
+        </a>
+    </div>
+</nav>

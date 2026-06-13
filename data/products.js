@@ -21,7 +21,7 @@ module.exports = [
     name: '飛機餅乾',
     description: '古早味飛機餅乾，酥脆爽口，懷舊零食',
     price: 80,
-    image: '/images/green-plum.jpg',
+    image: '/images/airplane-biscuit.jpg',
     isActive: true
   },
   {

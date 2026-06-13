@@ -17,7 +17,7 @@ function getProductInfo(id) {
     return allProducts.find(p => p.id === id);
 }
 
-// 渲染購物車 - 新版 UI
+// 渲染購物車
 async function loadCart() {
     await loadCurrentProducts();
 
@@ -37,6 +37,7 @@ async function loadCart() {
             </div>
         `;
         updateTotal(0);
+        updateAllCartCounts();   // 更新底部與上方數量
         return;
     }
 
@@ -81,7 +82,6 @@ async function loadCart() {
                         ${item.spec ? item.spec : ''}
                     </div>
 
-                    <!-- 數量與小計 -->
                     <div class="qty-row">
                         <div class="qty-control">
                             <button class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button>
@@ -89,13 +89,12 @@ async function loadCart() {
                             <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
                         </div>
                         <div class="item-subtotal">
-                            小計：NT$${subtotal}
+                            NT$${subtotal}
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 垃圾桶 -->
             <button class="delete-btn" onclick="removeItem(${item.id})">
                 <i class="bi bi-trash"></i>
             </button>
@@ -106,6 +105,7 @@ async function loadCart() {
     });
 
     updateTotal(total);
+    updateAllCartCounts();   // 每次重新渲染都更新數量徽章
 
     // 已下架警告
     if (hasDelisted) {
@@ -125,11 +125,31 @@ function updateTotal(total) {
     if (subtotalEl) subtotalEl.innerText = `NT$${total}`;
 }
 
+// 更新所有頁面的購物車數量徽章
+function updateAllCartCounts() {
+    const count = getCartCount();
+    
+    const topCount = document.getElementById('cartCount');
+    const bottomCount = document.getElementById('cartCountBottom');
+    
+    if (topCount) topCount.textContent = count;
+    if (bottomCount) bottomCount.textContent = count;
+}
+
+function getCartCount() {
+    try {
+        const cart = JSON.parse(localStorage.getItem('shineguang_cart')) || [];
+        return cart.reduce((sum, item) => sum + (parseInt(item.qty) || 0), 0);
+    } catch(e) { 
+        return 0; 
+    }
+}
+
 function removeItem(id) {
     let cart = JSON.parse(localStorage.getItem('shineguang_cart')) || [];
     cart = cart.filter(item => item.id !== id);
     localStorage.setItem('shineguang_cart', JSON.stringify(cart));
-    loadCart();
+    loadCart();        // 重新渲染 + 更新數量
 }
 
 function changeQty(id, amount) {
@@ -143,8 +163,8 @@ function changeQty(id, amount) {
     }
 
     localStorage.setItem('shineguang_cart', JSON.stringify(cart));
-    loadCart();
+    loadCart();        // 重新渲染 + 更新數量
 }
 
-/* 頁面載入 */
+// 頁面載入
 window.onload = loadCart;

@@ -3,19 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>我的購物車｜晴光蜜餞</title>
+    <title>晴光蜜餞｜晴光市場人氣老店</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/styles.css">
 
     <style>
-        body{
-            background:#faf7f2;
-            font-family:"Microsoft JhengHei",sans-serif;
+        /* Hero */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), 
+                        url('/images/store-hero.jpg') center/cover no-repeat;
+            min-height: 68vh;
+            display: flex;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 100px 20px 90px;
         }
 
-        /* ==================== Navbar 樣式（與首頁一致） ==================== */
+        .hero h1 {
+            font-size: 2.85rem;
+            font-weight: 900;
+            margin-bottom: 0.4rem;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+        }
+
+        .hero h2 {
+            font-size: 1.55rem;
+            color: #ffc107;
+            margin-bottom: 1.8rem;
+            font-weight: 500;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 560px;
+            margin: 0 auto 2.8rem;
+            line-height: 1.6;
+        }
+
+        /* 熱銷商品卡片 */
+        .hot-card {
+            text-align: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 10px;
+        }
+
+        .circle-img {
+            width: 138px;
+            height: 138px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 6px solid #fff;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+            margin-bottom: 16px;
+        }
+
+        .hot-card h5 {
+            margin-bottom: 6px;
+            min-height: 1.4em;
+        }
+
+        .hot-card p {
+            margin-bottom: 16px;
+            flex-grow: 1;
+        }
+
+        .hot-card .btn {
+            margin-top: auto;
+            width: 100%;
+            max-width: 160px;
+        }
+
+        /* Navbar 樣式 */
         .navbar-brand img {
             height: 68px;
             width: 68px;
@@ -40,100 +104,101 @@
             font-size: 0.95rem;
         }
 
+        /* 底部導航欄 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1030;
+            padding: 8px 0 4px;
+        }
+
+        .bottom-nav .nav-link {
+            color: #333;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        .bottom-nav .nav-link:hover,
+        .bottom-nav .nav-link.active {
+            color: #ffc107;
+        }
+
+        .bottom-nav .fs-3 {
+            font-size: 1.65rem;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: 6px;
+            right: 20%;
+            font-size: 0.7rem;
+            min-width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 防止內容被底部導航蓋住 */
+        body {
+            padding-bottom: 70px;
+        }
+
         @media (max-width: 768px) {
             .navbar-brand img {
                 height: 48px;
                 width: 48px;
             }
-            
             .navbar-brand span {
-                font-size: 1.25rem;
+                font-size: 1.35rem;
             }
-
-            .mobile-search {
-                max-width: none;
-                flex-grow: 1;
-                max-width: 180px;
+            
+            .circle-img {
+                width: 115px;
+                height: 115px;
             }
-
-            .mobile-search .input-group input {
-                font-size: 0.9rem;
-                padding: 8px 10px;
+            
+            .hot-card {
+                padding: 14px 6px;
             }
-
-            .container {
-                padding-left: 12px;
-                padding-right: 12px;
+            
+            .hero {
+                min-height: 58vh;
+                padding: 80px 15px 70px;
+            }
+            
+            .hero h1 {
+                font-size: 2.1rem;
+            }
+            
+            .hero h2 {
+                font-size: 1.3rem;
+            }
+            
+            .bottom-nav {
+                display: block;
             }
         }
 
-        /* ==================== 購物車頁面樣式 ==================== */
-        /* 頁面標題 */
-        .cart-title{
-            font-size:2.2rem;
-            font-weight:700;
-            color:#5b3d2b;
-        }
-
-        /* 商品卡片 */
-        .cart-card{
-            background:white;
-            border:none;
-            border-radius:20px;
-            box-shadow:0 5px 15px rgba(0,0,0,.08);
-            margin-bottom:20px;
-            padding:25px;
-            transition:.3s;
-        }
-
-        .cart-card:hover{
-            transform:translateY(-3px);
-        }
-
-        .product-name{
-            font-size:1.4rem;
-            font-weight:700;
-            color:#333;
-        }
-
-        .product-price{
-            color:#666;
-        }
-
-        .subtotal{
-            color:#d35400;
-            font-size:1.2rem;
-            font-weight:700;
-        }
-
-        .checkout-box{
-            background:white;
-            border-radius:20px;
-            padding:25px;
-            box-shadow:0 5px 15px rgba(0,0,0,.08);
-            position:sticky;
-            top:20px;
-        }
-
-        .total-price{
-            font-size:2rem;
-            color:#d35400;
-            font-weight:700;
-        }
-
-        .qty-btn{
-            width:36px;
-            height:36px;
-            border-radius:50%;
-            font-weight:bold;
+        /* iPhone 安全區域 */
+        @supports (padding: max(0px)) {
+            .bottom-nav {
+                padding-bottom: max(8px, env(safe-area-inset-bottom));
+            }
         }
     </style>
 </head>
 <body>
 
-<!-- 上方導航欄 -->
+<!-- 上方導航欄（手機不顯示購物車按鈕） -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
     <div class="container px-3">
+        <!-- Logo -->
         <a class="navbar-brand d-flex align-items-center" href="/">
             <img src="/images/log.png" alt="晴光蜜餞" class="me-2">
             <span class="fw-bold">晴光蜜餞</span>
@@ -157,58 +222,144 @@
 
         <!-- 桌面版選單 -->
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
+            <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item"><a class="nav-link" href="/">首頁</a></li>
                 <li class="nav-item"><a class="nav-link" href="/products">商品專區</a></li>
                 <li class="nav-item"><a class="nav-link" href="#about">品牌故事</a></li>
                 <li class="nav-item"><a class="nav-link" href="#store">門市資訊</a></li>
             </ul>
         </div>
+
+        <!-- 桌面版購物車按鈕（手機隱藏） -->
+        <a href="/cart" class="btn btn-warning position-relative ms-3 d-none d-lg-flex align-items-center">
+            <i class="bi bi-cart3 me-1"></i>購物車
+            <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
+        </a>
     </div>
 </nav>
 
-<div class="container py-5">
+<!-- Hero -->
+<section class="hero">
+    <div class="container">
+        <h1>晴光蜜餞</h1>
+        <h2>傳承30年古早味</h2>
+        <p>
+            來自台北晴光市場的人氣蜜餞老店<br>
+            保留記憶中的熟悉滋味
+        </p>
+    </div>
+</section>
 
-    <h1 class="cart-title mb-4">
-        🛒 我的購物車
-    </h1>
+<!-- 熱銷商品 -->
+<section class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">熱銷商品</h2>
+        <p class="text-muted">人氣推薦</p>
+    </div>
 
-    <div class="row">
-
-        <!-- 左邊商品 -->
-        <div class="col-lg-8">
-            <div id="cartItems">
-                <!-- JS動態產生 -->
+    <div class="row g-4 justify-content-center">
+        <div class="col-6 col-md-4 col-lg-3">
+            <div class="hot-card">
+                <img src="/images/butter-plum.jpg" class="circle-img" alt="奶油話梅">
+                <h5 class="fw-bold">奶油話梅</h5>
+                <p class="text-muted small">招牌人氣</p>
+                <a href="/products#butter-plum" class="btn btn-warning btn-sm">前往訂購</a>
             </div>
         </div>
+        <div class="col-6 col-md-4 col-lg-3">
+            <div class="hot-card">
+                <img src="/images/honey-plum.jpg" class="circle-img" alt="蜂蜜梅">
+                <h5 class="fw-bold">蜂蜜梅</h5>
+                <p class="text-muted small">酸甜回甘</p>
+                <a href="/products#honey-plum" class="btn btn-warning btn-sm">前往訂購</a>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3">
+            <div class="hot-card">
+                <img src="/images/airplane-biscuit.jpg" class="circle-img" alt="飛機餅乾">
+                <h5 class="fw-bold">飛機餅乾</h5>
+                <p class="text-muted small">懷舊經典</p>
+                <a href="/products#airplane-biscuit" class="btn btn-warning btn-sm">前往訂購</a>
+            </div>
+        </div>
+    </div>
+</section>
 
-        <!-- 右邊結帳 -->
-        <div class="col-lg-4">
-            <div class="checkout-box">
-                <h4>訂單摘要</h4>
-                <hr>
-                <div class="mb-3">總金額</div>
-                <div id="totalPrice" class="total-price">NT$0</div>
+<!-- 品牌故事 -->
+<section id="about" class="py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center gx-5">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <img src="/images/store.jpg" class="img-fluid rounded-4 shadow" alt="晴光蜜餞">
+            </div>
+            <div class="col-lg-6">
+                <span class="text-warning fw-bold">SINCE 1990</span>
+                <h2 class="fw-bold mt-3">晴光市場的人情味</h2>
+                <p class="mt-4 lead">多年來陪伴無數人成長，從經典話梅到各式蜜餞果乾，保留熟悉的滋味，也傳承著屬於台灣的古早味記憶。</p>
+                <p>感謝多年來顧客的支持與喜愛，我們將持續把最熟悉的味道帶給大家。</p>
+            </div>
+        </div>
+    </div>
+</section>
 
-                <div class="d-grid gap-2 mt-4">
-                    <a href="/products" class="btn btn-secondary btn-lg">
-                        繼續購物
-                    </a>
-                    <a href="/checkout" class="btn btn-success btn-lg">
-                        前往填寫收件資料並結帳
-                    </a>
+<!-- 門市資訊 -->
+<section id="store" class="py-5">
+    <div class="container">
+        <div class="card border-0 shadow-lg overflow-hidden">
+            <div class="row g-0 align-items-center">
+                <div class="col-lg-6 p-4 p-lg-5">
+                    <h2 class="fw-bold mb-4">🏪 門市資訊</h2>
+                    <p class="fs-5 mb-2">📍 台北市中山區雙城街12巷2-10號</p>
+                    <p class="fs-5 mb-4">📞 02-2596-7767</p>
+                    <p class="mb-4">歡迎來店選購或電話訂購</p>
+                    <a href="https://maps.google.com/?q=台北市中山區雙城街12巷2-10號" target="_blank" class="btn btn-dark btn-lg">Google 地圖導航</a>
+                </div>
+                <div class="col-lg-6">
+                    <img src="/images/store-map.jpg" class="img-fluid w-100" alt="門市照片">
                 </div>
             </div>
         </div>
-
     </div>
-</div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-dark text-white py-5">
+    <div class="container text-center">
+        <h4>🍯 晴光蜜餞</h4>
+        <p class="mb-1">02-2596-7767</p>
+        <p>台北市中山區雙城街12巷2-10號</p>
+        <p class="text-secondary mt-3">© 2026 晴光蜜餞 All Rights Reserved.</p>
+    </div>
+</footer>
+
+<!-- 固定底部導航欄（手機版顯示購物車數量） -->
+<nav class="bottom-nav">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-4">
+                <a href="/products" class="nav-link d-block">
+                    <span class="fs-3">🛍️</span><br>全部商品
+                </a>
+            </div>
+            <div class="col-4">
+                <a href="/cart" class="nav-link d-block position-relative">
+                    <span class="fs-3">🛒</span><br>我的購物車
+                    <span id="cartCountBottom" class="cart-badge position-absolute translate-middle badge rounded-pill bg-danger">0</span>
+                </a>
+            </div>
+            <div class="col-4">
+                <a href="#" class="nav-link d-block">
+                    <span class="fs-3">📋</span><br>訂單查詢
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/js/cart.js"></script>
 
 <script>
-// ==================== 購物車數量更新 ====================
+// 購物車數量顯示
 function getCartCount() {
     try {
         const cart = JSON.parse(localStorage.getItem('shineguang_cart') || '[]');
@@ -220,11 +371,17 @@ function getCartCount() {
 
 function updateAllCartCounts() {
     const count = getCartCount();
-    console.log('目前購物車數量:', count);
+    
+    // 桌面版上方徽章
+    const topCount = document.getElementById('cartCount');
+    if (topCount) topCount.textContent = count;
+    
+    // 底部導航徽章
+    const bottomCount = document.getElementById('cartCountBottom');
+    if (bottomCount) bottomCount.textContent = count;
 }
 
 document.addEventListener('DOMContentLoaded', updateAllCartCounts);
-window.updateAllCartCounts = updateAllCartCounts;
 </script>
 
 </body>

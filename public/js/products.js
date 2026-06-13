@@ -7,7 +7,7 @@ function generateSlug(name) {
         .replace(/奶油話梅/g, 'butter-plum')
         .replace(/蜂蜜梅/g, 'honey-plum')
         .replace(/飛機餅乾/g, 'airplane-biscuit')
-        .replace(/[^a-z0-9\u4e00-\u9fa5]+/g, '-')  // 其他商品也轉成 kebab-case
+        .replace(/[^a-z0-9\u4e00-\u9fa5]+/g, '-')  
         .replace(/-+/g, '-')
         .replace(/^-|-$/g, '');
 }
@@ -38,7 +38,7 @@ async function loadProducts() {
             const slug = generateSlug(product.name);
 
             html += `
-                <div class="col-6 col-md-3 col-lg-3 col-xl-3 mb-4" id="${slug}">
+                <div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-3 mb-4" id="${slug}">
                     <div class="product-card">
                         <div class="product-image-container">
                             <img
@@ -48,8 +48,8 @@ async function loadProducts() {
                         </div>
 
                         <div class="card-body">
-                            <h5 class="fw-bold">${product.name}</h5>
-                            <p class="text-muted">${product.description || ''}</p>
+                            <h5 class="fw-bold product-name">${product.name}</h5>
+                            <p class="text-muted product-desc">${product.description || ''}</p>
                             <p class="price">NT$${product.price}</p>
 
                             <div class="d-flex align-items-center mb-3">
@@ -85,7 +85,7 @@ async function loadProducts() {
 
 // 平滑滾動到指定商品
 function scrollToProduct() {
-    const hash = window.location.hash;  // 如 #butter-plum
+    const hash = window.location.hash;
     if (!hash) return;
 
     setTimeout(() => {
@@ -96,7 +96,6 @@ function scrollToProduct() {
                 block: "center"
             });
 
-            // 高亮效果
             const card = target.querySelector('.product-card');
             if (card) {
                 card.style.transition = "all 0.6s ease";
@@ -109,7 +108,7 @@ function scrollToProduct() {
                 }, 2800);
             }
         }
-    }, 600); // 等待 DOM 渲染完成
+    }, 600);
 }
 
 /* 數量加減 */
@@ -149,6 +148,10 @@ function updateCartCount() {
 
     const cartCount = document.getElementById('cartCount');
     if (cartCount) cartCount.innerText = totalQty;
+
+    // 同時更新底部導航（如果存在）
+    const bottomCount = document.getElementById('cartCountBottom');
+    if (bottomCount) bottomCount.innerText = totalQty;
 }
 
 /* 頁面載入 */
