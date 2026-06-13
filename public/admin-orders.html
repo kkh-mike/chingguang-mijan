@@ -28,6 +28,9 @@
             font-weight: bold;
             background-color: rgba(255,255,255,0.2);
         }
+        .badge {
+            font-size: 0.95em;
+        }
     </style>
 </head>
 <body>
@@ -69,15 +72,26 @@
     <div class="container mt-4">
         <h1 class="mb-4">📋 訂單管理</h1>
 
-        <!-- 搜尋區 -->
-        <div class="row mb-3">
-            <div class="col-md-6">
+        <!-- 搜尋與篩選區 -->
+        <div class="row mb-4">
+            <div class="col-md-4">
                 <label class="form-label fw-bold">🔍 搜尋收件人</label>
                 <input type="text" id="searchReceiver" class="form-control" placeholder="輸入收件人姓名">
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <label class="form-label fw-bold">📱 搜尋電話</label>
                 <input type="text" id="searchPhone" class="form-control" placeholder="輸入電話號碼">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-bold">📌 狀態篩選</label>
+                <select id="statusFilter" class="form-select">
+                    <option value="">全部狀態</option>
+                    <option value="待確認">待確認</option>
+                    <option value="已確認">已確認</option>
+                    <option value="已出貨">已出貨</option>
+                    <option value="已完成">已完成</option>
+                    <option value="已取消">已取消</option>
+                </select>
             </div>
         </div>
 

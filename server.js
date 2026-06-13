@@ -68,11 +68,20 @@ app.get('/success', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'success.html'));
 });
 
-// === 後台路由 ===
+// === 後台路由（已優化）===
 app.get('/admin', requireAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
+app.get('/admin/orders', requireAdmin, (req, res) => {           // ← 推薦新路徑
+  res.sendFile(path.join(__dirname, 'public', 'admin-orders.html'));
+});
+
+app.get('/admin/products', requireAdmin, (req, res) => {         // ← 推薦新路徑
+  res.sendFile(path.join(__dirname, 'public', 'admin-products.html'));
+});
+
+// 保留舊路徑相容性
 app.get('/admin-orders', requireAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin-orders.html'));
 });
@@ -82,13 +91,13 @@ app.get('/admin-products', requireAdmin, (req, res) => {
 });
 
 // === API 路由 ===
-// 前台商品 API（只顯示上架商品）
+// 前台商品 API
 app.get('/api/products', (req, res) => {
   const activeProducts = products.filter(p => p.isActive !== false);
   res.json(activeProducts);
 });
 
-// 後台取得全部商品（包含已下架）
+// 後台取得全部商品
 app.get('/api/admin/products', requireAdmin, (req, res) => {
   res.json(products);
 });
@@ -225,6 +234,8 @@ app.get('/api/orders', requireAdmin, async (req, res) => {
         o.remark,
         o.total_amount,
         o.status,
+        o.cancel_reason,
+        o.status_updated_at,
         o.created_at,
         COALESCE(
           json_agg(
@@ -238,7 +249,9 @@ app.get('/api/orders', requireAdmin, async (req, res) => {
         ) AS items
       FROM orders o
       LEFT JOIN order_items oi ON o.id = oi.order_id
-      GROUP BY o.id, o.receiver, o.phone, o.address, o.remark, o.total_amount, o.status, o.created_at
+      GROUP BY o.id, o.receiver, o.phone, o.address, o.remark, 
+               o.total_amount, o.status, o.cancel_reason, 
+               o.status_updated_at, o.created_at
       ORDER BY o.id DESC
     `);
     res.json(result.rows);
@@ -248,17 +261,45 @@ app.get('/api/orders', requireAdmin, async (req, res) => {
   }
 });
 
+// 更新訂單狀態（最終版本）
 app.put('/api/orders/:id/status', requireAdmin, async (req, res) => {
   try {
     const { id } = req.params;
-    const { status } = req.body;
+    const { status, cancel_reason } = req.body;
 
-    await pool.query(
-      `UPDATE orders SET status = $1 WHERE id = $2`,
-      [status, id]
+    // 驗證允許狀態
+    const allowedStatuses = ['待確認', '已確認', '已出貨', '已完成', '已取消'];
+    if (!allowedStatuses.includes(status)) {
+      return res.status(400).json({ success: false, message: '無效狀態' });
+    }
+
+    // 取得目前狀態
+    const current = await pool.query('SELECT status FROM orders WHERE id = $1', [id]);
+    const oldStatus = current.rows[0]?.status;
+
+    if (oldStatus === '已完成' && status !== '已完成') {
+      return res.status(400).json({ success: false, message: '已完成訂單無法變更' });
+    }
+
+    const result = await pool.query(
+      `UPDATE orders 
+       SET status = $1, 
+           cancel_reason = $2,
+           status_updated_at = NOW()
+       WHERE id = $3 RETURNING *`,
+      [status, cancel_reason || null, id]
     );
 
-    res.json({ success: true });
+    // 記錄狀態歷史
+    if (oldStatus !== status) {
+      await pool.query(
+        `INSERT INTO order_status_history (order_id, old_status, new_status, reason)
+         VALUES ($1, $2, $3, $4)`,
+        [id, oldStatus, status, cancel_reason]
+      );
+    }
+
+    res.json({ success: true, order: result.rows[0] });
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, error: err.message });
@@ -275,4 +316,5 @@ app.get('/admin-logout', (req, res) => {
 
 app.listen(3000, () => {
   console.log('🚀 Server running on http://localhost:3000');
+  console.log('後台訂單管理頁面：http://localhost:3000/admin/orders');
 });
