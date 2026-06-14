@@ -330,3 +330,16 @@ footer h4 {
     transform: translateY(-8px);
     box-shadow: 0 15px 35px rgba(0,0,0,0.15) !important;
 }
+
+
+ .cart-badge {
+            position: absolute;
+            top: 6px;
+            right: 20%;
+            font-size: 0.7rem;
+            min-width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
