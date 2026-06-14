@@ -43,11 +43,7 @@
             padding-left: 20px;
         }
 
-        .desktop-search button {
-            border-radius: 0 50px 50px 0;
-            background: #d35400;
-        }
-
+       
         /* ==================== Banner ==================== */
         .top-banner {
             width: 100%;
@@ -206,26 +202,6 @@
                 padding: 16px 0;
                 font-size: 1.12rem;
             }
-
-            .d-lg-none .input-group input {
-                font-size: 1.08rem;
-                padding: 13px 18px;
-                border-radius: 50px 0 0 50px;
-            }
-
-            .d-lg-none .input-group button {
-                padding: 0 18px;
-                border-radius: 0 50px 50px 0;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .card-body {
-                padding: 22px 20px !important;
-            }
-            .product-name {
-                font-size: 1.22rem;
-            }
         }
     </style>
 </head>
@@ -249,10 +225,6 @@
             </form>
         </div>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="/">首頁</a></li>
@@ -269,8 +241,9 @@
                     </div>
                 </form>
 
-                <a href="/cart" class="btn btn-warning position-relative d-flex align-items-center">
-                    🛒 <span class="ms-2 d-none d-lg-inline">購物車</span>
+                    <a href="/cart" class="btn btn-warning position-relative d-flex align-items-center">
+                    <i class="bi bi-cart-fill me-2" style="font-size: 1.35rem;"></i>
+                    <span class="d-none d-lg-inline">購物車</span>
                     <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
                 </a>
             </div>
@@ -302,7 +275,7 @@
 
             <div class="col-4">
                 <a href="/cart" class="nav-link d-block position-relative" id="bottom-cart">
-                    <i class="bi bi-cart-fill fs-3"></i><br>我的購物車
+                    <i class="bi bi-cart-fill fs-3"></i><br>購物車
                     <span id="cartCountBottom" class="cart-badge position-absolute translate-middle badge rounded-pill bg-danger">0</span>
                 </a>
             </div>

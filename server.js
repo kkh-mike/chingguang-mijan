@@ -22,7 +22,7 @@ app.use(session({
 }));
 
 // === 後台登入相關 ===
-const ADMIN_PASSWORD = '123';   // ← 建議修改成更安全的密碼
+const ADMIN_PASSWORD = '123';   // ← 建議之後改成更安全的密碼
 
 app.get('/admin-login', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'admin-login.html'));
@@ -73,7 +73,6 @@ app.get('/success', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'success.html'));
 });
 
-// 【新增】前台訂單查詢頁面
 app.get('/orders', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'orders.html'));
 });
@@ -91,7 +90,6 @@ app.get('/admin/products', requireAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin-products.html'));
 });
 
-// 保留舊後台路徑相容性
 app.get('/admin-orders', requireAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin-orders.html'));
 });
@@ -232,8 +230,72 @@ app.get('/test-db', async (req, res) => {
   }
 });
 
-// 後台訂單 API
-app.get('/api/orders', requireAdmin, async (req, res) => {
+// === 【重要修改】前台公開訂單查詢 API ===
+app.get('/api/orders', async (req, res) => {
+  try {
+    const { receiver, phone, start_date, end_date } = req.query;
+
+    let query = `
+      SELECT
+        o.id,
+        o.receiver,
+        o.phone,
+        o.address,
+        o.remark,
+        o.total_amount,
+        o.status,
+        o.created_at,
+        COALESCE(
+          json_agg(
+            json_build_object(
+              'product_name', oi.product_name,
+              'price', oi.price,
+              'quantity', oi.quantity
+            )
+          ) FILTER (WHERE oi.id IS NOT NULL),
+          '[]'
+        ) AS items
+      FROM orders o
+      LEFT JOIN order_items oi ON o.id = oi.order_id
+      WHERE 1=1
+    `;
+
+    const queryParams = [];
+    let paramCount = 1;
+
+    if (receiver) {
+      query += ` AND o.receiver ILIKE $${paramCount}`;
+      queryParams.push(`%${receiver}%`);
+      paramCount++;
+    }
+    if (phone) {
+      query += ` AND o.phone ILIKE $${paramCount}`;
+      queryParams.push(`%${phone}%`);
+      paramCount++;
+    }
+    if (start_date) {
+      query += ` AND DATE(o.created_at) >= $${paramCount}`;
+      queryParams.push(start_date);
+      paramCount++;
+    }
+    if (end_date) {
+      query += ` AND DATE(o.created_at) <= $${paramCount}`;
+      queryParams.push(end_date);
+      paramCount++;
+    }
+
+    query += ` GROUP BY o.id ORDER BY o.id DESC`;
+
+    const result = await pool.query(query, queryParams);
+    res.json(result.rows);
+  } catch (err) {
+    console.error('前台訂單查詢失敗:', err);
+    res.status(500).json({ error: '查詢失敗，請稍後再試' });
+  }
+});
+
+// === 後台管理用訂單 API（保留原本功能）===
+app.get('/api/admin/orders', requireAdmin, async (req, res) => {
   try {
     const result = await pool.query(`
       SELECT

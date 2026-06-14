@@ -10,16 +10,42 @@
     <link rel="stylesheet" href="/styles.css">
 
     <style>
+        body {
+            background: #fffaf3;
+            padding-bottom: 90px;
+        }
+
+        /* ==================== Navbar ==================== */
+        .navbar {
+            padding: 12px 0;
+        }
+
+        .navbar-brand img {
+            height: 62px;
+            width: 62px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .navbar-brand span {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #8B4513;
+            letter-spacing: 1px;
+        }
+
         /* Hero */
         .hero {
             background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), 
                         url('/images/store-hero.jpg') center/cover no-repeat;
-            min-height: 68vh;
+            min-height: 58vh;
             display: flex;
             align-items: center;
             color: white;
             text-align: center;
-            padding: 100px 20px 90px;
+            padding: 100px 20px 80px;
         }
 
         .hero h1 {
@@ -43,7 +69,7 @@
             line-height: 1.6;
         }
 
-        /* 熱銷商品卡片 */
+        /* 熱銷商品 */
         .hot-card {
             text-align: center;
             height: 100%;
@@ -63,67 +89,7 @@
             margin-bottom: 16px;
         }
 
-        .hot-card h5 {
-            margin-bottom: 6px;
-            min-height: 1.4em;
-        }
-
-        .hot-card p {
-            margin-bottom: 16px;
-            flex-grow: 1;
-        }
-
-        .hot-card .btn {
-            margin-top: auto;
-            width: 100%;
-            max-width: 160px;
-        }
-
-        /* ==================== Navbar 優化 ==================== */
-        .navbar {
-            padding: 12px 0;
-        }
-
-        .navbar-brand img {
-            height: 62px;
-            width: 62px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 3px solid #fff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .navbar-brand span {
-            font-size: 1.75rem;
-            font-weight: 800;
-            color: #8B4513;
-            letter-spacing: 1px;
-        }
-
-        .nav-link {
-            font-weight: 600;
-            color: #5c4033 !important;
-            margin: 0 12px;
-        }
-
-        .nav-link:hover,
-        .nav-link.active {
-            color: #d35400 !important;
-        }
-
-        /* 搜尋框 */
-        .desktop-search input {
-            border-radius: 50px 0 0 50px;
-            border-right: none;
-            padding-left: 20px;
-        }
-
-        .desktop-search button {
-            border-radius: 0 50px 50px 0;
-            background: #d35400;
-        }
-
-        /* 底部導航欄 */
+        /* ==================== 底部導航 ==================== */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -131,65 +97,68 @@
             right: 0;
             background: #f8f9fa;
             border-top: 1px solid #dee2e6;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
             z-index: 1030;
-            padding: 8px 0 4px;
+            padding: 10px 0 8px;
         }
 
         .bottom-nav .nav-link {
-            color: #333;
-            font-size: 0.85rem;
-            transition: color 0.2s;
+            color: #6c757d;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
-        .bottom-nav .nav-link:hover,
         .bottom-nav .nav-link.active {
-            color: #ffc107;
+            color: #d35400;
+            font-weight: 700;
         }
 
-   
-
-        body {
-            padding-bottom: 70px;
+        .bottom-nav .nav-link.active i {
+            color: #d35400;
+            transform: scale(1.15);
         }
 
+        .bottom-nav .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 28px;
+            height: 3px;
+            background: #d35400;
+            border-radius: 3px;
+        }
+
+        /* ==================== 手機版優化 ==================== */
         @media (max-width: 768px) {
-            .navbar-brand img {
-                height: 48px;
-                width: 48px;
+            .container {
+                padding-left: 18px !important;
+                padding-right: 18px !important;
             }
-            .navbar-brand span {
+            .hero {
+                min-height: 55vh;
+                padding: 80px 15px 60px;
+            }
+            .hero h1 {
+                font-size: 2.3rem;
+            }
+            .hero h2 {
                 font-size: 1.35rem;
             }
             .circle-img {
                 width: 115px;
                 height: 115px;
             }
-            .hero {
-                min-height: 58vh;
-                padding: 80px 15px 70px;
-            }
-            .hero h1 {
-                font-size: 2.1rem;
-            }
-            .hero h2 {
-                font-size: 1.3rem;
-            }
-        }
-
-        @supports (padding: max(0px)) {
-            .bottom-nav {
-                padding-bottom: max(8px, env(safe-area-inset-bottom));
-            }
         }
     </style>
 </head>
 <body>
 
-<!-- Navbar - 優化版 -->
+
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
     <div class="container px-4">
-        <!-- Logo -->
         <a class="navbar-brand d-flex align-items-center" href="/">
             <img src="/images/log.png" alt="晴光蜜餞" class="me-3">
             <span>晴光蜜餞</span>
@@ -198,27 +167,21 @@
         <!-- 手機版搜尋 -->
         <div class="d-lg-none flex-grow-1 mx-3">
             <form action="/products" method="GET">
-                <div class="input-group input-group-sm">
+                <div class="input-group">
                     <input type="text" class="form-control" name="q" placeholder="搜尋商品..." aria-label="搜尋商品">
                     <button class="btn btn-warning" type="submit"><i class="bi bi-search"></i></button>
                 </div>
             </form>
         </div>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
         <div class="collapse navbar-collapse" id="navbarNav">
-            <!-- 選單置中 -->
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="/">首頁</a></li>
-                <li class="nav-item"><a class="nav-link" href="/products">商品專區</a></li>
-                <li class="nav-item"><a class="nav-link" href="#about">品牌故事</a></li>
-                <li class="nav-item"><a class="nav-link" href="#store">門市資訊</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/products">商品專區</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#about">品牌故事</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#store">門市資訊</a></li>
             </ul>
 
-            <!-- 桌面版搜尋 + 購物車 -->
             <div class="d-flex align-items-center gap-3">
                 <form action="/products" method="GET" class="d-none d-lg-flex">
                     <div class="input-group input-group-sm desktop-search" style="width: 320px;">
@@ -227,8 +190,8 @@
                     </div>
                 </form>
 
-                <a href="/cart" class="btn btn-warning position-relative d-flex align-items-center">
-                    <i class="bi bi-cart3 me-1"></i>
+                              <a href="/cart" class="btn btn-warning position-relative d-flex align-items-center">
+                    <i class="bi bi-cart-fill me-2" style="font-size: 1.35rem;"></i>
                     <span class="d-none d-lg-inline">購物車</span>
                     <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
                 </a>
@@ -236,6 +199,7 @@
         </div>
     </div>
 </nav>
+
 
 <!-- Hero -->
 <section class="hero">
@@ -335,40 +299,34 @@
 <nav class="bottom-nav">
     <div class="container">
         <div class="row text-center">
-  <div class="col-4">
-    <a href="/products" class="nav-link d-block">
-        <i class="bi bi-shop-window fs-3"></i><br>全部商品
-    </a>
-</div>
-
-<div class="col-4">
-    <a href="/cart" class="nav-link d-block position-relative">
-        <i class="bi bi-cart-fill fs-3"></i><br>我的購物車
-        <span id="cartCountBottom" class="cart-badge position-absolute translate-middle badge rounded-pill bg-danger">0</span>
-    </a>
-</div>
-
-<div class="col-4">
-    <a href="#" class="nav-link d-block">
-        <i class="bi bi-receipt fs-3"></i><br>訂單查詢
-    </a>
-</div>
+            <div class="col-4">
+                <a href="/products" class="nav-link d-block" id="bottom-products">
+                    <i class="bi bi-shop-window fs-3"></i><br>全部商品
+                </a>
+            </div>
+            <div class="col-4">
+                <a href="/cart" class="nav-link d-block position-relative" id="bottom-cart">
+                    <i class="bi bi-cart-fill fs-3"></i><br>購物車
+                    <span id="cartCountBottom" class="cart-badge position-absolute translate-middle badge rounded-pill bg-danger">0</span>
+                </a>
+            </div>
+            <div class="col-4">
+                <a href="/orders" class="nav-link d-block" id="bottom-orders">
+                    <i class="bi bi-receipt fs-3"></i><br>訂單查詢
+                </a>
+            </div>
         </div>
     </div>
 </nav>
-
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-// 購物車數量顯示
+// 購物車數量更新
 function getCartCount() {
     try {
         const cart = JSON.parse(localStorage.getItem('shineguang_cart') || '[]');
         return cart.reduce((sum, item) => sum + (parseInt(item.qty) || 0), 0);
-    } catch(e) {
-        return 0;
-    }
+    } catch(e) { return 0; }
 }
 
 function updateAllCartCounts() {
@@ -379,8 +337,31 @@ function updateAllCartCounts() {
     if (bottomCount) bottomCount.textContent = count;
 }
 
-document.addEventListener('DOMContentLoaded', updateAllCartCounts);
-</script>
+// === 底部導航高亮 ===
+function highlightBottomNav() {
+    const currentPath = window.location.pathname;
+    document.querySelectorAll('.bottom-nav .nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
 
+    if (currentPath === '/' || currentPath === '/index.html') {
+        // 首頁時高亮「全部商品」
+        document.getElementById('bottom-products').classList.add('active');
+    } 
+    else if (currentPath === '/cart') {
+        document.getElementById('bottom-cart').classList.add('active');
+    } 
+    else if (currentPath.includes('/orders')) {
+        document.getElementById('bottom-orders').classList.add('active');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateAllCartCounts();
+    highlightBottomNav();
+});
+
+window.updateAllCartCounts = updateAllCartCounts;
+</script>
 </body>
 </html>
