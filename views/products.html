@@ -12,10 +12,10 @@
     <style>
         body {
             background: #fffaf3;
-            padding-bottom: 70px;
+            padding-bottom: 90px;
         }
 
-        /* ==================== Navbar 優化 ==================== */
+        /* ==================== Navbar ==================== */
         .navbar {
             padding: 12px 0;
         }
@@ -36,17 +36,6 @@
             letter-spacing: 1px;
         }
 
-        .nav-link {
-            font-weight: 600;
-            color: #5c4033 !important;
-            margin: 0 12px;
-        }
-
-        .nav-link:hover,
-        .nav-link.active {
-            color: #d35400 !important;
-        }
-
         /* 搜尋框 */
         .desktop-search input {
             border-radius: 50px 0 0 50px;
@@ -63,41 +52,41 @@
         .top-banner {
             width: 100%;
             border-radius: 16px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            margin-bottom: 30px;
-            display: block;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            margin-bottom: 20px;
         }
 
-        /* 減少 Banner 與 Navbar 之間的空隙 */
         .banner-section {
-            padding-top: 10px;     /* 可再調小到 5px 或 0 */
-            padding-bottom: 10px;
+            padding-top: 12px;
+            padding-bottom: 16px;
         }
 
         @media (max-width: 768px) {
             .banner-section {
-                padding-top: 8px;   /* 手機版更緊密 */
+                padding-top: 8px;
+                padding-bottom: 20px;
             }
             .top-banner {
-                border-radius: 12px;   /* 手機版圓角稍微小一點 */
+                border-radius: 14px;
             }
         }
 
-        /* 商品卡片 */
+        /* ==================== 商品卡片核心優化 ==================== */
         .product-card {
             border: none;
-            border-radius: 20px;
+            border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.09);
             transition: all 0.3s ease;
             height: 100%;
             display: flex;
             flex-direction: column;
+            background: white;
         }
 
         .product-image-container {
             position: relative;
-            padding-top: 65%;
+            padding-top: 65%;           /* 圖片比例調整更協調 */
             background: #f8f1e3;
             overflow: hidden;
         }
@@ -111,11 +100,11 @@
         }
 
         .product-card:hover img {
-            transform: scale(1.08);
+            transform: scale(1.06);
         }
 
         .card-body {
-            padding: 16px 18px;
+            padding: 20px 22px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
@@ -123,15 +112,17 @@
 
         .product-name {
             font-weight: 700;
-            margin-bottom: 8px;
-            min-height: 2.8em;
-            font-size: 1.12rem;
+            font-size: 1.18rem;
+            line-height: 1.45;
+            margin-bottom: 12px;
+            color: #3f2a22;
         }
 
         .price {
             color: #d35400;
-            font-size: 1.35rem;
-            font-weight: bold;
+            font-size: 1.52rem;
+            font-weight: 800;
+            margin-bottom: 16px;
         }
 
         .btn-order {
@@ -139,9 +130,11 @@
             color: white;
             border: none;
             border-radius: 50px;
-            padding: 12px 0;
+            padding: 15px 0;
             font-weight: 700;
+            font-size: 1.1rem;
             margin-top: auto;
+            box-shadow: 0 4px 12px rgba(211, 84, 0, 0.25);
         }
 
         /* 底部導航 */
@@ -152,9 +145,72 @@
             right: 0;
             background: #f8f9fa;
             border-top: 1px solid #dee2e6;
-            box-shadow: 0 -3px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
             z-index: 1030;
-            padding: 8px 0 4px;
+            padding: 10px 0 8px;
+        }
+
+        /* ==================== 手機版重點優化 ==================== */
+        @media (max-width: 768px) {
+            /* 強制單欄 + 加大間距 */
+            #productList .row > div {
+                width: 100% !important;
+                flex: 0 0 100% !important;
+                max-width: 100% !important;
+            }
+
+            .container {
+                padding-left: 18px !important;
+                padding-right: 18px !important;
+            }
+
+            .product-card {
+                margin-bottom: 28px;
+                border-radius: 22px;
+            }
+
+            .product-image-container {
+                padding-top: 68% !important;
+            }
+
+            .card-body {
+                padding: 24px 22px !important;
+            }
+
+            .product-name {
+                font-size: 1.25rem;
+            }
+
+            .price {
+                font-size: 1.6rem;
+            }
+
+            .btn-order {
+                padding: 16px 0;
+                font-size: 1.12rem;
+            }
+
+            /* 手機搜尋框更舒適 */
+            .d-lg-none .input-group input {
+                font-size: 1.08rem;
+                padding: 13px 18px;
+                border-radius: 50px 0 0 50px;
+            }
+
+            .d-lg-none .input-group button {
+                padding: 0 18px;
+                border-radius: 0 50px 50px 0;
+            }
+        }
+
+        /* 小螢幕額外加強 */
+        @media (max-width: 576px) {
+            .card-body {
+                padding: 22px 20px !important;
+            }
+            .product-name {
+                font-size: 1.22rem;
+            }
         }
     </style>
 </head>
@@ -163,7 +219,6 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
     <div class="container px-4">
-        <!-- Logo -->
         <a class="navbar-brand d-flex align-items-center" href="/">
             <img src="/images/log.png" alt="晴光蜜餞" class="me-3">
             <span>晴光蜜餞</span>
@@ -172,7 +227,7 @@
         <!-- 手機版搜尋 -->
         <div class="d-lg-none flex-grow-1 mx-3">
             <form action="/products" method="GET">
-                <div class="input-group input-group-sm">
+                <div class="input-group">
                     <input type="text" class="form-control" name="q" placeholder="搜尋商品..." aria-label="搜尋商品">
                     <button class="btn btn-warning" type="submit"><i class="bi bi-search"></i></button>
                 </div>
@@ -191,7 +246,6 @@
                 <li class="nav-item"><a class="nav-link" href="/#store">門市資訊</a></li>
             </ul>
 
-            <!-- 桌面版搜尋 + 購物車 -->
             <div class="d-flex align-items-center gap-3">
                 <form action="/products" method="GET" class="d-none d-lg-flex">
                     <div class="input-group input-group-sm desktop-search" style="width: 320px;">
@@ -209,32 +263,33 @@
     </div>
 </nav>
 
-<!-- Banner 區塊（不填滿全寬） -->
+<!-- Banner -->
 <div class="container banner-section">
-    <img src="/images/top-sale-banner.png" 
-         alt="人氣商品 Top Sale" 
-         class="top-banner img-fluid">
+    <img src="/images/top-sale-banner.png" alt="人氣商品 Top Sale" class="top-banner img-fluid">
 </div>
 
-<!-- 商品列表區塊 -->
+<!-- 商品列表 -->
 <div class="container pt-2 pb-5">
     <div class="row g-4" id="productList">
         <div class="loading col-12">商品載入中...</div>
     </div>
 </div>
 
-<!-- 底部導航 -->
+
+
+
+<!-- 固定底部導航欄 -->
 <nav class="bottom-nav">
     <div class="container">
         <div class="row text-center">
             <div class="col-4">
-                <a href="/products" class="nav-link d-block active">
+                <a href="/products" class="nav-link d-block">
                     <span class="fs-3">🛍️</span><br>全部商品
                 </a>
             </div>
             <div class="col-4">
-                <a href="/cart" class="nav-link d-block position-relative">
-                    <span class="fs-3">🛒</span><br>我的購物車
+                <a href="/cart" class="nav-link d-block position-relative active">
+                    <span class="fs-3">🛒</span><br>購物車
                     <span id="cartCountBottom" class="cart-badge position-absolute translate-middle badge rounded-pill bg-danger">0</span>
                 </a>
             </div>
