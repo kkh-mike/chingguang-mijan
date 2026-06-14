@@ -15,6 +15,28 @@
             padding-bottom: 90px;
         }
 
+        /* ==================== Navbar ==================== */
+        .navbar {
+            padding: 12px 0;
+        }
+
+        .navbar-brand img {
+            height: 62px;
+            width: 62px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .navbar-brand span {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #8B4513;
+            letter-spacing: 1px;
+        }
+
+        /* ==================== 訂單專用樣式 ==================== */
         .order-title {
             font-size: 1.85rem;
             font-weight: 700;
@@ -64,6 +86,7 @@
         .status-completed { background: #d4edda; color: #155724; }
         .status-cancelled { background: #f8d7da; color: #721c24; }
 
+        /* ==================== 底部導航 ==================== */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -103,63 +126,87 @@
             background: #d35400;
             border-radius: 3px;
         }
+
+        /* ==================== 手機版優化 ==================== */
+        @media (max-width: 768px) {
+            .container {
+                padding-left: 18px !important;
+                padding-right: 18px !important;
+            }
+            .order-title {
+                font-size: 1.65rem;
+            }
+            .search-box {
+                padding: 16px;
+            }
+        }
     </style>
 </head>
 <body>
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
-    <div class="container px-3">
+    <div class="container px-4">
         <a class="navbar-brand d-flex align-items-center" href="/">
-            <img src="/images/log.png" alt="晴光蜜餞" class="me-2">
-            <span class="fw-bold">晴光蜜餞</span>
+            <img src="/images/log.png" alt="晴光蜜餞" class="me-3">
+            <span>晴光蜜餞</span>
         </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto align-items-center">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="/">首頁</a></li>
                 <li class="nav-item"><a class="nav-link" href="/products">商品專區</a></li>
-                <li class="nav-item"><a class="nav-link" href="#about">品牌故事</a></li>
-                <li class="nav-item"><a class="nav-link" href="#store">門市資訊</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#about">品牌故事</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#store">門市資訊</a></li>
             </ul>
-        </div>
 
-        <a href="/cart" class="btn btn-warning position-relative ms-3 d-none d-lg-flex align-items-center">
-            <i class="bi bi-cart3 me-1"></i>購物車
-            <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
-        </a>
+            <div class="d-flex align-items-center gap-3">
+                <a href="/cart" class="btn btn-warning position-relative d-flex align-items-center">
+                    🛒 <span class="ms-2 d-none d-lg-inline">購物車</span>
+                    <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
+                </a>
+            </div>
+        </div>
     </div>
 </nav>
 
 <div class="container py-4">
     <h1 class="order-title mb-4">我的訂單查詢</h1>
 
-    <!-- 搜尋表單 -->
+    <!-- 搜尋表單 - 修改為日期區間 -->
     <div class="search-box">
         <div class="row g-3">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label class="form-label">姓名</label>
                 <input type="text" id="searchName" class="form-control" placeholder="輸入姓名">
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label class="form-label">電話</label>
                 <input type="text" id="searchPhone" class="form-control" placeholder="輸入電話">
             </div>
-            <div class="col-md-4">
-                <label class="form-label">訂單日期</label>
-                <input type="date" id="searchDate" class="form-control">
+            <div class="col-md-3">
+                <label class="form-label">開始日期</label>
+                <input type="date" id="startDate" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">結束日期</label>
+                <input type="date" id="endDate" class="form-control">
             </div>
         </div>
         <div class="mt-3">
             <button onclick="searchOrders()" class="btn btn-warning px-4">
-                <i class="bi bi-search"></i> 查詢訂單
+                <i class="bi bi-search"></i> 查詢
             </button>
             <button onclick="resetSearch()" class="btn btn-secondary ms-2">清除</button>
         </div>
     </div>
 
     <div id="orderList">
-        <!-- 訂單動態產生 -->
+        <!-- 訂單由此產生 -->
     </div>
 </div>
 
@@ -187,11 +234,11 @@
     </div>
 </nav>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/js/orders.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-// 購物車數量 + 高亮
+// 購物車數量更新
 function getCartCount() {
     try {
         const cart = JSON.parse(localStorage.getItem('shineguang_cart') || '[]');
@@ -207,17 +254,25 @@ function updateAllCartCounts() {
     if (bottomCount) bottomCount.textContent = count;
 }
 
+// === 底部導航高亮 ===
 function highlightBottomNav() {
-    document.querySelectorAll('.bottom-nav .nav-link').forEach(link => link.classList.remove('active'));
-    const el = document.getElementById('bottom-orders');
-    if (el) el.classList.add('active');
+    const currentPath = window.location.pathname;
+    document.querySelectorAll('.bottom-nav .nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+
+    if (currentPath.includes('/orders')) {
+        document.getElementById('bottom-orders').classList.add('active');
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     updateAllCartCounts();
     highlightBottomNav();
-    searchOrders();        // 預設載入所有訂單
+    searchOrders();   // 預設載入所有訂單
 });
+
+window.updateAllCartCounts = updateAllCartCounts;
 </script>
 </body>
 </html>
