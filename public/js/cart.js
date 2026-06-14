@@ -17,6 +17,28 @@ function getProductInfo(id) {
     return allProducts.find(p => p.id === id);
 }
 
+// === 底部導航高亮 ===
+function highlightBottomNav() {
+    const currentPath = window.location.pathname;
+
+    document.querySelectorAll('.bottom-nav .nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+
+    if (currentPath === '/products' || currentPath === '/') {
+        const el = document.getElementById('bottom-products');
+        if (el) el.classList.add('active');
+    } 
+    else if (currentPath === '/cart') {
+        const el = document.getElementById('bottom-cart');
+        if (el) el.classList.add('active');
+    } 
+    else if (currentPath.includes('/orders') || currentPath === '/order') {
+        const el = document.getElementById('bottom-orders');
+        if (el) el.classList.add('active');
+    }
+}
+
 // 渲染購物車
 async function loadCart() {
     await loadCurrentProducts();
@@ -37,7 +59,7 @@ async function loadCart() {
             </div>
         `;
         updateTotal(0);
-        updateAllCartCounts();   // 更新底部與上方數量
+        updateAllCartCounts();
         return;
     }
 
@@ -113,6 +135,7 @@ async function loadCart() {
     if (itemCountEl) {
         itemCountEl.textContent = `已選購 ${totalQty} 件商品`;
     }
+
     // 已下架警告
     if (hasDelisted) {
         cartItems.insertAdjacentHTML('beforeend', `
@@ -130,7 +153,6 @@ function updateTotal(total) {
     if (totalEl) totalEl.innerText = `NT$${total}`;
     if (subtotalEl) subtotalEl.innerText = `NT$${total}`;
 
-    // ===== 新增：運費邏輯 =====
     const shippingRow = document.getElementById('shippingRow');
     const shippingText = document.getElementById('shippingText');
     
@@ -173,7 +195,7 @@ function removeItem(id) {
     let cart = JSON.parse(localStorage.getItem('shineguang_cart')) || [];
     cart = cart.filter(item => item.id !== id);
     localStorage.setItem('shineguang_cart', JSON.stringify(cart));
-    loadCart();        // 重新渲染 + 更新數量
+    loadCart();
 }
 
 function changeQty(id, amount) {
@@ -187,8 +209,11 @@ function changeQty(id, amount) {
     }
 
     localStorage.setItem('shineguang_cart', JSON.stringify(cart));
-    loadCart();        // 重新渲染 + 更新數量
+    loadCart();
 }
 
 // 頁面載入
-window.onload = loadCart;
+window.onload = () => {
+    loadCart();
+    highlightBottomNav();     // ← 新增：底部導航高亮
+};

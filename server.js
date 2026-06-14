@@ -39,22 +39,20 @@ app.post('/api/admin-login', (req, res) => {
     }
 });
 
-// 登入檢查中間件 - 改進版
+// 登入檢查中間件
 function requireAdmin(req, res, next) {
     if (req.session && req.session.isAdmin) {
         return next();
     }
 
-    // 如果是 AJAX / API 請求 → 回傳 JSON
     if (req.xhr || req.headers.accept?.includes('application/json')) {
         return res.status(401).json({ success: false, message: '請先登入後台' });
     }
 
-    // 如果是一般頁面請求 → 直接跳轉登入頁
     res.redirect('/admin-login');
 }
 
-// === 頁面路由 ===
+// === 前台頁面路由 ===
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
@@ -75,20 +73,25 @@ app.get('/success', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'success.html'));
 });
 
-// === 後台路由（已優化）===
+// 【新增】前台訂單查詢頁面
+app.get('/orders', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'orders.html'));
+});
+
+// === 後台路由 ===
 app.get('/admin', requireAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
-app.get('/admin/orders', requireAdmin, (req, res) => {           // ← 推薦新路徑
+app.get('/admin/orders', requireAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin-orders.html'));
 });
 
-app.get('/admin/products', requireAdmin, (req, res) => {         // ← 推薦新路徑
+app.get('/admin/products', requireAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin-products.html'));
 });
 
-// 保留舊路徑相容性
+// 保留舊後台路徑相容性
 app.get('/admin-orders', requireAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin-orders.html'));
 });
@@ -230,7 +233,6 @@ app.get('/test-db', async (req, res) => {
 });
 
 // 後台訂單 API
-// 後台訂單 API（已修正，包含 cancel_reason）
 app.get('/api/orders', requireAdmin, async (req, res) => {
   try {
     const result = await pool.query(`
@@ -242,8 +244,8 @@ app.get('/api/orders', requireAdmin, async (req, res) => {
         o.remark,
         o.total_amount,
         o.status,
-        o.cancel_reason,           -- ← 新增
-        o.status_updated_at,       -- ← 新增
+        o.cancel_reason,
+        o.status_updated_at,
         o.created_at,
         COALESCE(
           json_agg(
@@ -270,19 +272,17 @@ app.get('/api/orders', requireAdmin, async (req, res) => {
   }
 });
 
-// 更新訂單狀態（最終版本）
+// 更新訂單狀態
 app.put('/api/orders/:id/status', requireAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const { status, cancel_reason } = req.body;
 
-    // 驗證允許狀態
     const allowedStatuses = ['待確認', '已確認', '已出貨', '已完成', '已取消'];
     if (!allowedStatuses.includes(status)) {
       return res.status(400).json({ success: false, message: '無效狀態' });
     }
 
-    // 取得目前狀態
     const current = await pool.query('SELECT status FROM orders WHERE id = $1', [id]);
     const oldStatus = current.rows[0]?.status;
 
@@ -299,7 +299,6 @@ app.put('/api/orders/:id/status', requireAdmin, async (req, res) => {
       [status, cancel_reason || null, id]
     );
 
-    // 記錄狀態歷史
     if (oldStatus !== status) {
       await pool.query(
         `INSERT INTO order_status_history (order_id, old_status, new_status, reason)
@@ -325,5 +324,6 @@ app.get('/admin-logout', (req, res) => {
 
 app.listen(3000, () => {
   console.log('🚀 Server running on http://localhost:3000');
+  console.log('前台訂單查詢頁面：http://localhost:3000/orders');
   console.log('後台訂單管理頁面：http://localhost:3000/admin/orders');
 });

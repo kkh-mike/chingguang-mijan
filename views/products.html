@@ -61,16 +61,6 @@
             padding-bottom: 16px;
         }
 
-        @media (max-width: 768px) {
-            .banner-section {
-                padding-top: 8px;
-                padding-bottom: 20px;
-            }
-            .top-banner {
-                border-radius: 14px;
-            }
-        }
-
         /* ==================== 商品卡片核心優化 ==================== */
         .product-card {
             border: none;
@@ -86,7 +76,7 @@
 
         .product-image-container {
             position: relative;
-            padding-top: 65%;           /* 圖片比例調整更協調 */
+            padding-top: 65%;
             background: #f8f1e3;
             overflow: hidden;
         }
@@ -137,7 +127,7 @@
             box-shadow: 0 4px 12px rgba(211, 84, 0, 0.25);
         }
 
-        /* 底部導航 */
+        /* ==================== 底部導航 ==================== */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -150,9 +140,36 @@
             padding: 10px 0 8px;
         }
 
+        .bottom-nav .nav-link {
+            color: #6c757d;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .bottom-nav .nav-link.active {
+            color: #d35400;
+            font-weight: 700;
+        }
+
+        .bottom-nav .nav-link.active i {
+            color: #d35400;
+            transform: scale(1.15);
+        }
+
+        .bottom-nav .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 28px;
+            height: 3px;
+            background: #d35400;
+            border-radius: 3px;
+        }
+
         /* ==================== 手機版重點優化 ==================== */
         @media (max-width: 768px) {
-            /* 強制單欄 + 加大間距 */
             #productList .row > div {
                 width: 100% !important;
                 flex: 0 0 100% !important;
@@ -190,7 +207,6 @@
                 font-size: 1.12rem;
             }
 
-            /* 手機搜尋框更舒適 */
             .d-lg-none .input-group input {
                 font-size: 1.08rem;
                 padding: 13px 18px;
@@ -203,7 +219,6 @@
             }
         }
 
-        /* 小螢幕額外加強 */
         @media (max-width: 576px) {
             .card-body {
                 padding: 22px 20px !important;
@@ -275,29 +290,28 @@
     </div>
 </div>
 
-
-
-
 <!-- 固定底部導航欄 -->
 <nav class="bottom-nav">
     <div class="container">
-       <div class="col-4">
-            <a href="/products" class="nav-link d-block">
-                <i class="bi bi-shop-window fs-3"></i><br>全部商品
-            </a>
-        </div>
+        <div class="row text-center">
+            <div class="col-4">
+                <a href="/products" class="nav-link d-block" id="bottom-products">
+                    <i class="bi bi-shop-window fs-3"></i><br>全部商品
+                </a>
+            </div>
 
-        <div class="col-4">
-            <a href="/cart" class="nav-link d-block position-relative">
-                <i class="bi bi-cart-fill fs-3"></i><br>我的購物車
-                <span id="cartCountBottom" class="cart-badge position-absolute translate-middle badge rounded-pill bg-danger">0</span>
-            </a>
-        </div>
+            <div class="col-4">
+                <a href="/cart" class="nav-link d-block position-relative" id="bottom-cart">
+                    <i class="bi bi-cart-fill fs-3"></i><br>我的購物車
+                    <span id="cartCountBottom" class="cart-badge position-absolute translate-middle badge rounded-pill bg-danger">0</span>
+                </a>
+            </div>
 
-        <div class="col-4">
-            <a href="#" class="nav-link d-block">
-                <i class="bi bi-receipt fs-3"></i><br>訂單查詢
-            </a>
+            <div class="col-4">
+                <a href="/orders" class="nav-link d-block" id="bottom-orders">
+                    <i class="bi bi-receipt fs-3"></i><br>訂單查詢
+                </a>
+            </div>
         </div>
     </div>
 </nav>
@@ -322,7 +336,30 @@ function updateAllCartCounts() {
     if (bottomCount) bottomCount.textContent = count;
 }
 
-document.addEventListener('DOMContentLoaded', updateAllCartCounts);
+// === 底部導航高亮 ===
+function highlightBottomNav() {
+    const currentPath = window.location.pathname;
+
+    document.querySelectorAll('.bottom-nav .nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+
+    if (currentPath === '/products' || currentPath === '/') {
+        document.getElementById('bottom-products').classList.add('active');
+    } 
+    else if (currentPath === '/cart') {
+        document.getElementById('bottom-cart').classList.add('active');
+    } 
+    else if (currentPath.includes('/orders') || currentPath === '/order') {
+        document.getElementById('bottom-orders').classList.add('active');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateAllCartCounts();
+    highlightBottomNav();
+});
+
 window.updateAllCartCounts = updateAllCartCounts;
 </script>
 </body>

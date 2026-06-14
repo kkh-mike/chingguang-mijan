@@ -245,8 +245,32 @@ function updateCartCount() {
     if (bottomCount) bottomCount.innerText = totalQty;
 }
 
-/* 頁面載入 */
+
+
+// === 底部導航高亮 ===
+function highlightBottomNav() {
+    const currentPath = window.location.pathname;
+
+    // 移除所有 active
+    document.querySelectorAll('.bottom-nav .nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+
+    if (currentPath === '/products' || currentPath === '/') {
+        document.getElementById('bottom-products').classList.add('active');
+    } 
+    else if (currentPath === '/cart') {
+        document.getElementById('bottom-cart').classList.add('active');
+    } 
+    else if (currentPath.includes('/orders') || currentPath === '/order') {
+        document.getElementById('bottom-orders').classList.add('active');
+    }
+}
+
+// 在頁面載入時執行
 window.onload = () => {
     loadProducts();
     updateCartCount();
+    highlightBottomNav();        // ← 新增這行
 };
+

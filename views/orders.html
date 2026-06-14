@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>訂單查詢｜晴光蜜餞</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/styles.css">
+
+    <style>
+        body {
+            background: #fffaf3;
+            padding-bottom: 90px;
+        }
+
+        .order-title {
+            font-size: 1.85rem;
+            font-weight: 700;
+            color: #5b3d2b;
+        }
+
+        .search-box {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .order-card {
+            background: white;
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .order-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 12px;
+        }
+
+        .status {
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-shipping { background: #d1ecf1; color: #0c5460; }
+        .status-completed { background: #d4edda; color: #155724; }
+        .status-cancelled { background: #f8d7da; color: #721c24; }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+            z-index: 1030;
+            padding: 10px 0 8px;
+        }
+
+        .bottom-nav .nav-link {
+            color: #6c757d;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .bottom-nav .nav-link.active {
+            color: #d35400;
+            font-weight: 700;
+        }
+
+        .bottom-nav .nav-link.active i {
+            color: #d35400;
+            transform: scale(1.15);
+        }
+
+        .bottom-nav .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 28px;
+            height: 3px;
+            background: #d35400;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+    <div class="container px-3">
+        <a class="navbar-brand d-flex align-items-center" href="/">
+            <img src="/images/log.png" alt="晴光蜜餞" class="me-2">
+            <span class="fw-bold">晴光蜜餞</span>
+        </a>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item"><a class="nav-link" href="/">首頁</a></li>
+                <li class="nav-item"><a class="nav-link" href="/products">商品專區</a></li>
+                <li class="nav-item"><a class="nav-link" href="#about">品牌故事</a></li>
+                <li class="nav-item"><a class="nav-link" href="#store">門市資訊</a></li>
+            </ul>
+        </div>
+
+        <a href="/cart" class="btn btn-warning position-relative ms-3 d-none d-lg-flex align-items-center">
+            <i class="bi bi-cart3 me-1"></i>購物車
+            <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
+        </a>
+    </div>
+</nav>
+
+<div class="container py-4">
+    <h1 class="order-title mb-4">我的訂單查詢</h1>
+
+    <!-- 搜尋表單 -->
+    <div class="search-box">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label">姓名</label>
+                <input type="text" id="searchName" class="form-control" placeholder="輸入姓名">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">電話</label>
+                <input type="text" id="searchPhone" class="form-control" placeholder="輸入電話">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">訂單日期</label>
+                <input type="date" id="searchDate" class="form-control">
+            </div>
+        </div>
+        <div class="mt-3">
+            <button onclick="searchOrders()" class="btn btn-warning px-4">
+                <i class="bi bi-search"></i> 查詢訂單
+            </button>
+            <button onclick="resetSearch()" class="btn btn-secondary ms-2">清除</button>
+        </div>
+    </div>
+
+    <div id="orderList">
+        <!-- 訂單動態產生 -->
+    </div>
+</div>
+
+<!-- 固定底部導航欄 -->
+<nav class="bottom-nav">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-4">
+                <a href="/products" class="nav-link d-block" id="bottom-products">
+                    <i class="bi bi-shop-window fs-3"></i><br>全部商品
+                </a>
+            </div>
+            <div class="col-4">
+                <a href="/cart" class="nav-link d-block position-relative" id="bottom-cart">
+                    <i class="bi bi-cart-fill fs-3"></i><br>我的購物車
+                    <span id="cartCountBottom" class="cart-badge position-absolute translate-middle badge rounded-pill bg-danger">0</span>
+                </a>
+            </div>
+            <div class="col-4">
+                <a href="/orders" class="nav-link d-block active" id="bottom-orders">
+                    <i class="bi bi-receipt fs-3"></i><br>訂單查詢
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/orders.js"></script>
+
+<script>
+// 購物車數量 + 高亮
+function getCartCount() {
+    try {
+        const cart = JSON.parse(localStorage.getItem('shineguang_cart') || '[]');
+        return cart.reduce((sum, item) => sum + (parseInt(item.qty) || 0), 0);
+    } catch(e) { return 0; }
+}
+
+function updateAllCartCounts() {
+    const count = getCartCount();
+    const topCount = document.getElementById('cartCount');
+    const bottomCount = document.getElementById('cartCountBottom');
+    if (topCount) topCount.textContent = count;
+    if (bottomCount) bottomCount.textContent = count;
+}
+
+function highlightBottomNav() {
+    document.querySelectorAll('.bottom-nav .nav-link').forEach(link => link.classList.remove('active'));
+    const el = document.getElementById('bottom-orders');
+    if (el) el.classList.add('active');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateAllCartCounts();
+    highlightBottomNav();
+    searchOrders();        // 預設載入所有訂單
+});
+</script>
+</body>
+</html>
