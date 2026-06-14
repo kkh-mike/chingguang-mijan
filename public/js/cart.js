@@ -105,8 +105,14 @@ async function loadCart() {
     });
 
     updateTotal(total);
-    updateAllCartCounts();   // 每次重新渲染都更新數量徽章
+    updateAllCartCounts();
 
+    // 更新「已選購 XX 件商品」
+    const totalQty = cart.reduce((sum, item) => sum + (parseInt(item.qty) || 0), 0);
+    const itemCountEl = document.getElementById('itemCount');
+    if (itemCountEl) {
+        itemCountEl.textContent = `已選購 ${totalQty} 件商品`;
+    }
     // 已下架警告
     if (hasDelisted) {
         cartItems.insertAdjacentHTML('beforeend', `
@@ -119,10 +125,28 @@ async function loadCart() {
 
 function updateTotal(total) {
     const totalEl = document.getElementById('totalPrice');
-    if (totalEl) totalEl.innerText = `NT$${total}`;
-    
     const subtotalEl = document.getElementById('subtotalText');
+    
+    if (totalEl) totalEl.innerText = `NT$${total}`;
     if (subtotalEl) subtotalEl.innerText = `NT$${total}`;
+
+    // ===== 新增：運費邏輯 =====
+    const shippingRow = document.getElementById('shippingRow');
+    const shippingText = document.getElementById('shippingText');
+    
+    if (shippingRow && shippingText) {
+        if (total >= 1000) {
+            shippingText.innerHTML = `<span class="text-success">含運費</span>`;
+            shippingText.classList.remove('text-danger');
+        } else {
+            const remaining = 1000 - total;
+            shippingText.innerHTML = `
+                +60 
+                <small class="text-muted">(差 ${remaining} 元免運)</small>
+            `;
+            shippingText.classList.add('text-danger');
+        }
+    }
 }
 
 // 更新所有頁面的購物車數量徽章

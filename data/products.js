@@ -5,15 +5,15 @@ module.exports = [
     name: '奶油話梅',
     description: '香濃奶油香氣搭配酸甜話梅，經典熱銷款',
     price: 120,
-    image: '/images/green-plum.jpg',
+    image: '/images/Butter-White-Plum.jpg',
     isActive: true
   },
   {
     id: 2,
-    name: '蜂蜜梅',
+    name: '八仙果',
     description: '天然蜂蜜調味，酸甜回甘，養生首選',
     price: 150,
-    image: '/images/green-plum.jpg',
+    image: '/images/Ba-Xian-Guo.jpg',
     isActive: true
   },
   {
@@ -26,10 +26,10 @@ module.exports = [
   },
   {
     id: 4,
-    name: '甘草芭樂乾',
+    name: '芭樂乾',
     description: '甘草香氣與芭樂果香完美結合',
     price: 100,
-    image: '/images/green-plum.jpg',
+    image: '/images/DriedGuava.jpg',
     isActive: true
   },
   {
@@ -37,7 +37,7 @@ module.exports = [
     name: '陳皮梅',
     description: '經典陳皮風味，越吃越涮嘴',
     price: 130,
-    image: '/images/green-plum.jpg',
+    image: '/images/TangerinePeelPlum.jpg',
     isActive: true
   },
   {
@@ -45,7 +45,7 @@ module.exports = [
     name: '芒果乾',
     description: '嚴選愛文芒果，香甜軟Q',
     price: 160,
-    image: '/images/green-plum.jpg',
+    image: '/images/mango.jpg',
     isActive: true
   },
   {
@@ -53,7 +53,7 @@ module.exports = [
     name: '化應子',
     description: '傳統手工化應子，酸甜開胃',
     price: 110,
-    image: '/images/green-plum.jpg',
+    image: '/images/Hua-Ying-Zi.jpg',
     isActive: true
   },
   {

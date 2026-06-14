@@ -1,60 +1,182 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>填寫訂購資料｜晴光蜜餞</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>填寫訂購資料｜晴光蜜餞</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/styles.css">
 
-<style>
-    body { background: #faf7f2; }
-    .delisted {
-        background: #fff3cd;
-        border-left: 5px solid #ffc107;
-    }
-</style>
+    <style>
+        body { 
+            background: #faf7f2; 
+            padding-bottom: 80px;
+        }
+
+        .checkout-container {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .delisted {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+        }
+
+        /* Navbar 統一風格 */
+        .navbar {
+            padding: 12px 0;
+        }
+        .navbar-brand img {
+            height: 62px;
+            width: 62px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .navbar-brand span {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #8B4513;
+        }
+        .nav-link {
+            font-weight: 600;
+            color: #5c4033 !important;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #d35400 !important;
+        }
+        .desktop-search input {
+            border-radius: 50px 0 0 50px;
+            border-right: none;
+            padding-left: 20px;
+        }
+        .desktop-search button {
+            border-radius: 0 50px 50px 0;
+            background: #d35400;
+        }
+    </style>
 </head>
 <body>
 
-<div class="container py-5">
+<!-- Navbar（與首頁、商品專區一致） -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+    <div class="container px-4">
+        <a class="navbar-brand d-flex align-items-center" href="/">
+            <img src="/images/log.png" alt="晴光蜜餞" class="me-3">
+            <span>晴光蜜餞</span>
+        </a>
 
-    <h1 class="mb-4">📦 填寫訂購資料</h1>
-
-    <div id="orderSummary" class="mb-4"></div>
-
-    <!-- 改成非表單結構（因為不再使用 submit） -->
-    <div>
-
-        <div class="mb-3">
-            <label class="form-label">收件人</label>
-            <input type="text" id="receiver" class="form-control" required>
+        <!-- 手機版搜尋 -->
+        <div class="d-lg-none flex-grow-1 mx-3">
+            <form action="/products" method="GET">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" name="q" placeholder="搜尋商品..." aria-label="搜尋商品">
+                    <button class="btn btn-warning" type="submit"><i class="bi bi-search"></i></button>
+                </div>
+            </form>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">電話</label>
-            <input type="text" id="phone" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">收件地址</label>
-            <textarea id="address" class="form-control" rows="3" required></textarea>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">備註</label>
-            <textarea id="remark" class="form-control" rows="3"></textarea>
-        </div>
-
-        <!-- 主要 LINE 送單按鈕 -->
-        <button onclick="sendToLineFromCheckout()" 
-                class="btn btn-lg fw-bold mt-3 w-100"
-                style="background:#00C300; color:white; border:none; padding:18px; font-size:1.15rem;">
-            📱 用 LINE 快速送出完整訂單
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
         </button>
 
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="/">首頁</a></li>
+                <li class="nav-item"><a class="nav-link" href="/products">商品專區</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#about">品牌故事</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#store">門市資訊</a></li>
+            </ul>
+
+            <div class="d-flex align-items-center gap-3">
+                <form action="/products" method="GET" class="d-none d-lg-flex">
+                    <div class="input-group input-group-sm desktop-search" style="width: 320px;">
+                        <input type="text" class="form-control" name="q" placeholder="搜尋商品名稱..." aria-label="搜尋商品">
+                        <button class="btn btn-warning" type="submit"><i class="bi bi-search"></i></button>
+                    </div>
+                </form>
+
+                <a href="/cart" class="btn btn-warning position-relative d-flex align-items-center">
+                    <i class="bi bi-cart3 me-1"></i>
+                    <span class="d-none d-lg-inline">購物車</span>
+                    <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container py-5 checkout-container">
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold text-dark">📦 填寫訂購資料</h1>
+        <p class="text-muted">請確認您的訂單資訊</p>
+    </div>
+
+    <div id="orderSummary" class="mb-5"></div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4 p-md-5">
+            
+            <div class="mb-4">
+                <label class="form-label fw-bold">收件人姓名</label>
+                <input type="text" id="receiver" class="form-control form-control-lg" placeholder="請輸入收件人姓名" required>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-bold">聯絡電話</label>
+                <input type="tel" id="phone" class="form-control form-control-lg" placeholder="09xxxxxxxx" required>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-bold">收件地址</label>
+                <textarea id="address" class="form-control form-control-lg" rows="3" placeholder="請填寫完整地址（含樓層）" required></textarea>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-bold">備註（選填）</label>
+                <textarea id="remark" class="form-control form-control-lg" rows="3" placeholder="例如：請下午配送、包裝要精美、加贈小禮..."></textarea>
+            </div>
+
+            <button onclick="sendToLineFromCheckout()" 
+                    class="btn btn-lg fw-bold w-100 py-4 mt-3"
+                    style="background:#00C300; color:white; border:none; font-size:1.25rem;">
+                📱 用 LINE 快速送出訂單
+            </button>
+
+            <p class="text-center text-muted mt-4 small">
+                送出後店家會盡快透過 LINE 與您確認
+            </p>
+        </div>
     </div>
 </div>
+
+<!-- 底部導航 -->
+<nav class="bottom-nav">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-4">
+                <a href="/products" class="nav-link d-block">
+                    <span class="fs-3">🛍️</span><br>全部商品
+                </a>
+            </div>
+            <div class="col-4">
+                <a href="/cart" class="nav-link d-block position-relative">
+                    <span class="fs-3">🛒</span><br>我的購物車
+                    <span id="cartCountBottom" class="cart-badge position-absolute translate-middle badge rounded-pill bg-danger">0</span>
+                </a>
+            </div>
+            <div class="col-4">
+                <a href="#" class="nav-link d-block">
+                    <span class="fs-3">📋</span><br>訂單查詢
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
 
 <script>
 // 全域變數
@@ -84,7 +206,7 @@ async function renderOrderSummary() {
     let total = 0;
     let hasDelisted = false;
 
-    let html = `<h4>訂單明細</h4><hr>`;
+    let html = `<h4 class="mb-3">🛒 訂單明細</h4>`;
 
     if (cart.length === 0) {
         html += `<p class="text-muted">購物車是空的</p>`;
@@ -95,7 +217,7 @@ async function renderOrderSummary() {
             if (!product) {
                 hasDelisted = true;
                 html += `
-                    <div class="delisted p-3 mb-2 rounded">
+                    <div class="delisted p-3 mb-3 rounded">
                         <strong>商品已不存在</strong> 
                         <span class="badge bg-danger">已下架</span>
                     </div>`;
@@ -108,14 +230,14 @@ async function renderOrderSummary() {
             if (!isActive) hasDelisted = true;
 
             html += `
-                <div class="${isActive ? '' : 'delisted'} p-3 mb-2 rounded">
-                    <div class="d-flex justify-content-between">
+                <div class="${isActive ? '' : 'delisted'} p-3 mb-3 rounded border">
+                    <div class="d-flex justify-content-between align-items-start">
                         <div>
                             <strong>${product.name}</strong><br>
-                            <small>${item.qty} 件 × NT$${product.price}</small>
+                            <small class="text-muted">${item.qty} 件 × NT$${product.price}</small>
                         </div>
                         <div class="text-end">
-                            ${!isActive ? `<span class="badge bg-danger">已下架</span><br>` : ''}
+                            ${!isActive ? `<span class="badge bg-danger mb-1 d-block">已下架</span>` : ''}
                             <strong>NT$${subtotal}</strong>
                         </div>
                     </div>
@@ -125,21 +247,24 @@ async function renderOrderSummary() {
         });
     }
 
-    html += `<hr><h4 class="text-end">總金額：NT$<strong>${total}</strong></h4>`;
+    html += `
+        <hr class="my-4">
+        <div class="d-flex justify-content-between align-items-center fs-4 fw-bold">
+            <span>總金額</span>
+            <span>NT$<span id="totalAmount">${total}</span></span>
+        </div>`;
 
     if (hasDelisted) {
         html += `
-            <div class="alert alert-warning mt-3">
-                <strong>⚠️ 注意：</strong>訂單中含有已下架商品，<br>
-                送出時將自動排除這些商品。
+            <div class="alert alert-warning mt-4">
+                <strong>⚠️ 注意：</strong>訂單中含有已下架商品，送出時將自動排除。
             </div>`;
     }
 
     summaryContainer.innerHTML = html;
-    return total;
 }
 
-// LINE 快速送單（包含寫入資料庫）
+// LINE 快速送單
 async function sendToLineFromCheckout() {
     const receiver = document.getElementById('receiver').value.trim();
     const phone = document.getElementById('phone').value.trim();
@@ -176,9 +301,9 @@ async function sendToLineFromCheckout() {
         return;
     }
 
-    // 1. 先寫入資料庫（與原本 submit 相同邏輯）
+    // 寫入資料庫
     try {
-        const response = await fetch('/api/orders', {
+        await fetch('/api/orders', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -190,19 +315,11 @@ async function sendToLineFromCheckout() {
                 items: validItems
             })
         });
-
-        const result = await response.json();
-
-        if (!result.success) {
-            console.error('資料庫寫入失敗', result);
-            // 仍然繼續送 LINE，但提醒使用者
-        }
     } catch (err) {
         console.error('寫入訂單失敗', err);
-        // 不阻擋使用者送 LINE
     }
 
-    // 2. 準備 LINE 訊息
+    // 準備 LINE 訊息
     let message = "🌟 *晴光蜜餞 - 新訂單* 🌟\n\n";
 
     validItems.forEach(item => {
@@ -224,26 +341,20 @@ async function sendToLineFromCheckout() {
     message += `📍 收件地址：${address}\n`;
     if (remark) message += `💬 備註：${remark}\n`;
 
-    message += `\n🙏 請店家確認後回覆「確認訂單」即可\n`;
-    message += `感謝您的購買！💕`;
+    message += `\n🙏 請店家確認後回覆「確認訂單」即可\n感謝您的購買！💕`;
 
-    // 開啟 LINE
     const lineId = "@xhr6167l";
     const lineUrl = `https://line.me/R/oaMessage/${lineId}/?text=${encodeURIComponent(message)}`;
     
     window.open(lineUrl, '_blank');
     navigator.clipboard.writeText(message).catch(() => {});
     
-    alert('✅ 已開啟 LINE 並複製訊息，請確認後送出！\n\n訂單已記錄至系統。');
+    alert('✅ 已開啟 LINE 並複製訊息！\n\n訂單已記錄至系統。');
 
-    // 清空購物車
     localStorage.removeItem('shineguang_cart');
-    
-    // 可選：跳轉到成功頁面
-    // window.location.href = '/success';
 }
 
- // 頁面載入時顯示訂單摘要
+// 頁面載入
 window.onload = renderOrderSummary;
 </script>
 

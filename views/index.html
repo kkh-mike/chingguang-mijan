@@ -79,10 +79,14 @@
             max-width: 160px;
         }
 
-        /* Navbar 樣式 */
+        /* ==================== Navbar 優化 ==================== */
+        .navbar {
+            padding: 12px 0;
+        }
+
         .navbar-brand img {
-            height: 68px;
-            width: 68px;
+            height: 62px;
+            width: 62px;
             object-fit: cover;
             border-radius: 50%;
             border: 3px solid #fff;
@@ -90,18 +94,33 @@
         }
 
         .navbar-brand span {
-            font-size: 1.65rem;
-            font-weight: 700;
-            white-space: nowrap;
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #8B4513;
+            letter-spacing: 1px;
         }
 
-        /* 手機版搜尋框優化 */
-        .mobile-search {
-            max-width: 220px;
+        .nav-link {
+            font-weight: 600;
+            color: #5c4033 !important;
+            margin: 0 12px;
         }
 
-        .mobile-search .input-group input {
-            font-size: 0.95rem;
+        .nav-link:hover,
+        .nav-link.active {
+            color: #d35400 !important;
+        }
+
+        /* 搜尋框 */
+        .desktop-search input {
+            border-radius: 50px 0 0 50px;
+            border-right: none;
+            padding-left: 20px;
+        }
+
+        .desktop-search button {
+            border-radius: 0 50px 50px 0;
+            background: #d35400;
         }
 
         /* 底部導航欄 */
@@ -128,10 +147,6 @@
             color: #ffc107;
         }
 
-        .bottom-nav .fs-3 {
-            font-size: 1.65rem;
-        }
-
         .cart-badge {
             position: absolute;
             top: 6px;
@@ -144,7 +159,6 @@
             justify-content: center;
         }
 
-        /* 防止內容被底部導航蓋住 */
         body {
             padding-bottom: 70px;
         }
@@ -157,35 +171,22 @@
             .navbar-brand span {
                 font-size: 1.35rem;
             }
-            
             .circle-img {
                 width: 115px;
                 height: 115px;
             }
-            
-            .hot-card {
-                padding: 14px 6px;
-            }
-            
             .hero {
                 min-height: 58vh;
                 padding: 80px 15px 70px;
             }
-            
             .hero h1 {
                 font-size: 2.1rem;
             }
-            
             .hero h2 {
                 font-size: 1.3rem;
             }
-            
-            .bottom-nav {
-                display: block;
-            }
         }
 
-        /* iPhone 安全區域 */
         @supports (padding: max(0px)) {
             .bottom-nav {
                 padding-bottom: max(8px, env(safe-area-inset-bottom));
@@ -195,46 +196,54 @@
 </head>
 <body>
 
-<!-- 上方導航欄（手機不顯示購物車按鈕） -->
+<!-- Navbar - 優化版 -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
-    <div class="container px-3">
+    <div class="container px-4">
         <!-- Logo -->
         <a class="navbar-brand d-flex align-items-center" href="/">
-            <img src="/images/log.png" alt="晴光蜜餞" class="me-2">
-            <span class="fw-bold">晴光蜜餞</span>
+            <img src="/images/log.png" alt="晴光蜜餞" class="me-3">
+            <span>晴光蜜餞</span>
         </a>
 
-        <!-- 手機版搜尋框 -->
-        <div class="d-lg-none mobile-search flex-grow-1 mx-2">
+        <!-- 手機版搜尋 -->
+        <div class="d-lg-none flex-grow-1 mx-3">
             <form action="/products" method="GET">
                 <div class="input-group input-group-sm">
-                    <input type="text" 
-                           class="form-control" 
-                           name="q" 
-                           placeholder="搜尋商品..."
-                           aria-label="搜尋商品">
-                    <button class="btn btn-warning" type="submit">
-                        <i class="bi bi-search"></i>
-                    </button>
+                    <input type="text" class="form-control" name="q" placeholder="搜尋商品..." aria-label="搜尋商品">
+                    <button class="btn btn-warning" type="submit"><i class="bi bi-search"></i></button>
                 </div>
             </form>
         </div>
 
-        <!-- 桌面版選單 -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto align-items-center">
+            <!-- 選單置中 -->
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="/">首頁</a></li>
                 <li class="nav-item"><a class="nav-link" href="/products">商品專區</a></li>
                 <li class="nav-item"><a class="nav-link" href="#about">品牌故事</a></li>
                 <li class="nav-item"><a class="nav-link" href="#store">門市資訊</a></li>
             </ul>
-        </div>
 
-        <!-- 桌面版購物車按鈕（手機隱藏） -->
-        <a href="/cart" class="btn btn-warning position-relative ms-3 d-none d-lg-flex align-items-center">
-            <i class="bi bi-cart3 me-1"></i>購物車
-            <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
-        </a>
+            <!-- 桌面版搜尋 + 購物車 -->
+            <div class="d-flex align-items-center gap-3">
+                <form action="/products" method="GET" class="d-none d-lg-flex">
+                    <div class="input-group input-group-sm desktop-search" style="width: 320px;">
+                        <input type="text" class="form-control" name="q" placeholder="搜尋商品名稱..." aria-label="搜尋商品">
+                        <button class="btn btn-warning" type="submit"><i class="bi bi-search"></i></button>
+                    </div>
+                </form>
+
+                <a href="/cart" class="btn btn-warning position-relative d-flex align-items-center">
+                    <i class="bi bi-cart3 me-1"></i>
+                    <span class="d-none d-lg-inline">購物車</span>
+                    <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
+                </a>
+            </div>
+        </div>
     </div>
 </nav>
 
@@ -332,7 +341,7 @@
     </div>
 </footer>
 
-<!-- 固定底部導航欄（手機版顯示購物車數量） -->
+<!-- 固定底部導航欄 -->
 <nav class="bottom-nav">
     <div class="container">
         <div class="row text-center">
@@ -371,13 +380,9 @@ function getCartCount() {
 
 function updateAllCartCounts() {
     const count = getCartCount();
-    
-    // 桌面版上方徽章
     const topCount = document.getElementById('cartCount');
-    if (topCount) topCount.textContent = count;
-    
-    // 底部導航徽章
     const bottomCount = document.getElementById('cartCountBottom');
+    if (topCount) topCount.textContent = count;
     if (bottomCount) bottomCount.textContent = count;
 }
 

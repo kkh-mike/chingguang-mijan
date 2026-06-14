@@ -38,6 +38,22 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/#store">門市資訊</a>
                 </li>
+
+                <!-- 【新增】桌面版搜尋框 -->
+                <li class="nav-item d-none d-lg-block ms-3">
+                    <form action="/products" method="GET" class="d-flex">
+                        <div class="input-group input-group-sm" style="width: 280px;">
+                            <input type="text" 
+                                   class="form-control" 
+                                   name="q" 
+                                   placeholder="搜尋商品名稱..."
+                                   aria-label="搜尋商品">
+                            <button class="btn btn-warning" type="submit">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                </li>
             </ul>
         </div>
 
