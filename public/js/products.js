@@ -9,10 +9,14 @@ function generateSlug(name) {
         '芭樂乾': 'dried-guava',
         'Q梅': 'q-plum',
         '八仙果': 'ba-xian-guo',
-        '陳皮梅': 'chen-pi-plum',
+        '化核梅-黑肉': 'hua-hei-plum',
+        '化核梅-紅肉': 'hua-hong-plum',
+        '化應子': 'hua-ying-zi',
+        '梅粉芭樂乾': 'PlumDriedGuava',
         '芒果乾': 'mango-dry',
         '化應子': 'hua-ying-zi',
-        '橄欖': 'olive'
+        '橄欖': 'olive',
+        '酒李': 'WinePlum'
     };
 
     if (slugMap[name]) return slugMap[name];
@@ -73,7 +77,7 @@ function highlightAndScrollToProduct(query, allProducts) {
     }
 }
 
-// 載入商品（已修改圖片部分）
+// 載入商品
 async function loadProducts() {
     try {
         const response = await fetch('/api/products');
@@ -119,13 +123,17 @@ async function loadProducts() {
 
                         <!-- 右邊 數量 + 加入購物車 -->
                         <div class="d-flex flex-column align-items-end gap-2 ms-3">
-                            <div class="d-flex align-items-center">
-                                <button class="btn btn-outline-secondary btn-sm qty-btn" onclick="changeQty(${product.id}, -1)">–</button>
+                            <!-- 數量選擇器 -->
+                            <div class="input-group input-group-sm" style="width: 128px;">
+                                <button class="btn btn-outline-secondary qty-btn" 
+                                        onclick="changeQty(${product.id}, -1)">–</button>
                                 <input id="qty-${product.id}" type="number" min="1" value="1" 
-                                    class="form-control text-center qty-input mx-1">
-                                <button class="btn btn-outline-secondary btn-sm qty-btn" onclick="changeQty(${product.id}, 1)">+</button>
+                                       class="form-control text-center qty-input">
+                                <button class="btn btn-outline-secondary qty-btn" 
+                                        onclick="changeQty(${product.id}, 1)">+</button>
                             </div>
-                            <button class="btn btn-order btn-sm px-4" onclick="addToCart(${product.id}); event.stopImmediatePropagation();">
+                            <button class="btn btn-order btn-sm px-4" 
+                                    onclick="addToCart(${product.id}); event.stopImmediatePropagation();">
                                 加入
                             </button>
                         </div>
