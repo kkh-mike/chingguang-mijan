@@ -61,34 +61,35 @@
         }
     }
 
-    /* ==================== 商品卡片 - 手機版橫向卡片 (大幅優化) ==================== */
+    /* ==================== 商品卡片 - 手機版橫向卡片 (修正切邊問題) ==================== */
     .product-row {
         border: none;
         background: white;
-        border-radius: 24px;
+        border-radius: 20px;
         overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.09);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.06);
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        padding: 16px;
-        margin-bottom: 20px;
+        padding: 12px;
+        margin-bottom: 16px;
         display: flex;
-        align-items: flex-start;
-        gap: 18px;
+        align-items: center; /* 垂直居中，畫面更和諧 */
+        gap: 14px;
+        width: 100%;
     }
 
     .product-row:hover {
-        box-shadow: 0 16px 40px rgba(139, 69, 19, 0.15);
-        transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(139, 69, 19, 0.12);
+        transform: translateY(-2px);
     }
 
     .product-img-wrapper {
-        width: 130px;
-        height: 130px;
-        border-radius: 20px;
+        width: 100px; /* 縮小圖片尺寸，釋放右側寬度 */
+        height: 100px;
+        border-radius: 14px;
         overflow: hidden;
         background: #f8f1e3;
         flex-shrink: 0;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        box-shadow: 0 3px 10px rgba(0,0,0,0.06);
     }
 
     .product-img {
@@ -99,41 +100,46 @@
     }
 
     .product-row:hover .product-img {
-        transform: scale(1.08);
+        transform: scale(1.06);
     }
 
     .product-content {
         flex-grow: 1;
-        min-width: 0;
+        min-width: 0; /* 關鍵：防止 Flex 子元素將父層向外撐開爆版 */
         display: flex;
         flex-direction: column;
-        height: 130px;
+        justify-content: space-between;
+        height: 100px; /* 與圖片高度齊平 */
+        padding-right: 2px;
     }
 
     .product-name {
         font-weight: 700;
-        font-size: 1.22rem;
-        line-height: 1.35;
+        font-size: 1.15rem;
+        line-height: 1.3;
         color: #3f2a22;
-        margin-bottom: 6px;
+        margin-bottom: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; /* 文字過長時自動呈現 ... */
     }
 
     .product-desc {
-        font-size: 0.95rem;
-        color: #666;
-        line-height: 1.45;
-        margin-bottom: 12px;
+        font-size: 0.85rem;
+        color: #777;
+        line-height: 1.4;
+        margin-bottom: 0;
         display: -webkit-box;
-        -webkit-line-clamp: 2;
+        -webkit-line-clamp: 1; /* 手機版限縮為 1 行，留空間給按鈕 */
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
 
     .price {
         color: #d35400;
-        font-size: 1.55rem;
+        font-size: 1.35rem;
         font-weight: 800;
-        margin-bottom: 12px;
+        margin-bottom: 0;
     }
 
     /* 數量與按鈕區 */
@@ -141,7 +147,8 @@
         margin-top: auto;
         display: flex;
         align-items: center;
-        gap: 12px;
+        justify-content: space-between; /* 價格靠左，加減按鈕靠右 */
+        width: 100%;
     }
 
     .qty-controls {
@@ -149,21 +156,22 @@
         align-items: center;
         background: #f8f1e3;
         border-radius: 50px;
-        padding: 4px;
+        padding: 2px;
     }
 
     .qty-btn {
-        width: 34px;
-        height: 34px;
+        width: 30px; /* 稍微縮小按鈕尺寸更適合精準點擊 */
+        height: 30px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.3rem;
+        font-size: 1.1rem;
         color: #8B4513;
         background: white;
         border: 1px solid #e6d5b8;
         border-radius: 50%;
         transition: all 0.2s;
+        padding: 0;
     }
 
     .qty-btn:active {
@@ -171,9 +179,9 @@
     }
 
     .qty-input {
-        width: 42px !important;
+        width: 34px !important; /* 縮減數字輸入框寬度 */
         text-align: center;
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: 600;
         background: transparent;
         border: none;
@@ -185,12 +193,12 @@
         color: white;
         border: none;
         border-radius: 50px;
-        padding: 0 28px;
+        padding: 0 20px;
         font-weight: 700;
-        font-size: 1.05rem;
-        height: 42px;
+        font-size: 0.95rem;
+        height: 34px;
         white-space: nowrap;
-        box-shadow: 0 4px 15px rgba(211, 84, 0, 0.3);
+        box-shadow: 0 4px 12px rgba(211, 84, 0, 0.25);
         transition: all 0.3s;
     }
 
@@ -274,31 +282,38 @@
         }
 
         .container {
-            padding-left: 16px !important;
-            padding-right: 16px !important;
+            padding-left: 12px !important;
+            padding-right: 12px !important;
         }
     }
 
     @media (max-width: 375px) {
         .product-img-wrapper {
-            width: 118px;
-            height: 118px;
+            width: 90px;
+            height: 90px;
         }
         
         .product-row {
-            padding: 14px;
-            gap: 14px;
+            padding: 10px;
+            gap: 10px;
+        }
+
+        .product-content {
+            height: 90px;
         }
 
         .product-name {
-            font-size: 1.15rem;
+            font-size: 1.05rem;
+        }
+        
+        .price {
+            font-size: 1.2rem;
         }
     }
     </style>
 </head>
 <body>
 
-<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
     <div class="container px-4">
         <a class="navbar-brand d-flex align-items-center" href="/">
@@ -306,7 +321,6 @@
             <span>晴光蜜餞</span>
         </a>
 
-        <!-- 手機版搜尋 -->
         <div class="d-lg-none flex-grow-1 mx-3">
             <form action="/products" method="GET">
                 <div class="input-group">
@@ -342,19 +356,16 @@
     </div>
 </nav>
 
-<!-- Banner -->
 <div class="container banner-section">
     <img src="/images/top-sale-banner.png" alt="人氣商品 Top Sale" class="top-banner img-fluid">
 </div>
 
-<!-- 商品列表 -->
 <div class="container pt-2 pb-5">
     <div class="row g-4" id="productList">
         <div class="loading col-12">商品載入中...</div>
     </div>
 </div>
 
-<!-- 固定底部導航欄 -->
 <nav class="bottom-nav">
     <div class="container">
         <div class="row text-center">
