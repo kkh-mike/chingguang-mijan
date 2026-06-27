@@ -13,7 +13,7 @@
 
 
 
-    <style>
+   <style>
     body {
         background: #fffaf3;
         padding-bottom: 90px;
@@ -65,7 +65,7 @@
         }
     }
 
-    /* ==================== 商品卡片 - 手機版橫向卡片 (已優化不切邊) ==================== */
+    /* ==================== 商品卡片 - 手機版 ==================== */
     .product-row {
         border: none;
         background: white;
@@ -146,31 +146,39 @@
         margin-bottom: 0;
     }
 
-  /* ==================== 數量選擇器 - 加大觸控版 ==================== */
+    /* ==================== 數量選擇器 - 加大 + 防畫面放大 ==================== */
     .input-group.qty-group {
         width: auto !important;
-        min-width: 148px;     /* 加寬整體 */
+        min-width: 148px;
+        touch-action: manipulation;
     }
 
     .qty-btn {
-        width: 48px !important;     /* 明顯加大 */
+        width: 48px !important;
         height: 48px !important;
-        font-size: 1.6rem;          /* 符號更大 */
+        font-size: 1.6rem;
         font-weight: 700;
         color: #8B4513;
         background: white;
         border: 2.5px solid #e6d5b8;
         border-radius: 50%;
         box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+        transition: all 0.2s ease;
+        
+        /* 防止手機雙擊放大 */
+        touch-action: manipulation;
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-tap-highlight-color: transparent;
     }
 
     .qty-btn:active {
         background: #f0e6d9;
-        transform: scale(0.9);
+        transform: scale(0.92);
     }
 
     .qty-input {
-        width: 52px !important;     /* 數字框也加大 */
+        width: 52px !important;
         text-align: center;
         font-size: 1.3rem;
         font-weight: 700;
@@ -178,6 +186,7 @@
         background: #fffaf3;
         border: 2px solid #e6d5b8;
         border-radius: 8px;
+        touch-action: manipulation;
     }
 
     /* 數量為1時減號狀態 */
@@ -186,7 +195,6 @@
         color: #c9a97f;
         background: #fffaf3;
     }
-
 
     .btn-order {
         background: linear-gradient(135deg, #e67e22, #d35400);
@@ -323,36 +331,7 @@
             font-size: 1.2rem;
         }
 
-        .input-group {
-            min-width: 110px;
-        }
-    }
-
-    /* ←←← 在這裡加上這段（放在最下面） */
-    @media (max-width: 375px) {
-        .product-img-wrapper {
-            width: 86px;
-            height: 86px;
-        }
-        
-        .product-row {
-            padding: 10px;
-            gap: 10px;
-        }
-
-        .product-content {
-            height: 86px;
-        }
-
-        .product-name {
-            font-size: 1.05rem;
-        }
-        
-        .price {
-            font-size: 1.2rem;
-        }
-
-        /* 超小螢幕再加強 */
+        /* 小螢幕加強數量按鈕 */
         .input-group.qty-group {
             min-width: 142px;
         }
@@ -367,8 +346,6 @@
         }
     }
 </style>
-
-
 
 </head>
 <body>
