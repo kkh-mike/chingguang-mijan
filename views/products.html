@@ -11,12 +11,13 @@
 
 
 
-
-<style>
+    <style>
     body {
         background: #fffaf3;
         padding-bottom: 90px;
         font-family: 'Noto Sans TC', system-ui, -apple-system, sans-serif;
+        /* 全域防止縮放 */
+        touch-action: manipulation;
     }
 
     /* ==================== Navbar ==================== */
@@ -79,10 +80,11 @@
         gap: 12px;
         width: 100%;
         
-        /* 防止點擊商品區域時畫面放大 */
-        touch-action: manipulation;
+        /* 多重防放大 */
+        touch-action: pan-y manipulation;
         -webkit-tap-highlight-color: transparent;
         user-select: none;
+        -webkit-user-select: none;
     }
 
     .product-row:hover {
@@ -98,8 +100,6 @@
         background: #f8f1e3;
         flex-shrink: 0;
         box-shadow: 0 3px 10px rgba(0,0,0,0.06);
-        
-        /* 防止點擊圖片區域放大 */
         touch-action: manipulation;
         -webkit-tap-highlight-color: transparent;
     }
@@ -154,7 +154,7 @@
         margin-bottom: 0;
     }
 
-    /* ==================== 數量選擇器 - 加大 + 防畫面放大 ==================== */
+    /* ==================== 數量選擇器 ==================== */
     .input-group.qty-group {
         width: auto !important;
         min-width: 148px;
@@ -172,8 +172,6 @@
         border-radius: 50%;
         box-shadow: 0 4px 10px rgba(0,0,0,0.12);
         transition: all 0.2s ease;
-        
-        /* 防止手機雙擊放大 */
         touch-action: manipulation;
         user-select: none;
         -webkit-user-select: none;
@@ -197,7 +195,6 @@
         touch-action: manipulation;
     }
 
-    /* 數量為1時減號狀態 */
     .qty-btn:disabled,
     .qty-btn[disabled] {
         color: #c9a97f;
@@ -220,86 +217,6 @@
 
     .btn-order:active {
         transform: scale(0.96);
-    }
-
-    /* ==================== 桌面版卡片 ==================== */
-    .product-card {
-        border: none;
-        border-radius: 24px;
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.09);
-        transition: all 0.3s ease;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        background: white;
-    }
-
-    .product-image-container {
-        position: relative;
-        padding-top: 70%;
-        background: #f8f1e3;
-        overflow: hidden;
-    }
-
-    .product-image-container img {
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        object-fit: cover;
-        transition: transform 0.5s ease;
-    }
-
-    .product-card:hover img {
-        transform: scale(1.06);
-    }
-
-    .card-body {
-        padding: 22px;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    }
-
-    /* ==================== 底部導航 ==================== */
-    .bottom-nav {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: #f8f9fa;
-        border-top: 1px solid #dee2e6;
-        box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
-        z-index: 1030;
-        padding: 10px 0 8px;
-    }
-
-    .bottom-nav .nav-link {
-        color: #6c757d;
-        transition: all 0.3s ease;
-        position: relative;
-    }
-
-    .bottom-nav .nav-link.active {
-        color: #d35400;
-        font-weight: 700;
-    }
-
-    .bottom-nav .nav-link.active i {
-        color: #d35400;
-        transform: scale(1.15);
-    }
-
-    .bottom-nav .nav-link.active::after {
-        content: '';
-        position: absolute;
-        bottom: 6px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 28px;
-        height: 3px;
-        background: #d35400;
-        border-radius: 3px;
     }
 
     /* ==================== 響應式調整 ==================== */
@@ -339,7 +256,6 @@
             font-size: 1.2rem;
         }
 
-        /* 小螢幕加強數量按鈕 */
         .input-group.qty-group {
             min-width: 142px;
         }
