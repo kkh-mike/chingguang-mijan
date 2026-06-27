@@ -124,12 +124,12 @@ async function loadProducts() {
                         <!-- 右邊 數量 + 加入購物車 -->
                         <div class="d-flex flex-column align-items-end gap-2 ms-3">
                             <!-- 數量選擇器 -->
-                            <div class="input-group input-group-sm" style="width: 128px;">
-                                <button class="btn btn-outline-secondary qty-btn" 
+                            <div class="input-group input-group-sm qty-group" style="width: 128px;">
+                                <button class="btn qty-btn" 
                                         onclick="changeQty(${product.id}, -1)">–</button>
                                 <input id="qty-${product.id}" type="number" min="1" value="1" 
                                        class="form-control text-center qty-input">
-                                <button class="btn btn-outline-secondary qty-btn" 
+                                <button class="btn qty-btn" 
                                         onclick="changeQty(${product.id}, 1)">+</button>
                             </div>
                             <button class="btn btn-order btn-sm px-4" 
@@ -188,14 +188,22 @@ function scrollToProduct() {
     }, 600);
 }
 
-/* 數量加減 */
+/* 數量加減 - 已優化 */
 function changeQty(productId, delta) {
     const input = document.getElementById(`qty-${productId}`);
     if (!input) return;
+
     let qty = parseInt(input.value) || 1;
     qty += delta;
     if (qty < 1) qty = 1;
     input.value = qty;
+
+    // 更新減號按鈕狀態（更靈活）
+    const qtyGroup = input.parentElement;
+    const minusBtn = qtyGroup.querySelector('button:first-child');
+    if (minusBtn) {
+        minusBtn.disabled = (qty === 1);
+    }
 }
 
 /* 加入購物車 */

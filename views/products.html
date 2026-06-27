@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/styles.css">
 
+
+
+
+
     <style>
     body {
         background: #fffaf3;
@@ -61,7 +65,7 @@
         }
     }
 
-    /* ==================== 商品卡片 - 手機版橫向卡片 (修正切邊問題) ==================== */
+    /* ==================== 商品卡片 - 手機版橫向卡片 (已優化不切邊) ==================== */
     .product-row {
         border: none;
         background: white;
@@ -72,8 +76,8 @@
         padding: 12px;
         margin-bottom: 16px;
         display: flex;
-        align-items: center; /* 垂直居中，畫面更和諧 */
-        gap: 14px;
+        align-items: center;
+        gap: 12px;
         width: 100%;
     }
 
@@ -83,8 +87,8 @@
     }
 
     .product-img-wrapper {
-        width: 100px; /* 縮小圖片尺寸，釋放右側寬度 */
-        height: 100px;
+        width: 92px;
+        height: 92px;
         border-radius: 14px;
         overflow: hidden;
         background: #f8f1e3;
@@ -105,23 +109,23 @@
 
     .product-content {
         flex-grow: 1;
-        min-width: 0; /* 關鍵：防止 Flex 子元素將父層向外撐開爆版 */
+        min-width: 0;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        height: 100px; /* 與圖片高度齊平 */
-        padding-right: 2px;
+        height: 92px;
+        padding-right: 4px;
     }
 
     .product-name {
         font-weight: 700;
-        font-size: 1.15rem;
+        font-size: 1.08rem;
         line-height: 1.3;
         color: #3f2a22;
         margin-bottom: 2px;
         white-space: nowrap;
         overflow: hidden;
-        text-overflow: ellipsis; /* 文字過長時自動呈現 ... */
+        text-overflow: ellipsis;
     }
 
     .product-desc {
@@ -130,62 +134,61 @@
         line-height: 1.4;
         margin-bottom: 0;
         display: -webkit-box;
-        -webkit-line-clamp: 1; /* 手機版限縮為 1 行，留空間給按鈕 */
+        -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
 
     .price {
         color: #d35400;
-        font-size: 1.35rem;
+        font-size: 1.32rem;
         font-weight: 800;
         margin-bottom: 0;
     }
 
-    /* 數量與按鈕區 */
-    .product-actions {
-        margin-top: auto;
-        display: flex;
-        align-items: center;
-        justify-content: space-between; /* 價格靠左，加減按鈕靠右 */
-        width: 100%;
-    }
-
-    .qty-controls {
-        display: flex;
-        align-items: center;
-        background: #f8f1e3;
-        border-radius: 50px;
-        padding: 2px;
+    /* ==================== 數量選擇器 - 更靈活好看 ==================== */
+    .input-group {
+        width: auto !important;
+        min-width: 118px;
     }
 
     .qty-btn {
-        width: 30px; /* 稍微縮小按鈕尺寸更適合精準點擊 */
-        height: 30px;
+        width: 32px;
+        height: 32px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.1rem;
+        font-size: 1.25rem;
+        font-weight: 600;
         color: #8B4513;
         background: white;
-        border: 1px solid #e6d5b8;
+        border: 2px solid #e6d5b8;
         border-radius: 50%;
-        transition: all 0.2s;
-        padding: 0;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
     }
 
     .qty-btn:active {
         background: #f0e6d9;
+        transform: scale(0.92);
     }
 
     .qty-input {
-        width: 34px !important; /* 縮減數字輸入框寬度 */
+        width: 38px !important;
         text-align: center;
-        font-size: 1rem;
-        font-weight: 600;
+        font-size: 1.1rem;
+        font-weight: 700;
         background: transparent;
         border: none;
         outline: none;
+    }
+
+    /* 數量為1時減號不會太死板 */
+    .qty-btn:disabled,
+    .qty-btn[disabled] {
+        color: #c9a97f;
+        background: #fffaf3;
+        cursor: not-allowed;
     }
 
     .btn-order {
@@ -193,17 +196,17 @@
         color: white;
         border: none;
         border-radius: 50px;
-        padding: 0 20px;
+        padding: 0 22px;
         font-weight: 700;
-        font-size: 0.95rem;
-        height: 34px;
+        font-size: 0.96rem;
+        height: 36px;
         white-space: nowrap;
-        box-shadow: 0 4px 12px rgba(211, 84, 0, 0.25);
-        transition: all 0.3s;
+        box-shadow: 0 4px 12px rgba(211, 84, 0, 0.28);
+        transition: all 0.25s;
     }
 
     .btn-order:active {
-        transform: scale(0.97);
+        transform: scale(0.96);
     }
 
     /* ==================== 桌面版卡片 ==================== */
@@ -245,50 +248,47 @@
         flex-direction: column;
     }
 
-  
+    /* ==================== 底部導航 ==================== */
+    .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #f8f9fa;
+        border-top: 1px solid #dee2e6;
+        box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+        z-index: 1030;
+        padding: 10px 0 8px;
+    }
 
-     /* ==================== 底部導航 ==================== */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #f8f9fa;
-            border-top: 1px solid #dee2e6;
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
-            z-index: 1030;
-            padding: 10px 0 8px;
-        }
+    .bottom-nav .nav-link {
+        color: #6c757d;
+        transition: all 0.3s ease;
+        position: relative;
+    }
 
-        .bottom-nav .nav-link {
-            color: #6c757d;
-            transition: all 0.3s ease;
-            position: relative;
-        }
+    .bottom-nav .nav-link.active {
+        color: #d35400;
+        font-weight: 700;
+    }
 
-        .bottom-nav .nav-link.active {
-            color: #d35400;
-            font-weight: 700;
-        }
+    .bottom-nav .nav-link.active i {
+        color: #d35400;
+        transform: scale(1.15);
+    }
 
-        .bottom-nav .nav-link.active i {
-            color: #d35400;
-            transform: scale(1.15);
-        }
+    .bottom-nav .nav-link.active::after {
+        content: '';
+        position: absolute;
+        bottom: 6px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 28px;
+        height: 3px;
+        background: #d35400;
+        border-radius: 3px;
+    }
 
-        .bottom-nav .nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: 6px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 28px;
-            height: 3px;
-            background: #d35400;
-            border-radius: 3px;
-        }
-
-        
     /* ==================== 響應式調整 ==================== */
     @media (max-width: 768px) {
         #productList .row > div {
@@ -305,8 +305,8 @@
 
     @media (max-width: 375px) {
         .product-img-wrapper {
-            width: 90px;
-            height: 90px;
+            width: 86px;
+            height: 86px;
         }
         
         .product-row {
@@ -315,7 +315,7 @@
         }
 
         .product-content {
-            height: 90px;
+            height: 86px;
         }
 
         .product-name {
@@ -325,8 +325,15 @@
         .price {
             font-size: 1.2rem;
         }
+
+        .input-group {
+            min-width: 110px;
+        }
     }
-    </style>
+</style>
+
+
+
 </head>
 <body>
 
