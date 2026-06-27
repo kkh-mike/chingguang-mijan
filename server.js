@@ -230,10 +230,15 @@ app.get('/test-db', async (req, res) => {
   }
 });
 
-// === 【重要修改】前台公開訂單查詢 API ===
+// === 【核心修改】前台公開訂單查詢 API（加入安全防禦機制） ===
 app.get('/api/orders', async (req, res) => {
   try {
     const { receiver, phone, start_date, end_date } = req.query;
+
+    // 💡 核心安全防禦：如果完全沒有傳入任何查詢參數，直接返回空陣列，絕不查庫！
+    if (!receiver && !phone && !start_date && !end_date) {
+      return res.json([]);
+    }
 
     let query = `
       SELECT
@@ -263,14 +268,16 @@ app.get('/api/orders', async (req, res) => {
     const queryParams = [];
     let paramCount = 1;
 
+    // 姓名支援模糊查詢
     if (receiver) {
       query += ` AND o.receiver ILIKE $${paramCount}`;
       queryParams.push(`%${receiver}%`);
       paramCount++;
     }
+    // 💡 安全防禦調整：電話號碼改用精確對比 (=)，防止輸入特定關鍵字就把所有客戶電話撈出來
     if (phone) {
-      query += ` AND o.phone ILIKE $${paramCount}`;
-      queryParams.push(`%${phone}%`);
+      query += ` AND o.phone = $${paramCount}`;
+      queryParams.push(phone);
       paramCount++;
     }
     if (start_date) {

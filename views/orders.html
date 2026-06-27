@@ -86,7 +86,14 @@
         .status-completed { background: #d4edda; color: #155724; }
         .status-cancelled { background: #f8d7da; color: #721c24; }
 
-         /* ==================== 底部導航 ==================== */
+        /* ==================== 初始提示 ==================== */
+        .initial-prompt {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+
+        /* ==================== 底部導航 ==================== */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -127,7 +134,6 @@
             border-radius: 3px;
         }
 
-
         /* ==================== 手機版優化 ==================== */
         @media (max-width: 768px) {
             .container {
@@ -153,7 +159,7 @@
             <span>晴光蜜餞</span>
         </a>
 
-        <!-- 手機版搜尋（與 products 一致） -->
+        <!-- 手機版搜尋 -->
         <div class="d-lg-none flex-grow-1 mx-3">
             <form action="/products" method="GET">
                 <div class="input-group">
@@ -184,7 +190,7 @@
 <div class="container py-4">
     <h1 class="order-title mb-4">我的訂單查詢</h1>
 
-    <!-- 搜尋表單 - 日期區間 -->
+    <!-- 搜尋表單 -->
     <div class="search-box">
         <div class="row g-3">
             <div class="col-md-3">
@@ -213,7 +219,12 @@
     </div>
 
     <div id="orderList">
-        <!-- 訂單由此產生 -->
+        <!-- 初始提示 -->
+        <div class="initial-prompt">
+            <i class="bi bi-search display-1 mb-3"></i>
+            <h5>請輸入姓名、電話或選擇日期後點擊「查詢」</h5>
+            <p class="mb-0">系統不會自動顯示所有訂單</p>
+        </div>
     </div>
 </div>
 
@@ -276,7 +287,7 @@ function highlightBottomNav() {
 document.addEventListener('DOMContentLoaded', () => {
     updateAllCartCounts();
     highlightBottomNav();
-    searchOrders();   // 預設載入所有訂單
+    // searchOrders();   // 已移除預設載入
 });
 
 window.updateAllCartCounts = updateAllCartCounts;

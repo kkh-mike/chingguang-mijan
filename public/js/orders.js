@@ -1,4 +1,6 @@
 // public/js/orders.js
+
+// 1. 負責跟後端拿資料的函式
 async function fetchOrders(params = {}) {
     try {
         const query = new URLSearchParams(params).toString();
@@ -24,6 +26,7 @@ async function fetchOrders(params = {}) {
     }
 }
 
+// 2. 判斷訂單狀態標籤顏色的函式
 function getStatusClass(status) {
     if (!status) return 'status-pending';
     if (status.includes('待確認') || status.includes('待處理')) return 'status-pending';
@@ -33,6 +36,7 @@ function getStatusClass(status) {
     return 'status-pending';
 }
 
+// 3. 負責把訂單資料渲染到畫面上的函式
 function renderOrders(orders) {
     const container = document.getElementById('orderList');
     
@@ -46,15 +50,12 @@ function renderOrders(orders) {
         return;
     }
 
-    // 顯示找到幾筆
     let html = `<div class="mb-3 fw-bold text-muted">找到 ${orders.length} 筆訂單</div>`;
 
     orders.forEach(order => {
-        // 防止 items 是 null 或 undefined
         const items = order.items && Array.isArray(order.items) ? order.items : [];
-        
         const itemsHtml = items.map(item => 
-            `<div class="small mb-1">• ${item.product_name || '商品'} × ${item.quantity}　$${item.price}</div>`
+            `<div class="small mb-1">• ${item.product_name || '商品'} × ${item.quantity} $${item.price}</div>`
         ).join('');
 
         html += `
@@ -70,7 +71,7 @@ function renderOrders(orders) {
                 </div>
                 
                 <div class="mb-2">
-                    <strong>收件人：</strong>${order.receiver || '—'}　${order.phone || '—'}<br>
+                    <strong>收件人：</strong>${order.receiver || '—'} ${order.phone || '—'}<br>
                     <strong>地址：</strong>${order.address || '—'}
                 </div>
                 
@@ -90,12 +91,18 @@ function renderOrders(orders) {
     container.innerHTML = html;
 }
 
-// === 查詢函式 ===
+// 4. 按下查詢按鈕執行的動作（確保這裡有對應到 HTML 的 onclick="searchOrders()"）
 window.searchOrders = async function() {
     const name = document.getElementById('searchName').value.trim();
     const phone = document.getElementById('searchPhone').value.trim();
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
+
+    // 如果全部都是空的，彈出提示，不呼叫 API 抓取資料
+    if (!name && !phone && !startDate && !endDate) {
+        alert('請至少輸入一項查詢條件（姓名、電話或日期）！');
+        return; 
+    }
 
     const params = {};
     if (name) params.receiver = name;
@@ -107,13 +114,17 @@ window.searchOrders = async function() {
     renderOrders(orders);
 };
 
-// === 重置查詢 ===
+// 5. 按下清除按鈕執行的動作
 window.resetSearch = function() {
     document.getElementById('searchName').value = '';
     document.getElementById('searchPhone').value = '';
     document.getElementById('startDate').value = '';
     document.getElementById('endDate').value = '';
     
-    // 重置後重新查詢（顯示全部訂單）
-    searchOrders();
+    document.getElementById('orderList').innerHTML = `
+        <div class="initial-prompt">
+            <i class="bi bi-search display-1 mb-3"></i>
+            <h5>已清除，請重新輸入條件後查詢</h5>
+            <p class="mb-0">系統不會自動顯示所有訂單</p>
+        </div>`;
 };
