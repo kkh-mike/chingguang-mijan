@@ -82,41 +82,46 @@ async function loadProducts() {
         let html = '';
         const searchQuery = getSearchQuery();
 
+        
         products.forEach(product => {
             if (product.isActive === false) return;
 
             const slug = generateSlug(product.name);
 
             html += `
-<div class="col-6 col-md-4 col-lg-3 col-xl-3 mb-4" id="${slug}">
-            <div class="product-card">
-                        <div class="product-image-container">
-                            <img
-                                src="${product.image || '/images/no-image.jpg'}"
-                                alt="${product.name}"
-                            >
+                <div class="col-12 mb-3" id="${slug}">
+                    <div class="product-row d-flex align-items-center p-3 bg-white rounded-4 shadow-sm">
+                        <!-- 左邊圖片 -->
+                        <div class="product-img-wrapper me-3 flex-shrink-0">
+                            <img src="${product.image || '/images/no-image.jpg'}" 
+                                alt="${product.name}" 
+                                class="product-img">
                         </div>
 
-                        <div class="card-body">
-                            <h5 class="fw-bold product-name">${product.name}</h5>
-                            <p class="text-muted product-desc">${product.description || ''}</p>
-                            <p class="price">NT$${product.price}</p>
+                        <!-- 中間資訊 -->
+                        <div class="flex-grow-1">
+                            <h5 class="product-name mb-1 fw-bold">${product.name}</h5>
+                            <p class="text-muted mb-1 small">${product.description || ''}</p>
+                            <div class="price fw-bold">NT$${product.price}</div>
+                        </div>
 
-                            <div class="d-flex align-items-center mb-3">
-                                <button class="btn btn-outline-secondary" onclick="changeQty(${product.id}, -1)">-</button>
+                        <!-- 右邊 數量 + 加入購物車 -->
+                        <div class="d-flex flex-column align-items-end gap-2 ms-3">
+                            <div class="d-flex align-items-center">
+                                <button class="btn btn-outline-secondary btn-sm qty-btn" onclick="changeQty(${product.id}, -1)">–</button>
                                 <input id="qty-${product.id}" type="number" min="1" value="1" 
-                                    class="form-control text-center mx-2" style="width:80px">
-                                <button class="btn btn-outline-secondary" onclick="changeQty(${product.id}, 1)">+</button>
+                                    class="form-control text-center qty-input mx-1">
+                                <button class="btn btn-outline-secondary btn-sm qty-btn" onclick="changeQty(${product.id}, 1)">+</button>
                             </div>
-
-                            <button class="btn btn-order w-100" onclick="addToCart(${product.id})">
-                                加入購物車
+                            <button class="btn btn-order btn-sm px-4" onclick="addToCart(${product.id})">
+                                加入
                             </button>
                         </div>
                     </div>
                 </div>
             `;
         });
+
 
         productList.innerHTML = html;
 

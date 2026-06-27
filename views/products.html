@@ -9,201 +9,282 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/styles.css">
 
+    
+
     <style>
-        body {
-            background: #fffaf3;
-            padding-bottom: 90px;
-        }
+    body {
+        background: #fffaf3;
+        padding-bottom: 90px;
+    }
 
-        /* ==================== Navbar ==================== */
-        .navbar {
-            padding: 12px 0;
-        }
+    /* ==================== Navbar ==================== */
+    .navbar {
+        padding: 12px 0;
+    }
 
-        .navbar-brand img {
-            height: 62px;
-            width: 62px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 3px solid #fff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
+    .navbar-brand img {
+        height: 62px;
+        width: 62px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid #fff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
 
-        .navbar-brand span {
-            font-size: 1.75rem;
-            font-weight: 800;
-            color: #8B4513;
-            letter-spacing: 1px;
-        }
+    .navbar-brand span {
+        font-size: 1.75rem;
+        font-weight: 800;
+        color: #8B4513;
+        letter-spacing: 1px;
+    }
 
-        /* 搜尋框 */
-        .desktop-search input {
-            border-radius: 50px 0 0 50px;
-            border-right: none;
-            padding-left: 20px;
-        }
+    /* 搜尋框 */
+    .desktop-search input {
+        border-radius: 50px 0 0 50px;
+        border-right: none;
+        padding-left: 20px;
+    }
 
-       
-        /* ==================== Banner ==================== */
+    /* ==================== Banner ==================== */
+    .banner-section {
+        padding-top: 8px;
+        padding-bottom: 16px;
+    }
+
+    .top-banner {
+        width: 100%;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        margin-bottom: 20px;
+        object-fit: cover;           /* 改回 cover，讓圖片填滿 */
+        aspect-ratio: 1200 / 280;    /* 根據你的新圖片調整比例 */
+        max-height: 220px;           /* 電腦版 */
+    }
+
+    /* 手機版 */
+    @media (max-width: 768px) {
         .top-banner {
-            width: 100%;
-            border-radius: 16px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-            margin-bottom: 20px;
+            max-height: 165px;
+            aspect-ratio: 1200 / 240;
+        }
+    }
+
+
+    /* ==================== 商品卡片核心優化 (桌面版保留) ==================== */
+    .product-card {
+        border: none;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.09);
+        transition: all 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        background: white;
+    }
+
+    .product-image-container {
+        position: relative;
+        padding-top: 65%;
+        background: #f8f1e3;
+        overflow: hidden;
+    }
+
+    .product-image-container img {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .product-card:hover img {
+        transform: scale(1.06);
+    }
+
+    .card-body {
+        padding: 20px 22px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-name {
+        font-weight: 700;
+        font-size: 1.18rem;
+        line-height: 1.45;
+        margin-bottom: 12px;
+        color: #3f2a22;
+    }
+
+    .price {
+        color: #d35400;
+        font-size: 1.52rem;
+        font-weight: 800;
+        margin-bottom: 16px;
+    }
+
+    .btn-order {
+        background: #d35400;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 15px 0;
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin-top: auto;
+        box-shadow: 0 4px 12px rgba(211, 84, 0, 0.25);
+    }
+
+    /* ==================== 新增：手機版水平商品列 ==================== */
+    .product-row {
+        border: 1px solid #f0e6d9;
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+    }
+
+    .product-row:hover {
+        box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+        transform: translateY(-3px);
+    }
+
+    .product-img-wrapper {
+        width: 88px;
+        height: 88px;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #f8f1e3;
+        flex-shrink: 0;
+    }
+
+    .product-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .qty-input {
+        width: 50px !important;
+        height: 38px;
+        text-align: center;
+    }
+
+    .qty-btn {
+        width: 34px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+    }
+
+    /* ==================== 底部導航 ==================== */
+    .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #f8f9fa;
+        border-top: 1px solid #dee2e6;
+        box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+        z-index: 1030;
+        padding: 10px 0 8px;
+    }
+
+    .bottom-nav .nav-link {
+        color: #6c757d;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .bottom-nav .nav-link.active {
+        color: #d35400;
+        font-weight: 700;
+    }
+
+    .bottom-nav .nav-link.active i {
+        color: #d35400;
+        transform: scale(1.15);
+    }
+
+    .bottom-nav .nav-link.active::after {
+        content: '';
+        position: absolute;
+        bottom: 6px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 28px;
+        height: 3px;
+        background: #d35400;
+        border-radius: 3px;
+    }
+
+    /* ==================== 手機版重點優化 ==================== */
+    @media (max-width: 768px) {
+        #productList .row > div {
+            width: 100% !important;
+            flex: 0 0 100% !important;
+            max-width: 100% !important;
         }
 
-        .banner-section {
-            padding-top: 12px;
-            padding-bottom: 16px;
+        .container {
+            padding-left: 18px !important;
+            padding-right: 18px !important;
         }
 
-        /* ==================== 商品卡片核心優化 ==================== */
         .product-card {
-            border: none;
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.09);
-            transition: all 0.3s ease;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            background: white;
+            margin-bottom: 28px;
+            border-radius: 22px;
         }
 
         .product-image-container {
-            position: relative;
-            padding-top: 65%;
-            background: #f8f1e3;
-            overflow: hidden;
-        }
-
-        .product-image-container img {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .product-card:hover img {
-            transform: scale(1.06);
+            padding-top: 68% !important;
         }
 
         .card-body {
-            padding: 20px 22px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
+            padding: 24px 22px !important;
         }
 
         .product-name {
-            font-weight: 700;
-            font-size: 1.18rem;
-            line-height: 1.45;
-            margin-bottom: 12px;
-            color: #3f2a22;
+            font-size: 1.25rem;
         }
 
         .price {
-            color: #d35400;
-            font-size: 1.52rem;
-            font-weight: 800;
-            margin-bottom: 16px;
+            font-size: 1.6rem;
         }
 
         .btn-order {
-            background: #d35400;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 15px 0;
-            font-weight: 700;
+            padding: 16px 0;
+            font-size: 1.12rem;
+        }
+
+        /* 手機版商品水平列優化 */
+        .product-row {
+            padding: 14px 16px;
+            margin-bottom: 16px;
+        }
+
+        .product-img-wrapper {
+            width: 78px;
+            height: 78px;
+        }
+
+        .product-name {
             font-size: 1.1rem;
-            margin-top: auto;
-            box-shadow: 0 4px 12px rgba(211, 84, 0, 0.25);
+            margin-bottom: 4px;
         }
 
-        /* ==================== 底部導航 ==================== */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #f8f9fa;
-            border-top: 1px solid #dee2e6;
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
-            z-index: 1030;
-            padding: 10px 0 8px;
+        .price {
+            font-size: 1.35rem;
+            margin-bottom: 0;
         }
+    }
+</style>
 
-        .bottom-nav .nav-link {
-            color: #6c757d;
-            transition: all 0.3s ease;
-            position: relative;
-        }
 
-        .bottom-nav .nav-link.active {
-            color: #d35400;
-            font-weight: 700;
-        }
-
-        .bottom-nav .nav-link.active i {
-            color: #d35400;
-            transform: scale(1.15);
-        }
-
-        .bottom-nav .nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: 6px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 28px;
-            height: 3px;
-            background: #d35400;
-            border-radius: 3px;
-        }
-
-        /* ==================== 手機版重點優化 ==================== */
-        @media (max-width: 768px) {
-            #productList .row > div {
-                width: 100% !important;
-                flex: 0 0 100% !important;
-                max-width: 100% !important;
-            }
-
-            .container {
-                padding-left: 18px !important;
-                padding-right: 18px !important;
-            }
-
-            .product-card {
-                margin-bottom: 28px;
-                border-radius: 22px;
-            }
-
-            .product-image-container {
-                padding-top: 68% !important;
-            }
-
-            .card-body {
-                padding: 24px 22px !important;
-            }
-
-            .product-name {
-                font-size: 1.25rem;
-            }
-
-            .price {
-                font-size: 1.6rem;
-            }
-
-            .btn-order {
-                padding: 16px 0;
-                font-size: 1.12rem;
-            }
-        }
-    </style>
 </head>
 <body>
 
