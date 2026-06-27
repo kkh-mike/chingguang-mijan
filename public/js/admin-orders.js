@@ -1,10 +1,10 @@
-// admin-orders.js - Phase 8.9 美化版 + 自動跳轉登入
+// admin-orders.js
 function getStatusBadge(status) {
     switch(status) {
         case '待確認': return '<span class="badge bg-warning text-dark">待確認</span>';
         case '已確認': return '<span class="badge bg-primary">已確認</span>';
         case '已出貨': return '<span class="badge bg-success">已出貨</span>';
-        case '已完成': return '<span class="badge bg-dark">已完成</span>';
+        case '已完成': return '<span class="badge bg-dark">Ref已完成</span>';
         case '已取消': return '<span class="badge bg-danger">已取消</span>';
         default: return `<span class="badge bg-secondary">${status || '未知'}</span>`;
     }
@@ -18,9 +18,9 @@ async function loadOrders() {
     container.innerHTML = '<div class="text-center py-5"><div class="spinner-border text-primary" role="status"></div><p class="mt-3">載入中...</p></div>';
 
     try {
-        const response = await fetch('/api/orders');
+        // 💡 關鍵修正：後台必須請求 /api/admin/orders 才能正常讀取所有數據！
+        const response = await fetch('/api/admin/orders');
 
-        // === 新增：未登入自動跳轉 ===
         if (response.status === 401) {
             alert('請先登入後台');
             window.location.href = '/admin-login';
@@ -39,9 +39,7 @@ async function loadOrders() {
             <div class="alert alert-danger text-center py-5">
                 <h5>載入訂單失敗</h5>
                 <p>請確認已登入後台</p>
-                <button onclick="window.location.href='/admin-login'" class="btn btn-primary mt-3">
-                    前往登入
-                </button>
+                <button onclick="window.location.href='/admin-login'" class="btn btn-primary mt-3">前往登入</button>
             </div>`;
     }
 }
@@ -56,7 +54,7 @@ function renderOrders(orders) {
     }
 
     orders.forEach(order => {
-        let itemsHtml = order.items.map(item => `
+        let itemsHtml = (order.items || []).map(item => `
             <div class="order-item">
                 ${item.product_name} × ${item.quantity} 
                 <span class="float-end text-muted">NT$ ${item.price || ''}</span>
@@ -67,13 +65,7 @@ function renderOrders(orders) {
             ? `<div class="alert alert-danger py-2"><strong>取消原因：</strong>${order.cancel_reason}</div>` 
             : '';
 
-        const statusColor = {
-            '待確認': 'warning',
-            '已確認': 'primary',
-            '已出貨': 'success',
-            '已完成': 'dark',
-            '已取消': 'danger'
-        }[order.status] || 'secondary';
+        const statusColor = { '待確認': 'warning', '已確認': 'primary', '已出貨': 'success', '已完成': 'dark', '已取消': 'danger' }[order.status] || 'secondary';
 
         container.innerHTML += `
         <div class="card order-card">
@@ -92,29 +84,21 @@ function renderOrders(orders) {
                         <p><strong>地址：</strong>${order.address}</p>
                     </div>
                 </div>
-
                 <div class="mt-3">
                     <strong>更新狀態：</strong>
                     <select onchange="updateStatus(${order.id}, this.value)" class="form-select d-inline-block w-auto">
                         <option value="待確認" ${order.status === '待確認' ? 'selected' : ''}>待確認</option>
                         <option value="已確認" ${order.status === '已確認' ? 'selected' : ''}>已確認</option>
                         <option value="已出貨" ${order.status === '已出貨' ? 'selected' : ''}>已出貨</option>
-                        <option value="已完成" ${order.status === '已完成' ? 'selected' : ''}>已完成</option>
+                        <option value="已完成" ${order.status === '聯已完成' || order.status === '已完成' ? 'selected' : ''}>已完成</option>
                         <option value="已取消" ${order.status === '已取消' ? 'selected' : ''}>已取消</option>
                     </select>
                 </div>
-
                 ${cancelHtml}
-
                 <p class="mt-3"><strong>總金額：</strong><span class="fs-5 fw-bold text-danger">NT$ ${order.total_amount}</span></p>
                 <p><strong>建立時間：</strong>${new Date(order.created_at).toLocaleString('zh-TW')}</p>
-
-                <button class="btn btn-sm btn-outline-secondary mt-2" onclick="toggleItems(this)">
-                    📋 顯示商品明細 (${order.items.length} 項)
-                </button>
-                <div class="items-detail mt-3" style="display:none;">
-                    ${itemsHtml}
-                </div>
+                <button class="btn btn-sm btn-outline-secondary mt-2" onclick="toggleItems(this)">📋 顯示商品明細 (${(order.items || []).length} 項)</button>
+                <div class="items-detail mt-3" style="display:none;">${itemsHtml}</div>
             </div>
         </div>`;
     });
@@ -144,50 +128,28 @@ function applyFiltersAndSort() {
     });
 
     filtered.sort((a, b) => {
-        switch(currentSort) {
-            case 'newest': return new Date(b.created_at) - new Date(a.created_at);
-            case 'oldest': return new Date(a.created_at) - new Date(b.created_at);
-            case 'pending':
-                if (a.status === '待確認' && b.status !== '待確認') return -1;
-                if (a.status !== '待確認' && b.status === '待確認') return 1;
-                return new Date(b.created_at) - new Date(a.created_at);
-            case 'shipped':
-                if (a.status === '已出貨' && b.status !== '已出貨') return -1;
-                if (a.status !== '已出貨' && b.status === '已出貨') return 1;
-                return new Date(b.created_at) - new Date(a.created_at);
-            default: return 0;
-        }
+        if (currentSort === 'newest') return new Date(b.created_at) - new Date(a.created_at);
+        if (currentSort === 'oldest') return new Date(a.created_at) - new Date(b.created_at);
+        return 0;
     });
 
     renderOrders(filtered);
 }
 
 function setupListeners() {
-    const els = ['searchReceiver', 'searchPhone', 'statusFilter'];
-    els.forEach(id => {
+    ['searchReceiver', 'searchPhone', 'statusFilter'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.addEventListener('input', applyFiltersAndSort);
-        if (el && el.tagName === 'SELECT') el.addEventListener('change', applyFiltersAndSort);
-    });
-
-    document.querySelectorAll('.btn-group button').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.btn-group button').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentSort = btn.dataset.sort;
-            applyFiltersAndSort();
-        });
     });
 }
 
 async function updateStatus(orderId, newStatus) {
     let cancelReason = null;
     if (newStatus === '已取消') {
-        cancelReason = prompt('請輸入取消原因（可選）：', '客戶取消');
+        cancelReason = prompt('請輸入取消原因：', '客戶取消');
         if (cancelReason === null) return;
     }
-
-    if (!confirm(`確定將訂單 #${orderId} 改為「${newStatus}」？`)) return;
+    if (!confirm(`確定變更訂單 #${orderId} 狀態？`)) return;
 
     try {
         const res = await fetch(`/api/orders/${orderId}/status`, {
@@ -195,22 +157,8 @@ async function updateStatus(orderId, newStatus) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ status: newStatus, cancel_reason: cancelReason })
         });
-        const result = await res.json();
-
-        if (result.success) {
-            alert('✅ 更新成功！');
-            loadOrders();
-        } else {
-            alert('❌ ' + (result.message || '更新失敗'));
-        }
-    } catch (e) {
-        alert('❌ 網路錯誤');
-    }
+        if (res.ok) { alert('✅ 更新成功'); loadOrders(); }
+    } catch (e) { alert('❌ 網路錯誤'); }
 }
 
-// 初始化
-window.onload = () => {
-    loadOrders().then(() => {
-        setupListeners();
-    });
-};
+window.onload = () => { loadOrders().then(() => setupListeners()); };

@@ -152,14 +152,14 @@
 <body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
     <div class="container px-4">
         <a class="navbar-brand d-flex align-items-center" href="/">
             <img src="/images/log.png" alt="晴光蜜餞" class="me-3">
             <span>晴光蜜餞</span>
         </a>
 
-        <!-- 手機版搜尋 -->
         <div class="d-lg-none flex-grow-1 mx-3">
             <form action="/products" method="GET">
                 <div class="input-group">
@@ -172,14 +172,23 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="/">首頁</a></li>
-                <li class="nav-item"><a class="nav-link" href="/products">商品專區</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/products">商品專區</a></li>
                 <li class="nav-item"><a class="nav-link" href="/#about">品牌故事</a></li>
                 <li class="nav-item"><a class="nav-link" href="/#store">門市資訊</a></li>
+                <li class="nav-item"><a class="nav-link" href="/orders">訂單查詢</a></li>
             </ul>
 
             <div class="d-flex align-items-center gap-3">
+                <form action="/products" method="GET" class="d-none d-lg-flex">
+                    <div class="input-group input-group-sm desktop-search" style="width: 320px;">
+                        <input type="text" class="form-control" name="q" placeholder="搜尋商品名稱..." aria-label="搜尋商品">
+                        <button class="btn btn-warning" type="submit"><i class="bi bi-search"></i></button>
+                    </div>
+                </form>
+
                 <a href="/cart" class="btn btn-warning position-relative d-flex align-items-center">
-                    🛒 <span class="ms-2 d-none d-lg-inline">購物車</span>
+                    <i class="bi bi-cart-fill me-2" style="font-size: 1.35rem;"></i>
+                    <span class="d-none d-lg-inline">購物車</span>
                     <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
                 </a>
             </div>
