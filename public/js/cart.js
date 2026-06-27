@@ -2,6 +2,8 @@
 
 let allProducts = [];
 
+
+
 // 載入最新商品狀態
 async function loadCurrentProducts() {
     try {
@@ -10,6 +12,16 @@ async function loadCurrentProducts() {
     } catch (e) {
         console.error('載入商品狀態失敗', e);
     }
+}
+
+
+// === 運費計算邏輯（全站統一）===
+function calculateShipping(subtotal) {
+    return subtotal >= 1000 ? 0 : 60;
+}
+
+function calculateTotal(subtotal) {
+    return subtotal + calculateShipping(subtotal);
 }
 
 // 取得商品最新資訊
@@ -146,22 +158,27 @@ async function loadCart() {
     }
 }
 
-function updateTotal(total) {
+
+
+function updateTotal(subtotal) {
+    const total = calculateTotal(subtotal);
+    const shipping = calculateShipping(subtotal);
+
     const totalEl = document.getElementById('totalPrice');
     const subtotalEl = document.getElementById('subtotalText');
     
     if (totalEl) totalEl.innerText = `NT$${total}`;
-    if (subtotalEl) subtotalEl.innerText = `NT$${total}`;
+    if (subtotalEl) subtotalEl.innerText = `NT$${subtotal}`;
 
     const shippingRow = document.getElementById('shippingRow');
     const shippingText = document.getElementById('shippingText');
     
     if (shippingRow && shippingText) {
-        if (total >= 1000) {
-            shippingText.innerHTML = `<span class="text-success">含運費</span>`;
+        if (shipping === 0) {
+            shippingText.innerHTML = `<span class="text-success">免運費</span>`;
             shippingText.classList.remove('text-danger');
         } else {
-            const remaining = 1000 - total;
+            const remaining = 1000 - subtotal;
             shippingText.innerHTML = `
                 +60 
                 <small class="text-muted">(差 ${remaining} 元免運)</small>
