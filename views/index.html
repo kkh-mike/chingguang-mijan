@@ -76,17 +76,17 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px 10px;
+            padding: 15px 10px;
         }
 
         .circle-img {
-            width: 138px;
-            height: 138px;
+            width: 110px;
+            height: 110px;
             object-fit: cover;
             border-radius: 50%;
-            border: 6px solid #fff;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-            margin-bottom: 16px;
+            border: 5px solid #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            margin-bottom: 12px;
         }
 
         /* ==================== 底部導航 ==================== */
@@ -147,14 +147,13 @@
                 font-size: 1.35rem;
             }
             .circle-img {
-                width: 115px;
-                height: 115px;
+                width: 96px;
+                height: 96px;
             }
         }
     </style>
 </head>
 <body>
-
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
@@ -164,7 +163,6 @@
             <span>晴光蜜餞</span>
         </a>
 
-        <!-- 手機版搜尋 -->
         <div class="d-lg-none flex-grow-1 mx-3">
             <form action="/products" method="GET">
                 <div class="input-group">
@@ -190,7 +188,7 @@
                     </div>
                 </form>
 
-                              <a href="/cart" class="btn btn-warning position-relative d-flex align-items-center">
+                <a href="/cart" class="btn btn-warning position-relative d-flex align-items-center">
                     <i class="bi bi-cart-fill me-2" style="font-size: 1.35rem;"></i>
                     <span class="d-none d-lg-inline">購物車</span>
                     <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
@@ -200,49 +198,49 @@
     </div>
 </nav>
 
-
 <!-- Hero -->
 <section class="hero">
     <div class="container">
         <h1>晴光蜜餞</h1>
         <h2>傳承30年古早味</h2>
-        <p>
-            來自台北晴光市場的人氣蜜餞老店<br>
-            保留記憶中的熟悉滋味
-        </p>
+        <p>來自台北晴光市場的人氣蜜餞老店</p>
     </div>
 </section>
 
 <!-- 熱銷商品 -->
-<section class="container py-5">
-    <div class="text-center mb-5">
+<section class="container py-4">
+    <div class="text-center mb-4">
         <h2 class="fw-bold">熱銷商品</h2>
-        <p class="text-muted">人氣推薦</p>
     </div>
 
-    <div class="row g-4 justify-content-center">
+    <div class="row g-3 justify-content-center">
         <div class="col-6 col-md-4 col-lg-3">
             <div class="hot-card">
                 <img src="/images/butter-plum.jpg" class="circle-img" alt="奶油話梅">
-                <h5 class="fw-bold">奶油話梅</h5>
-                <p class="text-muted small">招牌人氣</p>
-                <a href="/products#butter-plum" class="btn btn-warning btn-sm">前往訂購</a>
+                <h5 class="fw-bold mt-2">奶油話梅</h5>
+                <a href="/products#butter-plum" class="btn btn-warning btn-sm mt-1">查看</a>
             </div>
         </div>
         <div class="col-6 col-md-4 col-lg-3">
             <div class="hot-card">
-                <img src="/images/honey-plum.jpg" class="circle-img" alt="蜂蜜梅">
-                <h5 class="fw-bold">蜂蜜梅</h5>
-                <p class="text-muted small">酸甜回甘</p>
-                <a href="/products#honey-plum" class="btn btn-warning btn-sm">前往訂購</a>
+                <img src="/images/DriedGuava.jpg" class="circle-img" alt="蜂蜜梅">
+                <h5 class="fw-bold mt-2">芭樂乾</h5>
+                <!-- 芭樂乾 -->
+                 <a href="/products#dried-guava" class="btn btn-warning btn-sm mt-1">查看</a>
             </div>
         </div>
         <div class="col-6 col-md-4 col-lg-3">
             <div class="hot-card">
                 <img src="/images/airplane-biscuit.jpg" class="circle-img" alt="飛機餅乾">
-                <h5 class="fw-bold">飛機餅乾</h5>
-                <p class="text-muted small">懷舊經典</p>
-                <a href="/products#airplane-biscuit" class="btn btn-warning btn-sm">前往訂購</a>
+                <h5 class="fw-bold mt-2">飛機餅乾</h5>
+                <a href="/products#airplane-biscuit" class="btn btn-warning btn-sm mt-1">查看</a>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3">
+            <div class="hot-card">
+                <img src="/images/Qplum.jpg" class="circle-img" alt="Q梅">
+                <h5 class="fw-bold mt-2">Q梅</h5>
+                <a href="/products#q-plum" class="btn btn-warning btn-sm mt-1">查看</a>
             </div>
         </div>
     </div>
@@ -251,15 +249,15 @@
 <!-- 品牌故事 -->
 <section id="about" class="py-5 bg-light">
     <div class="container">
-        <div class="row align-items-center gx-5">
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <img src="/images/store.jpg" class="img-fluid rounded-4 shadow" alt="晴光蜜餞">
+        <div class="row align-items-center gx-4">
+            <div class="col-lg-5 mb-4 mb-lg-0">
+                <img src="/images/store.jpg" class="img-fluid rounded-4 shadow" alt="晴光蜜餞" style="max-height: 380px; object-fit: cover;">
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-7">
                 <span class="text-warning fw-bold">SINCE 1990</span>
                 <h2 class="fw-bold mt-3">晴光市場的人情味</h2>
-                <p class="mt-4 lead">多年來陪伴無數人成長，從經典話梅到各式蜜餞果乾，保留熟悉的滋味，也傳承著屬於台灣的古早味記憶。</p>
-                <p>感謝多年來顧客的支持與喜愛，我們將持續把最熟悉的味道帶給大家。</p>
+                <p class="mt-3">多年來陪伴無數人成長，保留熟悉的滋味，也傳承著屬於台灣的古早味記憶。</p>
+                <p>感謝顧客的支持，我們將持續把最熟悉的味道帶給大家。</p>
             </div>
         </div>
     </div>
@@ -271,7 +269,7 @@
         <div class="card border-0 shadow-lg overflow-hidden">
             <div class="row g-0 align-items-center">
                 <div class="col-lg-6 p-4 p-lg-5">
-                    <h2 class="fw-bold mb-4">🏪 門市資訊</h2>
+                    <h2 class="fw-bold mb-4">門市資訊</h2>
                     <p class="fs-5 mb-2">📍 台北市中山區雙城街12巷2-10號</p>
                     <p class="fs-5 mb-4">📞 02-2596-7767</p>
                     <p class="mb-4">歡迎來店選購或電話訂購</p>
@@ -288,7 +286,7 @@
 <!-- Footer -->
 <footer class="bg-dark text-white py-5">
     <div class="container text-center">
-        <h4>🍯 晴光蜜餞</h4>
+        <h4>晴光蜜餞</h4>
         <p class="mb-1">02-2596-7767</p>
         <p>台北市中山區雙城街12巷2-10號</p>
         <p class="text-secondary mt-3">© 2026 晴光蜜餞 All Rights Reserved.</p>
@@ -318,6 +316,7 @@
         </div>
     </div>
 </nav>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
@@ -340,12 +339,12 @@ function updateAllCartCounts() {
 // === 底部導航高亮 ===
 function highlightBottomNav() {
     const currentPath = window.location.pathname;
+    
     document.querySelectorAll('.bottom-nav .nav-link').forEach(link => {
         link.classList.remove('active');
     });
 
-    if (currentPath === '/' || currentPath === '/index.html') {
-        // 首頁時高亮「全部商品」
+    if (currentPath === '/products' || currentPath.startsWith('/products')) {
         document.getElementById('bottom-products').classList.add('active');
     } 
     else if (currentPath === '/cart') {

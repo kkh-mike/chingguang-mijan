@@ -2,10 +2,10 @@
 module.exports = [
   {
     id: 1,
-    name: '奶油話梅',
+    name: 'Q梅',
     description: '好吃',
     price: 120,
-    image: '/images/Butter-White-Plum.jpg',
+    image: '/images/Qplum.jpg',
     isActive: true
   },
   {
@@ -64,4 +64,5 @@ module.exports = [
     image: '/images/green-plum.jpg',
     isActive: false   // 示範已下架商品
   }
+
 ];

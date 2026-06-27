@@ -2,12 +2,24 @@
 
 // 產生 slug（用於 anchor 跳轉）
 function generateSlug(name) {
+    const slugMap = {
+        '奶油話梅': 'butter-plum',
+        '蜂蜜梅': 'honey-plum',
+        '飛機餅乾': 'airplane-biscuit',
+        '芭樂乾': 'dried-guava',
+        'Q梅': 'q-plum',
+        '八仙果': 'ba-xian-guo',
+        '陳皮梅': 'chen-pi-plum',
+        '芒果乾': 'mango-dry',
+        '化應子': 'hua-ying-zi',
+        '橄欖': 'olive'
+    };
+
+    if (slugMap[name]) return slugMap[name];
+
     return name
         .toLowerCase()
-        .replace(/奶油話梅/g, 'butter-plum')
-        .replace(/蜂蜜梅/g, 'honey-plum')
-        .replace(/飛機餅乾/g, 'airplane-biscuit')
-        .replace(/[^a-z0-9\u4e00-\u9fa5]+/g, '-')  
+        .replace(/[^a-z0-9\u4e00-\u9fa5]+/g, '-')
         .replace(/-+/g, '-')
         .replace(/^-|-$/g, '');
 }
@@ -61,7 +73,7 @@ function highlightAndScrollToProduct(query, allProducts) {
     }
 }
 
-// 載入商品
+// 載入商品（已修改圖片部分）
 async function loadProducts() {
     try {
         const response = await fetch('/api/products');
@@ -82,7 +94,6 @@ async function loadProducts() {
         let html = '';
         const searchQuery = getSearchQuery();
 
-        
         products.forEach(product => {
             if (product.isActive === false) return;
 
@@ -91,11 +102,12 @@ async function loadProducts() {
             html += `
                 <div class="col-12 mb-3" id="${slug}">
                     <div class="product-row d-flex align-items-center p-3 bg-white rounded-4 shadow-sm">
-                        <!-- 左邊圖片 -->
-                        <div class="product-img-wrapper me-3 flex-shrink-0">
+                        <!-- 左邊圖片 - 可點擊看大圖 -->
+                        <div class="product-img-wrapper me-3 flex-shrink-0" 
+                             onclick="showProductImage('${product.image || "/images/no-image.jpg"}', '${product.name.replace(/'/g, "\\'")}')">
                             <img src="${product.image || '/images/no-image.jpg'}" 
-                                alt="${product.name}" 
-                                class="product-img">
+                                 alt="${product.name}" 
+                                 class="product-img">
                         </div>
 
                         <!-- 中間資訊 -->
@@ -113,7 +125,7 @@ async function loadProducts() {
                                     class="form-control text-center qty-input mx-1">
                                 <button class="btn btn-outline-secondary btn-sm qty-btn" onclick="changeQty(${product.id}, 1)">+</button>
                             </div>
-                            <button class="btn btn-order btn-sm px-4" onclick="addToCart(${product.id})">
+                            <button class="btn btn-order btn-sm px-4" onclick="addToCart(${product.id}); event.stopImmediatePropagation();">
                                 加入
                             </button>
                         </div>
@@ -121,7 +133,6 @@ async function loadProducts() {
                 </div>
             `;
         });
-
 
         productList.innerHTML = html;
 
@@ -196,13 +207,11 @@ function addToCart(productId) {
     localStorage.setItem('shineguang_cart', JSON.stringify(cart));
     updateCartCount();
 
-    // 顯示美觀的 Toast 提示
     showAddToCartToast(qty);
 }
 
-/* 顯示成功加入購物車的 Toast - 置中 + 大版 */
+/* 顯示成功加入購物車的 Toast */
 function showAddToCartToast(qty) {
-    // 移除舊的 toast
     let existingToast = document.getElementById('addToCartToast');
     if (existingToast) existingToast.remove();
 
@@ -224,15 +233,9 @@ function showAddToCartToast(qty) {
     document.body.insertAdjacentHTML('beforeend', toastHTML);
     
     const toastElement = document.getElementById('addToCartToast');
-    
-    const bsToast = new bootstrap.Toast(toastElement, {
-        autohide: true,
-        delay: 500   // 顯示時間稍長一點
-    });
-    
+    const bsToast = new bootstrap.Toast(toastElement, { autohide: true, delay: 500 });
     bsToast.show();
 
-    // 消失後移除 DOM
     toastElement.addEventListener('hidden.bs.toast', () => {
         toastElement.remove();
     });
@@ -250,13 +253,10 @@ function updateCartCount() {
     if (bottomCount) bottomCount.innerText = totalQty;
 }
 
-
-
 // === 底部導航高亮 ===
 function highlightBottomNav() {
     const currentPath = window.location.pathname;
 
-    // 移除所有 active
     document.querySelectorAll('.bottom-nav .nav-link').forEach(link => {
         link.classList.remove('active');
     });
@@ -272,10 +272,43 @@ function highlightBottomNav() {
     }
 }
 
+// ==================== 大圖預覽 Modal ====================
+function showProductImage(imageSrc, productName) {
+    let modal = document.getElementById('productImageModal');
+    if (modal) modal.remove();
+
+    const modalHTML = `
+        <div class="modal fade" id="productImageModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title">${productName}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-2 text-center bg-light">
+                        <img src="${imageSrc}" 
+                             class="img-fluid rounded" 
+                             style="max-height: 85vh; width: auto;"
+                             alt="${productName}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    const bsModal = new bootstrap.Modal(document.getElementById('productImageModal'));
+    bsModal.show();
+
+    document.getElementById('productImageModal').addEventListener('hidden.bs.modal', function () {
+        this.remove();
+    });
+}
+
 // 在頁面載入時執行
 window.onload = () => {
     loadProducts();
     updateCartCount();
-    highlightBottomNav();        // ← 新增這行
+    highlightBottomNav();
 };
-
