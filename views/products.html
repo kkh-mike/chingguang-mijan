@@ -9,8 +9,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/styles.css">
 
-   
-
     <style>
     body {
         background: #fffaf3;
@@ -36,13 +34,6 @@
         font-weight: 800;
         color: #8B4513;
         letter-spacing: 1px;
-    }
-
-    /* 搜尋框 */
-    .desktop-search input {
-        border-radius: 50px 0 0 50px;
-        border-right: none;
-        padding-left: 20px;
     }
 
     /* ==================== Banner ==================== */
@@ -134,7 +125,7 @@
         box-shadow: 0 4px 12px rgba(211, 84, 0, 0.25);
     }
 
-    /* ==================== 手機版水平商品列 (重點加大) ==================== */
+    /* ==================== 手機版水平商品列 (重點優化) ==================== */
     .product-row {
         border: 1px solid #f0e6d9;
         background: white;
@@ -142,8 +133,11 @@
         overflow: hidden;
         box-shadow: 0 8px 25px rgba(0,0,0,0.09);
         transition: all 0.3s ease;
-        padding: 16px 14px;
-        margin-bottom: 18px;
+        padding: 18px 16px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
     }
 
     .product-row:hover {
@@ -152,15 +146,14 @@
     }
 
     .product-img-wrapper {
-        width: 122px;          /* ← 加大 */
-        height: 122px;         /* ← 加大 */
-        border-radius: 18px;
+        width: 118px;
+        height: 118px;
+        border-radius: 16px;
         overflow: hidden;
         background: #f8f1e3;
         flex-shrink: 0;
         cursor: pointer;
         transition: transform 0.25s ease;
-        margin-right: 16px;
     }
 
     .product-img-wrapper:hover {
@@ -175,12 +168,45 @@
 
     .product-row .flex-grow-1 {
         min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    /* 商品文字區 */
+    .product-row .product-name {
+        font-size: 1.15rem;
+        line-height: 1.35;
+        margin-bottom: 4px;
+    }
+
+    .product-row .product-desc {
+        font-size: 0.95rem;
+        color: #666;
+        line-height: 1.4;
+        margin-bottom: 8px;
+    }
+
+    .product-row .price {
+        font-size: 1.48rem;
+        font-weight: 800;
+        color: #d35400;
+        margin-bottom: 10px;
+    }
+
+    /* 數量控制 */
+    .qty-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
     }
 
     .qty-input {
-        width: 52px !important;
+        width: 48px !important;
         height: 40px;
         text-align: center;
+        font-size: 1.05rem;
     }
 
     .qty-btn {
@@ -189,7 +215,13 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.15rem;
+        font-size: 1.2rem;
+    }
+
+    .btn-order {
+        width: 100%;
+        padding: 14px 0;
+        font-size: 1.08rem;
     }
 
     /* ==================== 底部導航 ==================== */
@@ -245,45 +277,32 @@
             padding-left: 16px !important;
             padding-right: 16px !important;
         }
+    }
 
-        .product-name {
-            font-size: 1.18rem;
+    /* 超小螢幕保護 */
+    @media (max-width: 375px) {
+        .product-img-wrapper {
+            width: 108px;
+            height: 108px;
         }
-
-        .price {
-            font-size: 1.45rem;
-        }
-
-        .btn-order {
-            padding: 16px 0;
-            font-size: 1.12rem;
-        }
-
-        /* 手機版商品水平列 */
+        
         .product-row {
             padding: 16px 14px;
-            margin-bottom: 18px;
+            gap: 14px;
         }
 
-        .product-img-wrapper {
-            width: 122px;
-            height: 122px;
+        .product-row .product-name {
+            font-size: 1.1rem;
         }
     }
 
-    /* 超小螢幕保護（iPhone SE、小尺寸 Android） */
     @media (max-width: 360px) {
         .product-img-wrapper {
-            width: 110px;
-            height: 110px;
-        }
-        .product-name {
-            font-size: 1.12rem;
+            width: 105px;
+            height: 105px;
         }
     }
-</style>
-
-
+    </style>
 </head>
 <body>
 
