@@ -12,8 +12,7 @@
 
 
 
-
-   <style>
+<style>
     body {
         background: #fffaf3;
         padding-bottom: 90px;
@@ -79,6 +78,11 @@
         align-items: center;
         gap: 12px;
         width: 100%;
+        
+        /* 防止點擊商品區域時畫面放大 */
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
     }
 
     .product-row:hover {
@@ -94,6 +98,10 @@
         background: #f8f1e3;
         flex-shrink: 0;
         box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+        
+        /* 防止點擊圖片區域放大 */
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
     }
 
     .product-img {
@@ -346,6 +354,7 @@
         }
     }
 </style>
+
 
 </head>
 <body>
