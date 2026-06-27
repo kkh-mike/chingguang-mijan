@@ -124,11 +124,11 @@ async function loadProducts() {
                         <!-- 右邊 數量 + 加入購物車 -->
                         <div class="d-flex flex-column align-items-end gap-2 ms-3">
                             <!-- 數量選擇器 -->
-                            <div class="input-group input-group-sm qty-group" style="width: 128px;">
+                            <div class="input-group input-group-sm qty-group">
                                 <button class="btn qty-btn" 
                                         onclick="changeQty(${product.id}, -1)">–</button>
                                 <input id="qty-${product.id}" type="number" min="1" value="1" 
-                                       class="form-control text-center qty-input">
+                                    class="form-control text-center qty-input">
                                 <button class="btn qty-btn" 
                                         onclick="changeQty(${product.id}, 1)">+</button>
                             </div>

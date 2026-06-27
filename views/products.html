@@ -146,50 +146,47 @@
         margin-bottom: 0;
     }
 
-    /* ==================== 數量選擇器 - 更靈活好看 ==================== */
-    .input-group {
+  /* ==================== 數量選擇器 - 加大觸控版 ==================== */
+    .input-group.qty-group {
         width: auto !important;
-        min-width: 118px;
+        min-width: 148px;     /* 加寬整體 */
     }
 
     .qty-btn {
-        width: 32px;
-        height: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.25rem;
-        font-weight: 600;
+        width: 48px !important;     /* 明顯加大 */
+        height: 48px !important;
+        font-size: 1.6rem;          /* 符號更大 */
+        font-weight: 700;
         color: #8B4513;
         background: white;
-        border: 2px solid #e6d5b8;
+        border: 2.5px solid #e6d5b8;
         border-radius: 50%;
-        transition: all 0.2s ease;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.12);
     }
 
     .qty-btn:active {
         background: #f0e6d9;
-        transform: scale(0.92);
+        transform: scale(0.9);
     }
 
     .qty-input {
-        width: 38px !important;
+        width: 52px !important;     /* 數字框也加大 */
         text-align: center;
-        font-size: 1.1rem;
+        font-size: 1.3rem;
         font-weight: 700;
-        background: transparent;
-        border: none;
-        outline: none;
+        height: 48px;
+        background: #fffaf3;
+        border: 2px solid #e6d5b8;
+        border-radius: 8px;
     }
 
-    /* 數量為1時減號不會太死板 */
+    /* 數量為1時減號狀態 */
     .qty-btn:disabled,
     .qty-btn[disabled] {
         color: #c9a97f;
         background: #fffaf3;
-        cursor: not-allowed;
     }
+
 
     .btn-order {
         background: linear-gradient(135deg, #e67e22, #d35400);
@@ -328,6 +325,45 @@
 
         .input-group {
             min-width: 110px;
+        }
+    }
+
+    /* ←←← 在這裡加上這段（放在最下面） */
+    @media (max-width: 375px) {
+        .product-img-wrapper {
+            width: 86px;
+            height: 86px;
+        }
+        
+        .product-row {
+            padding: 10px;
+            gap: 10px;
+        }
+
+        .product-content {
+            height: 86px;
+        }
+
+        .product-name {
+            font-size: 1.05rem;
+        }
+        
+        .price {
+            font-size: 1.2rem;
+        }
+
+        /* 超小螢幕再加強 */
+        .input-group.qty-group {
+            min-width: 142px;
+        }
+        .qty-btn {
+            width: 46px !important;
+            height: 46px !important;
+            font-size: 1.55rem;
+        }
+        .qty-input {
+            width: 50px !important;
+            font-size: 1.25rem;
         }
     }
 </style>
