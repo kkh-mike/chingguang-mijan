@@ -245,34 +245,50 @@
         flex-direction: column;
     }
 
-    /* ==================== 底部導航 ==================== */
-    .bottom-nav {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: #fffaf3;
-        border-top: 1px solid #e6d5b8;
-        box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
-        z-index: 1030;
-        padding: 8px 0 6px;
-    }
+  
 
-    .bottom-nav .nav-link {
-        color: #6c757d;
-        transition: all 0.3s ease;
-    }
+     /* ==================== 底部導航 ==================== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+            z-index: 1030;
+            padding: 10px 0 8px;
+        }
 
-    .bottom-nav .nav-link.active {
-        color: #d35400;
-        font-weight: 700;
-    }
+        .bottom-nav .nav-link {
+            color: #6c757d;
+            transition: all 0.3s ease;
+            position: relative;
+        }
 
-    .bottom-nav .nav-link i {
-        font-size: 1.65rem;
-        margin-bottom: 4px;
-    }
+        .bottom-nav .nav-link.active {
+            color: #d35400;
+            font-weight: 700;
+        }
 
+        .bottom-nav .nav-link.active i {
+            color: #d35400;
+            transform: scale(1.15);
+        }
+
+        .bottom-nav .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 28px;
+            height: 3px;
+            background: #d35400;
+            border-radius: 3px;
+        }
+
+        
     /* ==================== 響應式調整 ==================== */
     @media (max-width: 768px) {
         #productList .row > div {
@@ -411,6 +427,8 @@ function updateAllCartCounts() {
     if (bottomCount) bottomCount.textContent = count;
 }
 
+
+
 // === 底部導航高亮 ===
 function highlightBottomNav() {
     const currentPath = window.location.pathname;
@@ -419,16 +437,18 @@ function highlightBottomNav() {
         link.classList.remove('active');
     });
 
-    if (currentPath === '/products' || currentPath === '/') {
+    // 只要網址包含 product 或是純根目錄，就讓全部商品亮起來
+    if (currentPath.includes('product') || currentPath === '/' || currentPath === '') {
         document.getElementById('bottom-products').classList.add('active');
     } 
-    else if (currentPath === '/cart') {
+    else if (currentPath.includes('cart')) {
         document.getElementById('bottom-cart').classList.add('active');
     } 
-    else if (currentPath.includes('/orders') || currentPath === '/order') {
+    else if (currentPath.includes('order')) {
         document.getElementById('bottom-orders').classList.add('active');
     }
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
     updateAllCartCounts();

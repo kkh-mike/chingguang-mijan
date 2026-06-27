@@ -341,12 +341,21 @@ function updateAllCartCounts() {
 // === 底部導航高亮 ===
 function highlightBottomNav() {
     const currentPath = window.location.pathname;
+
     document.querySelectorAll('.bottom-nav .nav-link').forEach(link => {
         link.classList.remove('active');
     });
 
-    if (currentPath === '/cart') {
+    // 參考 cart 的寫法，並改用 includes 容錯
+    // 只要路徑裡包含 'product' (不管後面有沒有帶 ?q= 搜尋參數或斜線) 或者是首頁就亮
+    if (currentPath.includes('product') || currentPath === '/' || currentPath === '') {
+        document.getElementById('bottom-products').classList.add('active');
+    } 
+    else if (currentPath.includes('cart')) {
         document.getElementById('bottom-cart').classList.add('active');
+    } 
+    else if (currentPath.includes('order')) {
+        document.getElementById('bottom-orders').classList.add('active');
     }
 }
 
